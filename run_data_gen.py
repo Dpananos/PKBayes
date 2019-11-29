@@ -16,18 +16,17 @@ if __name__ == "__main__":
     )
     parser.add_argument("--tmin", type=float, default=0.5)
     parser.add_argument("--tmax", type=float, default=12)
-    parser.add_argument("--n_obs", type=float, default=8)
+    parser.add_argument("--n_obs", type=int, default=8)
 
     parser.add_argument("--D", type=int, default=5)
     parser.add_argument("--n_continuous_predictors", type=int, default=2)
     parser.add_argument("--n_binary_predictors", type=int, default=2)
     parser.add_argument("--binary_prob", type=float, default=0.33)
-    parser.add_argument(
-        "--beta_baseline", nargs=3, default=[np.log(3.3), np.log(0.2), np.log(1)]
-    )
+    parser.add_argument("--beta_baseline", nargs=3, default=[np.log(3.3), np.log(0.2), np.log(1)])
     parser.add_argument("--beta_cov", nargs=3, default=[0.075, 0.075, 0.075])
     parser.add_argument("--rfx_cov", nargs=3, default=[0.07, 0.2, 0.2])
     parser.add_argument("--use_normal_rfx", type=int, default=1)
+    parser.add_argument("--sigma_obs", type=float, default=0.12)
     args = parser.parse_args()
 
     subjects = np.sort([f"subject_{j:04}" for j in range(args.n_subjects)] * args.n_obs)
@@ -52,7 +51,7 @@ if __name__ == "__main__":
         "beta_baseline": args.beta_baseline,
         "beta_cov": args.beta_cov,
         "rfx_cov": args.rfx_cov,
-        "use_normal_rfx": args.use_normal_rfx,
+        "use_normal_rfx": args.use_normal_rfx
     }
 
     model = StanModel_cache(file="stan/data_gen.stan")
@@ -60,6 +59,6 @@ if __name__ == "__main__":
 
     pk = np.squeeze(fit["pk"])
     X = np.squeeze(fit["X"])
-    df = make_obs(args.D, subjects, times, X, pk)
+    df = make_obs(args.D, subjects, times, X, pk, args.sigma_obs)
 
     df.to_csv("data/test.csv")
