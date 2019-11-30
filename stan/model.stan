@@ -83,25 +83,15 @@ model{
   BETA_ka[1]~normal(1, 0.07);
   
   //Noise
-  SIGMA_Cl ~ lognormal(1,0.5);
-  SIGMA_ke~ lognormal(1,0.5);
-  SIGMA_ka ~lognormal(1,0.5);
-  sigma ~ lognormal(1,1);
+  SIGMA_Cl ~ gamma(2,2);
+  SIGMA_ke~ gamma(2,2);
+  SIGMA_ka ~ gamma(2,2);
+  sigma ~ gamma(2,2);
   
   //Random Effects
   z_Cl ~ normal(0,1);
   z_ke ~ normal(0,1);
   z_ka ~ normal(0,1);
-
-  
-  //Delay
-  //These priors make more sense to me and
-  //result in posteriors which are not much different.
-  
-  //Phi is the mean of the betra
-  //lambda sum of successes and losses
-  //See stan manual See section 20.2 : Reparameteriztions
-
 
   // Likelihood
  y ~ lognormal(log(C), sigma);

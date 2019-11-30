@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 def pk_func(t,D,Cl, ka, ke):
 
@@ -15,6 +16,7 @@ def make_obs(D, subjects, times, X, pk, sigma_obs):
 
     df = tdf.join(pkdf, how = 'left').join(Xdf, how='left')
     df['y'] = pk_func(df.t, D, df.Cl, df.ka, df.ke )
-    df['y_obs'] = np.exp( np.log(df.y) + np.random.normal(0, sigma_obs, size = df.shape[0]) )
+    z = norm(loc=0, scale=sigma_obs)
+    df['y_obs'] = np.exp( np.log(df.y) + z.rvs(size = df.shape[0], random_state= 0) )
 
     return df
