@@ -1,7 +1,4 @@
 functions {
-  
-  // PK Function.  Solution to differential equation
-  // y' = ka*(D/V)exp(-ka*t) - k*y, y(0) = 0
   real PK_profile(real t, real D, real Cl, real k_a, real k_e) {
     return (D / Cl) * (k_e*k_a / (k_e - k_a))
             * ( exp(- k_a * t) - exp(-k_e * t) );
@@ -75,17 +72,16 @@ model{
   
   // Priors
   //Coefficients
-  BETA_Cl  ~ normal(0,0.07);
+  BETA_Cl  ~ normal(0,0.1);
   BETA_Cl[1] ~ normal(log(3),0.07);
-  BETA_ke  ~ normal(0,0.07);
-  BETA_ke[1] ~ normal(0.2, 0.07);
-  BETA_ka ~ normal(0,0.07);
-  BETA_ka[1]~normal(1, 0.07);
+  BETA_ke  ~ normal(0,0.1);
+  BETA_ke[1] ~ normal(log(0.2), 0.1);
+  BETA_ka ~ normal(0,0.1);
   
   //Noise
-  SIGMA_Cl ~ gamma(2,2);
-  SIGMA_ke~ gamma(2,2);
-  SIGMA_ka ~ gamma(2,2);
+  SIGMA_Cl ~ lognormal(log(0.075), 0.1);
+  SIGMA_ke~ lognormal(log(0.2), 0.1);
+  SIGMA_ka ~ lognormal(log(0.2), 0.1);
   sigma ~ gamma(2,2);
   
   //Random Effects

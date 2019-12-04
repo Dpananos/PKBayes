@@ -1,3 +1,4 @@
+import pickle
 import pystan
 import numpy as np
 import argparse
@@ -27,6 +28,8 @@ if __name__ == "__main__":
     parser.add_argument("--sigma_obs", type=float, default=0.12)
     args = parser.parse_args()
 
+    # Create some names for our patients.  Zero pad to keep them to easily order them.  Comes in handy when we compare
+    # Random effects etc.  Else, subejcts may be ordered like subject_1, subject_10, subject_100, etc.
     subjects = np.sort([f"subject_{j:04}" for j in range(args.n_subjects)] * args.n_obs)
 
     # Create times for observations
@@ -35,28 +38,22 @@ if __name__ == "__main__":
         obs_times = np.linspace(args.tmin, args.tmax, args.n_obs)
         times = np.tile(obs_times, args.n_subjects)
     else:
-        obs_times = [
-            np.sort(np.random.uniform(low=args.tmin, high=args.tmax, size=args.n_obs))
-            for j in range(args.n_subjects)
-        ]
+        # If we don't observe at the same time, then observation times are uniformly random between tmin and tmax
+        obs_times = [np.sort(np.random.uniform(low=args.tmin, high=args.tmax, size=args.n_obs)) for j in range(args.n_subjects)]
+        # Store the times in a flat list
         times = functools.reduce(lambda x, y: x + y, obs_times)
 
-    data_params = {
-        "n_subjects": args.n_subjects,
-        "n_continuous_predictors": args.n_continuous_predictors,
-        "n_binary_predictors": args.n_binary_predictors,
-        "binary_prob": args.binary_prob,
-        "beta_baseline": args.beta_baseline,
-        "beta_cov": args.beta_cov,
-        "rfx_cov": args.rfx_cov,
-        "use_normal_rfx": args.use_normal_rfx
-    }
+    # See utils/pthon_tools.py
+    X = generate_covariates(args.n_subjects, args.n_continuous_predictors,
+    args.n_binary_predictors, args.binary_prob)
+    betas = generate_regression_coefficients(X, args.beta_cov)
+    pk = generate_pk_params(X, betas, args.beta_baseline, args.use_normal_rfx, args.rfx_cov)
 
-    model = StanModel_cache(file="stan/data_gen.stan")
-    fit = model.sampling(data=data_params, algorithm="Fixed_param", iter=1, chains=1, seed=args.seed).extract()
-
-    pk = np.squeeze(fit["pk"])
-    X = np.squeeze(fit["X"])
+    # Observational model is lognormal
+    # PK function is y' = (D/Cl)*ke*ka*exp(-ka*t) - ke*y
     df = make_obs(args.D, subjects, times, X, pk, args.sigma_obs)
-
     df.to_csv("data/test.csv")
+
+    with open('data/reg_coefs.txt', 'wb') as f:
+        # Save for comparison later.
+        pickle.dump({'betas':betas}, f, protocol=pickle.HIGHEST_PROTOCOL)
