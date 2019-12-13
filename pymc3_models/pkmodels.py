@@ -76,7 +76,7 @@ def pk_mixed_model(df,**kwargs):
     with pm.Model() as pkmodel:
         
         baseline_cl = pm.Bound(pm.Normal, lower=0)('baseline_cl', mu = tt.log(3), sd=1)
-        baseline_ke = pm.Normal('baseline_ke', mu = 0.4, sd=0.25)
+        baseline_ke = pm.Normal('baseline_ke', mu = 0, sd=1)
         alpha = pm.Beta('alpha',20,20)
         baseline_ka = pm.Deterministic('baseline_ka', tt.log(1.0/alpha) + baseline_ke)
 
