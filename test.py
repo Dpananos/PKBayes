@@ -2,11 +2,15 @@ import pandas as pd
 from pymc3_models import *
 import arviz as az
 import matplotlib.pyplot as plt
+import os
 
+df = pd.read_csv("data/test.csv", index_col=0)
 
-df = pd.read_csv('data/test.csv', index_col = 0)
+regression_posterior = pk_regression(df, draws=1000, tune=1000, chains=8, random_seed=19920908, target_accept = 0.95)
 
-posterior = pk_mixed_model(df, random_seed=0)
+az.to_netcdf(regression_posterior, "trace/pk_regression.NC")
 
-az.plot_density(posterior, var_names=['alpha'])
-plt.show()
+posterior = pk_mixed_model(df, draws=1000, tune=1000, chains=8, random_seed=19920908, target_accept=0.9)
+
+az.to_netcdf(posterior, "trace/pk_mixed_model.NC")
+

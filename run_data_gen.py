@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate data to fit the model")
     parser.add_argument("--seed", type=int, default=19920908)
-    parser.add_argument("--n_subjects", type=int, default=36)
+    parser.add_argument("--n_subjects", type=int, default=25)
     parser.add_argument("--spacing", type=str, default="even", choices=["even", "random"])
     parser.add_argument("--tmin", type=float, default=0.5)
     parser.add_argument("--tmax", type=float, default=12)

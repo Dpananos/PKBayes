@@ -22,8 +22,9 @@ def pk_regression(df,**kwargs):
         
         baseline_cl = pm.Bound(pm.Normal, lower=0)('baseline_cl', mu = tt.log(3), sd=1)
         baseline_ke = pm.Normal('baseline_ke', mu = 0, sd=1)
-        alpha = pm.Beta('alpha',1,1)
+        alpha = pm.Beta('alpha',20,20)
         baseline_ka = pm.Deterministic('baseline_ka', tt.log(1.0/alpha) + baseline_ke)
+        # baseline_ka = pm.Bound(pm.Normal, lower = baseline_ke)('baseline_ka', mu = 0, sd = 1)
         
         baseline = tt.stack([baseline_cl, baseline_ka, baseline_ke])
         sigma = pm.Gamma('sigma',.5,1)
@@ -40,7 +41,7 @@ def pk_regression(df,**kwargs):
         KE = params[tuple(idx), 2]
         
         delay_mu = pm.Beta('mu', 1,1)
-        delay_kappa = pm.Pareto('kappa', m=5, alpha=1)
+        delay_kappa = pm.Pareto('kappa', m=10, alpha=1)
         delay = pm.Beta('delay', alpha = delay_mu*delay_kappa, beta=(1-delay_mu)*delay_kappa, shape=n)
         dt = t-0.5*delay[idx]
         
@@ -75,14 +76,16 @@ def pk_mixed_model(df,**kwargs):
     with pm.Model() as pkmodel:
         
         baseline_cl = pm.Bound(pm.Normal, lower=0)('baseline_cl', mu = tt.log(3), sd=1)
-        baseline_ke = pm.Normal('baseline_ke', mu = 0, sd=1)
-        alpha = pm.Beta('alpha',1,1)
+        baseline_ke = pm.Normal('baseline_ke', mu = 0.4, sd=0.25)
+        alpha = pm.Beta('alpha',20,20)
         baseline_ka = pm.Deterministic('baseline_ka', tt.log(1.0/alpha) + baseline_ke)
+
+        # baseline_ka = pm.Bound(pm.Normal, lower = baseline_ke)('baseline_ka', mu = 0, sd=1)
         
         baseline = tt.stack([baseline_cl, baseline_ka, baseline_ke])
         sigma = pm.Gamma('sigma',.5,1)
         S = pm.HalfCauchy('S',1, shape=3)
-        z = pm.Normal('z', mu = 0, sd = 1, shape= (n,3))
+        z = pm.Normal('z' , shape= (n,3))
         
         beta = pm.Normal('beta', mu=0, sd=0.1, shape = (p,3))
         # params = pm.Deterministic('params', tt.exp(baseline + tt.dot(X,beta) + tt.dot(z, tt.diag(S))))
@@ -93,7 +96,7 @@ def pk_mixed_model(df,**kwargs):
         KA = params[tuple(idx), 1]
         KE = params[tuple(idx), 2]
         
-        delay_mu = pm.Beta('mu', 1,1)
+        delay_mu = pm.Beta('mu',1,1)
         delay_kappa = pm.Pareto('kappa', m=5, alpha=1)
         delay = pm.Beta('delay', alpha = delay_mu*delay_kappa, beta=(1-delay_mu)*delay_kappa, shape=n)
         dt = t-0.5*delay[idx]
