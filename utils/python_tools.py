@@ -58,10 +58,10 @@ def make_obs(D, subjects, times, X, pk, sigma_obs, use_delay = False):
     # Delay in drug absorption
     df = tdf.join(pkdf, how='left').join(Xdf, how='left')
     if use_delay:   
-        delays = pm.Beta.dist(alpha=10, beta=30).random(size=unique_subjects.size)
+        delays = pm.Beta.dist(alpha=10, beta=10).random(size=unique_subjects.size, random_state = 0)
         dfdelay = pd.DataFrame({'delay':delays}, index = unique_subjects)
         df = df.join(dfdelay, how='left')
-        df['y'] = pk_func(df.t-df.delay, D, df.Cl, df.ka, df.ke )
+        df['y'] = pk_func(df.t-0.5*df.delay, D, df.Cl, df.ka, df.ke )
     else:
         df['y'] = pk_func(df.t, D, df.Cl, df.ka, df.ke )
 
