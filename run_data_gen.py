@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate data to fit the model")
     parser.add_argument("--seed", type=int, default=19920908)
-    parser.add_argument("--n_subjects", type=int, default=25)
+    parser.add_argument("--n_subjects", type=int, default=75)
     parser.add_argument("--spacing", type=str, default="even", choices=["even", "random"])
     parser.add_argument("--tmin", type=float, default=0.5)
     parser.add_argument("--tmax", type=float, default=12)
@@ -60,7 +60,8 @@ if __name__ == "__main__":
     # Observational model is lognormal
     # PK function is y' = (D/Cl)*ke*ka*exp(-ka*t) - ke*y
     df = make_obs(args.D, subjects, times, X, pk, args.sigma_obs, use_delay=args.use_delay)
-    df.to_csv("data/test.csv")
+    df.iloc[:25,:].to_csv("data/train.csv")
+    df.iloc[25:,:].to_csv("data/test.csv")
 
     with open('data/reg_coefs.txt', 'wb') as f:
         # Save for comparison later.
