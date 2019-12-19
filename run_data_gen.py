@@ -60,8 +60,8 @@ if __name__ == "__main__":
     # Observational model is lognormal
     # PK function is y' = (D/Cl)*ke*ka*exp(-ka*t) - ke*y
     df = make_obs(args.D, subjects, times, X, pk, args.sigma_obs, use_delay=args.use_delay)
-    df.iloc[:25,:].to_csv("data/train.csv")
-    df.iloc[25:,:].to_csv("data/test.csv")
+    df.iloc[:args.n_obs*25,:].to_csv("data/train.csv")
+    df.iloc[args.n_obs*25:,:].to_csv("data/test.csv")
 
     with open('data/reg_coefs.txt', 'wb') as f:
         # Save for comparison later.

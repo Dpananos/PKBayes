@@ -6,7 +6,6 @@ import theano.tensor as tt
 
 def pk_regression(df,**kwargs):
 
-    df = pd.read_csv('data/test.csv', index_col = 0)
     df.index = df.index.rename('subject')
     df = df.reset_index()
     df['subject'] = df.subject.astype('category').cat.codes
@@ -34,6 +33,7 @@ def pk_regression(df,**kwargs):
         beta = pm.Normal('beta', mu=0, sd=0.1, shape = (p,3))
         params = pm.Deterministic('params', tt.exp(baseline + tt.dot(X,beta) + tt.dot(z, tt.diag(S))))
 
+
     #     params = pm.Deterministic('params', tt.exp(baseline + tt.dot(z, tt.diag(S))))
 
         CL = params[tuple(idx), 0]
@@ -50,18 +50,20 @@ def pk_regression(df,**kwargs):
         
         Y = pm.Lognormal('Yobs', mu = tt.log(concentration), sd = sigma, observed = yobs)
         
-        prior = pm.sample_prior_predictive(samples=1)
+        prior = pm.sample_prior_predictive()
         trace = pm.sample(**kwargs)
-        posterior = az.from_pymc3(trace)
+        posterior = pm.sample_posterior_predictive(trace)
+
+        pm_data = az.from_pymc3(trace = trace, prior = prior, posterior_predictive = posterior)
 
 
-    return posterior
+    return pm_data
 
 
 
 def pk_mixed_model(df,**kwargs):
     
-    df = pd.read_csv('data/test.csv', index_col = 0)
+
     df.index = df.index.rename('subject')
     df = df.reset_index()
     df['subject'] = df.subject.astype('category').cat.codes
@@ -106,10 +108,10 @@ def pk_mixed_model(df,**kwargs):
         
         Y = pm.Lognormal('Yobs', mu = tt.log(concentration), sd = sigma, observed = yobs)
         
-        prior = pm.sample_prior_predictive(samples=1)
+        prior = pm.sample_prior_predictive()
         trace = pm.sample(**kwargs)
-        posterior = az.from_pymc3(trace)
+        posterior = pm.sample_posterior_predictive(trace)
+        pm_data = az.from_pymc3(trace = trace, prior = prior, posterior_predictive = posterior)
 
-
-    return posterior
+    return pm_data
 
