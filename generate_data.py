@@ -11,7 +11,7 @@ from utils.tools import  save_obj
 
 # Simulate from the prior predictive to get some data to fit
 t = 8
-subjects = 36
+subjects = 25
 times, subject_ids = generate_times_subjects(t, subjects, random_sample = False)
 
 # A model to generate some data.  Not actually bootstrapping anything
