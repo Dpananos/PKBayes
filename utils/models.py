@@ -2,7 +2,7 @@ import numpy as np
 import pymc3 as pm
 import theano.tensor as tt
 
-def strong_model_factory(Yobs, times, subject_ids):
+def strong_model_factory(Yobs, times, subject_ids, use_delay = True):
 
     """Returns a model context for a strongly informative model.
     
@@ -35,23 +35,38 @@ def strong_model_factory(Yobs, times, subject_ids):
         z_ka = pm.Normal("z_ka", 0, 1, shape=len(np.unique(subject_ids)))
         s_ka = pm.Lognormal("s_ka", tt.log(0.12), 0.05)
 
-        CL = pm.Deterministic(
-            "Cl", tt.exp(log_CL + z_CL[np.unique(subject_ids)] * s_CL)
-        )
-        ke = pm.Deterministic(
-            "ke", tt.exp(log_ke + z_ke[np.unique(subject_ids)] * s_ke)
-        )
-        ka = pm.Deterministic(
-            "ka", tt.exp(log_ka + z_ka[np.unique(subject_ids)] * s_ka)
-        )
+        CL = pm.Deterministic("Cl", tt.exp(log_CL + z_CL[np.unique(subject_ids)] * s_CL))
+        ke = pm.Deterministic("ke", tt.exp(log_ke + z_ke[np.unique(subject_ids)] * s_ke))
+        ka = pm.Deterministic("ka", tt.exp(log_ka + z_ka[np.unique(subject_ids)] * s_ka))
 
-        y_est = (
-            5
-            / CL[subject_ids]
-            * (ke[subject_ids] * ka[subject_ids])
-            / (ke[subject_ids] - ka[subject_ids])
-            * (tt.exp(-ka[subject_ids] * times) - tt.exp(-ke[subject_ids] * times))
-        )
+        if use_delay:
+
+            delay_mu = pm.Beta('delay_mu',50,50)
+            delay_kappa = pm.Pareto('delay_kappa', alpha = 5, m=10)
+            delay_alpha = pm.Deterministic('delay_alpha', delay_mu*delay_kappa)
+            delay_beta = pm.Deterministic('delay_beta', (1-delay_mu)*delay_kappa)
+
+            delays = pm.Beta('delays', delay_alpha, delay_beta, shape = len(np.unique(subject_ids)))
+
+            delayed_times = times - 0.5*delays[subject_ids]
+
+            y_est = (
+                5
+                / CL[subject_ids]
+                * (ke[subject_ids] * ka[subject_ids])
+                / (ke[subject_ids] - ka[subject_ids])
+                * (tt.exp(-ka[subject_ids] * delayed_times) - tt.exp(-ke[subject_ids] * delayed_times))
+            )
+
+        else:
+                
+            y_est = (
+                5
+                / CL[subject_ids]
+                * (ke[subject_ids] * ka[subject_ids])
+                / (ke[subject_ids] - ka[subject_ids])
+                * (tt.exp(-ka[subject_ids] * times) - tt.exp(-ke[subject_ids] * times))
+            )
 
         y_conc = pm.Deterministic("y_est", y_est)
         sigma = pm.Lognormal("sigma", tt.log(0.12), 0.1)
@@ -61,7 +76,7 @@ def strong_model_factory(Yobs, times, subject_ids):
     return pk_model
 
 
-def weak_model_factory(Yobs, times, subject_ids):
+def weak_model_factory(Yobs, times, subject_ids, use_delay = True):
     """Returns a model context for a weakly informative model.
 
     Inputs:
@@ -97,13 +112,34 @@ def weak_model_factory(Yobs, times, subject_ids):
         ke = pm.Deterministic("ke", tt.exp(log_ke + z_ke[np.unique(subject_ids)] * s_ke))
         ka = pm.Deterministic("ka", tt.exp(log_ka + z_ka[np.unique(subject_ids)] * s_ka))
 
-        y_est = (
-            5
-            / CL[subject_ids]
-            * (ke[subject_ids] * ka[subject_ids])
-            / (ke[subject_ids] - ka[subject_ids])
-            * (tt.exp(-ka[subject_ids] * times) - tt.exp(-ke[subject_ids] * times))
-        )
+        if use_delay:
+
+            delay_mu = pm.Beta('delay_mu',1,1)
+            delay_kappa = pm.HalfCauchy('delay_kappa', 1)
+            delay_alpha = pm.Deterministic('delay_alpha', delay_mu*delay_kappa)
+            delay_beta = pm.Deterministic('delay_beta', (1-delay_mu)*delay_kappa)
+
+            delays = pm.Beta('delays', delay_alpha, delay_beta, shape = len(np.unique(subject_ids)))
+
+            delayed_times = times - 0.5*delays[subject_ids]
+
+            y_est = (
+                5
+                / CL[subject_ids]
+                * (ke[subject_ids] * ka[subject_ids])
+                / (ke[subject_ids] - ka[subject_ids])
+                * (tt.exp(-ka[subject_ids] * delayed_times) - tt.exp(-ke[subject_ids] * delayed_times))
+            )
+
+        else:
+                
+            y_est = (
+                5
+                / CL[subject_ids]
+                * (ke[subject_ids] * ka[subject_ids])
+                / (ke[subject_ids] - ka[subject_ids])
+                * (tt.exp(-ka[subject_ids] * times) - tt.exp(-ke[subject_ids] * times))
+            )
 
         y_conc = pm.Deterministic("y_est", y_est)
         sigma = pm.HalfCauchy("sigma", 1)

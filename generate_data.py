@@ -15,7 +15,7 @@ subjects = 25
 times, subject_ids = generate_times_subjects(t, subjects, random_sample = False)
 
 # A model to generate some data.  Not actually bootstrapping anything
-with strong_model_factory(None, times, subject_ids):    
+with strong_model_factory(None, times, subject_ids, use_delay = True):    
     bootstrap_prior = pm.sample_prior_predictive(1, random_seed=19920908)
 
 # generate some regression data too
