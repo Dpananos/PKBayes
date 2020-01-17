@@ -186,6 +186,21 @@ The model proposed above can be extended easily to perform regression by specify
 
 \noindent The prior in this instance could also serve to regularize coefficient estimates so as to select only predictive variables (think Bayesian lasso).  My only worry here is that the effects are likely already very close to 0, which may make selection difficult.  Anyway, no way to now know, we could always do yet another simulation.
 
+\section{Time Delay Effects}
+
+Time delays can be modelled as follows.  Assume patient $ j $'s first non-zero measurement is observed at $ \tau_j $.  The concentration at this time is $ C_j(\tau_j - \delta_j) $, where $ \delta_j $ is patient $ j $'s time delay.
+
+Assume each patient has their own time delay which comes from some population delay distribution.  Thus, the model structure for the delay is
+
+ \begin{align}
+	\mu_{\delta} &\sim p(\mu_{\delta})\\
+	\kappa_{\delta} &\sim p(\kappa_{\delta})\\
+	\delta_j &\sim \operatorname{Beta}\Big(\mu_{\delta}\kappa_{\delta}, (1-\mu_{\delta})\kappa_{\delta}\Big)\\
+	t_{j,actual} &= t_{j,obs} - \tau_j\delta_j
+ \end{align}
+ 
+ \noindent Here, $ t_{j, actual} $ is the actual time after absorption of the drug for the $ j^{th} $ patient, and  $p$ is an appropriate prior for $ \mu_{\delta} $ and $ \kappa_{\delta} $.
+
 
 \section{Model Evaluation}
 
