@@ -10,9 +10,9 @@ from utils.tools import generate_times_subjects
 from utils.tools import  save_obj
 
 # Simulate from the prior predictive to get some data to fit
-t = 8
-subjects = 25
-times, subject_ids = generate_times_subjects(t, subjects, random_sample = False)
+t = 2
+subjects = 600
+times, subject_ids = generate_times_subjects(t, subjects, random_sample = True)
 
 # A model to generate some data.  Not actually bootstrapping anything
 with strong_model_factory(None, times, subject_ids, use_delay = True):    

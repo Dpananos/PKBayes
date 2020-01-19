@@ -40,10 +40,15 @@ def strong_model_factory(Yobs, times, subject_ids, use_delay = True):
         ka = pm.Deterministic("ka", tt.exp(log_ka + z_ka[np.unique(subject_ids)] * s_ka))
 
 
+        #Etstimate tmax by generating quantities
         rng = tt.shared_randomstreams.RandomStreams()
         KA_samped = pm.math.exp(log_ka + rng.normal()*s_ka)
         KE_samped = pm.math.exp(log_ke + rng.normal()*s_ke)
         tmax = pm.Deterministic('tmax', (pm.math.log(KA_samped) - pm.math.log(KE_samped))/(KA_samped- KE_samped))
+        
+        #Estimate AUC in same way
+        CL_sampled = pm.math.exp(log_CL + rng.normal()*s_CL)
+        AUC = pm.Deterministic("AUC", 5/CL_sampled)
 
         if use_delay:
 
@@ -101,7 +106,7 @@ def weak_model_factory(Yobs, times, subject_ids, use_delay = True):
 
     with pm.Model() as pk_model:
 
-        log_CL = pm.Bound(pm.Normal, lower=0)("log_CL", tt.log(3.5), 1)
+        log_CL = pm.Normal("log_CL", tt.log(3.5), 1)
         z_CL = pm.Normal("z_CL", 0, 1, shape=len(np.unique(subject_ids)))
         s_CL = pm.HalfCauchy("s_CL", 1)
 
@@ -117,11 +122,16 @@ def weak_model_factory(Yobs, times, subject_ids, use_delay = True):
         CL = pm.Deterministic("Cl", tt.exp(log_CL + z_CL[np.unique(subject_ids)] * s_CL))
         ke = pm.Deterministic("ke", tt.exp(log_ke + z_ke[np.unique(subject_ids)] * s_ke))
         ka = pm.Deterministic("ka", tt.exp(log_ka + z_ka[np.unique(subject_ids)] * s_ka))
-
+        
+        #Estimate tmax by generating quantities
         rng = tt.shared_randomstreams.RandomStreams()
         KA_samped = pm.math.exp(log_ka + rng.normal()*s_ka)
         KE_samped = pm.math.exp(log_ke + rng.normal()*s_ke)
         tmax = pm.Deterministic('tmax', (pm.math.log(KA_samped) - pm.math.log(KE_samped))/(KA_samped- KE_samped))
+        
+        #Estimate AUC in same way
+        CL_sampled = pm.math.exp(log_CL + rng.normal()*s_CL)
+        AUC = pm.Deterministic("AUC", 5/CL_sampled)
 
         if use_delay:
 
@@ -180,7 +190,7 @@ def no_rfx_model_factory(Yobs, times, subject_ids, use_delay = True):
 
     with pm.Model() as pk_model:
 
-        log_CL = pm.Bound(pm.Normal, lower=0)("log_CL", tt.log(3.5), 1)
+        log_CL = pm.Normal("log_CL", tt.log(3.5), 1)
         z_CL = pm.Normal("z_CL", 0, 1, shape=len(np.unique(subject_ids)))
         s_CL = pm.HalfCauchy("s_CL", 1)
 
@@ -195,9 +205,15 @@ def no_rfx_model_factory(Yobs, times, subject_ids, use_delay = True):
         ke = pm.Deterministic("ke", tt.exp(log_ke + z_ke[np.unique(subject_ids)] * s_ke))
         ka = pm.Deterministic("ka", tt.exp(log_ka) ) 
 
+        #Estimate tmax by generating quantities
         rng = tt.shared_randomstreams.RandomStreams()
         KE_samped = pm.math.exp(log_ke + rng.normal()*s_ke)
         tmax = pm.Deterministic('tmax', (pm.math.log(ka) - pm.math.log(KE_samped))/(ka - KE_samped))
+        
+        #Estimate AUC in same way
+        CL_sampled = pm.math.exp(log_CL + rng.normal()*s_CL)
+        AUC = pm.Deterministic("AUC", 5/CL_sampled)
+
 
         
         if use_delay:

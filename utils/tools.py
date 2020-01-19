@@ -1,5 +1,23 @@
 import numpy as np 
 import pickle
+import arviz as az
+import pandas as pd
+import pymc3 as pm
+import argparse
+
+from .models import strong_model_factory
+from .regression_models import strong_regression_model_factory
+
+
+
+def save_obj(obj, name):
+    with open(f'{name}.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+
+def load_obj(name):
+    with open(f'{name}.pkl', 'rb') as f:
+        return pickle.load(f)
 
 
 def generate_times_subjects(t, subjects, random_sample = False):
@@ -16,7 +34,7 @@ def generate_times_subjects(t, subjects, random_sample = False):
         times = np.tile(np.linspace(0.5,12, t), subjects)
         subject_ids = np.concatenate([t*[j] for j in range(subjects)])
     elif isinstance(t, int) and random_sample:
-        times = np.concatenate([np.sort(np.random.uniform(low=0, high=12, size=t)) for j in range(subjects)])
+        times = np.concatenate([np.sort(np.random.uniform(low=0.5, high=12, size=t)) for j in range(subjects)])
         subject_ids = np.concatenate([t*[j] for j in range(subjects)])
     else:
         times = np.tile(t, subjects)
@@ -24,22 +42,35 @@ def generate_times_subjects(t, subjects, random_sample = False):
 
     return times, subject_ids
 
+def generate_data(t, subjects, random_sample):
+    
+    times, subject_ids = generate_times_subjects(t, subjects, random_sample)
 
-def save_obj(obj, name):
-    with open(f'{name}.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+    # A model to generate some data.  Not actually bootstrapping anything
+    with strong_model_factory(None, times, subject_ids, use_delay = True):    
+        bootstrap_prior = pm.sample_prior_predictive(1, random_seed=19920908)
 
+    # generate some regression data too
+    with strong_regression_model_factory(None, times, subject_ids):
+        regression_bootstrap_prior = pm.sample_prior_predictive(1, random_seed=19920908)
+    
 
-def load_obj(name):
-    with open(f'{name}.pkl', 'rb') as f:
-        return pickle.load(f)
+    bootstrap_prior['times'] = times
+    bootstrap_prior['subject_ids'] = subject_ids
+    save_obj(bootstrap_prior, 'data/bootstrap_data')
 
+    regression_bootstrap_prior['times'] = times
+    regression_bootstrap_prior['subject_ids'] = subject_ids
+    save_obj(regression_bootstrap_prior, 'data/regression_bootstrap_data')
+    print('Data Generated!')
 
+    
+    
+    
 def summarize_posterior(data, var_name, model_name):
     
     pred = (
-            data.
-            posterior[var_name].
+            data[var_name].
             to_dataframe().
             groupby(level=2).  #This should be the dimension
             agg([('pred',np.mean), 
@@ -56,8 +87,7 @@ def summarize_posterior(data, var_name, model_name):
 def summarize_ppc(data, var_name, model_name):
     
     pred = (
-            data.
-            posterior_predictive[var_name].
+            data[var_name].
             to_dataframe().
             groupby(level=2).  #This should be the dimension
             agg([('pred',np.mean), 
