@@ -1,0 +1,177 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r, libraries}
+library(rstan)
+library(bayesplot)
+library(tidyverse)
+library(tidybayes)
+
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+
+source('utils.R')
+
+`%notin%` <- Negate(`%in%`)
+
+```
+
+```{r, prepare_data}
+d = read_csv('../data/simulated_data.csv') %>%
+  filter(subjectids<100)
+
+
+obs_times = seq(0.5, 12, 0.5)
+condition = d %>% 
+  filter(times %in%obs_times)
+
+no_condition = d %>% 
+  filter(times %notin% obs_times)
+
+model_data = list(
+  yobs = condition$Cobs,
+  subjectids = condition$subjectids,
+  n_subjects = length(unique(condition$subjectids)),
+  times = condition$times,
+  N = nrow(condition),
+  #----------pred data---------
+  Ntest = nrow(no_condition),
+  test_ids = no_condition$subjectids,
+  test_times = no_condition$times
+)
+
+```
+
+```{r, mcmc}
+
+model = stan_model('models/strong_model.stan')
+
+fit = sampling(model,
+               model_data,
+               iter=3000,
+               chains = 4)
+
+p = rstan::extract(fit)
+
+mcmc_pred = apply(p$ypred, 2, mean)
+
+```
+
+
+```{r, MAP}
+maps = optimizing(
+  model,
+  data = model_data,
+  verbose = TRUE,
+  algorithm = 'LBFGS',
+  as_vector = TRUE,
+  hessian = TRUE,
+  tol_obj=1e-10,
+  iter=10000,
+  draws = 5000
+)
+
+```
+
+```{r, get_estimates}
+
+#MAP
+theta_tilde = maps$theta_tilde
+ypred_cols = theta_tilde[, grepl('ypred', colnames(theta_tilde))]
+
+map_pred = apply(ypred_cols, 2, mean)
+map_low = apply(ypred_cols, 2, function(x) quantile(x, 0.025))
+map_high = apply(ypred_cols, 2, function(x) quantile(x, 0.975))
+
+#MCMC
+mcmc_pred = apply(p$ypred, 2, mean)
+mcmc_low = apply(p$ypred, 2, function(x) quantile(x, 0.025))
+mcmc_high = apply(p$ypred, 2, function(x) quantile(x, 0.975))
+
+predictions = tibble(
+  mcmc_pred,
+  mcmc_low,
+  mcmc_high,
+  map_pred,
+  map_low,
+  map_high
+)
+
+
+
+```
+
+
+```{r}
+
+
+
+no_condition %>% 
+  bind_cols(predictions) %>% 
+  filter(subjectids %in% 1:12) %>% 
+  ggplot()+
+  # geom_line(aes(times, map_pred, color = 'MAP'))+
+  geom_ribbon(aes(times, ymin = map_low, ymax = map_high, fill = 'MAP'), alpha = 0.5)+
+  # geom_line(aes(times, C, color = 'Latent Concentration'))+
+  # geom_line(aes(times, mcmc_pred, color = 'MCMC'))+
+  geom_ribbon(aes(times, ymin = mcmc_low, ymax = mcmc_high, fill = 'MCMC'), alpha = 0.5)+
+  facet_wrap(~subjectids, scales = 'free_y')+
+  theme(aspect.ratio = 1)+
+  labs(x='Time', y='Concentration mg/L', Title='Interval Estimates for concentration')+
+  scale_fill_brewer(palette = 'Set1')
+```
+
+
+
+
+```{r}
+#Parameters and estimates for mcmc
+subject_12_params_mcmc = fit %>% 
+  spread_draws(ke[subjectid], ka[subjectid], Cl[subjectid]) %>% 
+  filter(subjectid==12) %>% 
+  ungroup %>% 
+  select(ke, ka, Cl) %>% 
+  gather(param,val) %>% 
+  group_by(param) %>% 
+  mean_hdci()
+
+
+
+subject_12_params_maps = tibble(
+  ka = theta_tilde[1:5000,'ka[12]'] ,
+  ke = theta_tilde[1:5000,'ke[12]'] ,
+  Cl = theta_tilde[1:5000,'Cl[12]']
+  ) %>% 
+  gather(param, val)  %>% 
+  group_by(param) %>% 
+  mean_hdci
+  
+
+```
+
+```{r}
+subject_12_params_maps %>% 
+  mutate(type = 'MAP') %>% 
+  bind_rows(subject_12_params_mcmc %>% 
+              mutate(type = 'MCMC')) %>% 
+  ggplot(aes('Parameter', val, ymin = .lower, ymax = .upper, color = type))+
+  geom_pointrange(position = position_dodge(width = 0.5))+
+  facet_wrap(~param, scales = 'free_y')
+```
+
+```{r}
+subject_12_params_maps %>% 
+  mutate(type = 'MAP') %>% 
+  select(param, val, .lower, .upper, type)
+ 
+```
+
+
+```{r}
+subject_12_params_mcmc %>% 
+  mutate(type = 'MCMC') %>% 
+  select(param, val, .lower, .upper, type)
+```
+

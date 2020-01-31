@@ -7,6 +7,7 @@ import argparse
 from scipy.stats import norm, binom, uniform
 
 from .regression_models import strong_regression_model_factory
+from .models import strong_model_factory, strongly_estimated_from_tmax
 
 
 def save_obj(obj, name):
@@ -55,8 +56,16 @@ def generate_data(t, subjects, random_sample):
     X = np.c_[Xb, Xc]
 
     # generate some regression data too
-    with strong_regression_model_factory(None, X, times, times, subject_ids, subject_ids, use_delay=True):
+    with strongly_estimated_from_tmax(None, times, subject_ids, times, subject_ids):
+        bootstrap_prior = pm.sample_prior_predictive(1,random_seed=19920908)
+    
+    with strong_regression_model_factory(None, X, times, times, subject_ids, subject_ids, use_delay=False):
         regression_bootstrap_prior = pm.sample_prior_predictive(1, random_seed=19920908)
+    
+    bootstrap_prior['times'] = times
+    bootstrap_prior['subject_ids'] = subject_ids
+    save_obj(bootstrap_prior, 'data/bootstrap_data')
+
     
     regression_bootstrap_prior['times'] = times
     regression_bootstrap_prior['subject_ids'] = subject_ids
