@@ -14,7 +14,7 @@ N = length(times)
 
 model_data = list(N = N, times = times, subjectids = subjectids, N_subjects = N_subjects)
 
-model = stan_model('stan/generate_pseudo_data.stan')
+model = stan_model('stan/models/generate_pseudo_data.stan')
 
 
 fits = sampling(model, 

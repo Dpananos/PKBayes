@@ -12,8 +12,6 @@ library(tidybayes)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
-source('utils.R')
-
 `%notin%` <- Negate(`%in%`)
 
 ```
@@ -120,7 +118,8 @@ no_condition %>%
   facet_wrap(~subjectids, scales = 'free_y')+
   theme(aspect.ratio = 1)+
   labs(x='Time', y='Concentration mg/L', Title='Interval Estimates for concentration')+
-  scale_fill_brewer(palette = 'Set1')
+  scale_fill_brewer(palette = 'Set1')+
+  labs(fill='Credible Intervals')
 ```
 
 
@@ -173,5 +172,21 @@ subject_12_params_maps %>%
 subject_12_params_mcmc %>% 
   mutate(type = 'MCMC') %>% 
   select(param, val, .lower, .upper, type)
+```
+
+
+
+```{r}
+no_condition %>% 
+  bind_cols(predictions) %>% 
+  filter(subjectids<13) %>% 
+  mutate(mcmc_width = mcmc_high - mcmc_low,
+         map_width = map_high - map_low) %>% 
+  select(times, subjectids, map_width, mcmc_width) %>% 
+  gather(estimator, width, -times, -subjectids) %>% 
+  ggplot(aes(times, width, color = estimator))+
+  geom_line()+
+  facet_wrap(~subjectids)+
+  scale_color_brewer(palette = 'Set2')
 ```
 
