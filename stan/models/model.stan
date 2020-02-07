@@ -38,18 +38,38 @@ transformed parameters{
   vector[N] C = (2.5 ./ Cl[subjectids]) .* (ke[subjectids] .* ka[subjectids]) ./ (ke[subjectids] - ka[subjectids]) .* (exp(-ka[subjectids] .* delayed_times) -exp(-ke[subjectids] .* delayed_times));
 }
 model{
-  mu_CL ~ gamma(45,50);
+  mu_CL ~ lognormal(log(log(3.3)),0.15);
   s_CL ~ gamma(15,100);
   z_CL ~ normal(0,1);
   
   mu_t ~ normal(log(3.3), 0.25);
-  s_t ~ gamma(15, 100);
+  s_t ~ gamma(10, 100);
   z_t ~ normal(0,1);
   
   alpha ~ beta(2,2);
-  phi ~ beta(1,1);
-  kappa ~ beta(5,5);
+  phi ~ beta(20,20);
+  kappa ~ beta(20,20);
   delays ~ beta(phi/kappa, (1-phi)/kappa);
   sigma ~ lognormal(log(0.1), 0.2);
   yobs ~ lognormal(log(C), sigma);
+}
+generated quantities{
+  vector[9] ppc_t = [0.0, 0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0]';
+  vector[9] ppc_y;
+  real ppc_CL = exp(mu_CL + normal_rng(0,1)*s_CL);
+  // real ppc_alpha = beta_rng(2,2);
+  real ppc_alpha = beta_rng(2,2);
+  real ppc_tmax = exp(mu_t + normal_rng(0,1)*s_t);
+  real ppc_ka = log(ppc_alpha)*(ppc_tmax * (ppc_alpha-1));
+  real ppc_ke = ppc_alpha*ppc_ka;
+  real ppc_delay = beta_rng(phi/kappa, (1-phi)/kappa);
+  vector[N] C_ppc;
+  
+  for (i in 1:N){
+    C_ppc[i] = lognormal_rng(log(C[i]), sigma);
+  }
+  
+  ppc_y = 2.5/ppc_CL*(ppc_ke*ppc_ka/(ppc_ke - ppc_ka))*(exp(-ppc_ka*(ppc_t - 0.5*ppc_delay)) - exp(-ppc_ke*(ppc_t - 0.5*ppc_delay)));
+  
+
 }

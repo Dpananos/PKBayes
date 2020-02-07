@@ -24,7 +24,7 @@ parameters{
   // real<lower=0, upper=1> phi;
   // real<lower=0, upper=1> kappa;
   // vector<lower=0, upper=1>[n_subjects] delays;
-  
+
   real<lower=0> sigma;
   
 }
@@ -39,28 +39,30 @@ transformed parameters{
   vector[N] C = (2.5 ./ Cl[subjectids]) .* (ke[subjectids] .* ka[subjectids]) ./ (ke[subjectids] - ka[subjectids]) .* (exp(-ka[subjectids] .* delayed_times) -exp(-ke[subjectids] .* delayed_times));
 }
 model{
-  mu_CL ~ lognormal(0.24,0.042);
-  s_CL ~ lognormal(-1.14,0.1);
+  mu_CL ~ lognormal(0.26,0.042);
+  s_CL ~ lognormal(-1.14,0.09);
   z_CL ~ normal(0,1);
   
-  mu_t ~ lognormal(-0.034, 0.054);
-  s_t ~ lognormal(-1.33, 0.11);
+  mu_t ~ lognormal(-0.028, 0.051);
+  s_t ~ lognormal(-1.40, 0.12);
   z_t ~ normal(0,1);
   
   alpha ~ beta(2,2);
-  // phi ~ beta(33.99,42.17);
-  // kappa ~ beta(11.8,8.0);
+  // phi ~ beta(63.97,42.17);
+  // kappa ~ beta(26.4,25.6);
   // delays ~ beta(phi/kappa, (1-phi)/kappa);
-  sigma ~ lognormal(-1.57, 0.06);
+  sigma ~ lognormal(-1.76, 0.063);
   yobs ~ lognormal(log(C), sigma);
 }
 generated quantities{
   
   // vector[Ntest] test_delay_times = test_times - 0.5*delays[test_ids];
-  vector[Ntest] test_delay_times = test_times; 
+  vector[Ntest] test_delay_times = test_times;
   vector[Ntest] ypred;
   
   ypred = (2.5 ./ Cl[test_ids]) .* (ke[test_ids] .* ka[test_ids]) ./ (ke[test_ids] - ka[test_ids]) .* (exp(-ka[test_ids] .* test_delay_times) -exp(-ke[test_ids] .* test_delay_times));
+  
+  
   
   
 }

@@ -7,13 +7,13 @@ data{
   
 }
 generated quantities{
-  real mu_CL = lognormal_rng(0.24, 0.042);
-  real s_CL = lognormal_rng(-1.14, 0.1);
+  real mu_CL = lognormal_rng(0.26, 0.042);
+  real s_CL = lognormal_rng(-1.14, 0.09);
   // real phi = beta_rng(43.98, 39.47);
   // real kappa = beta_rng(10.41, 9.5);
-  real sigma = lognormal_rng(-1.77, 0.06);
-  real mu_t = lognormal_rng(-0.034, 0.054);
-  real s_t = lognormal_rng(-1.33, 0.11);
+  real sigma = lognormal_rng(-1.76, 0.063);
+  real mu_t = lognormal_rng(-0.028, 0.051);
+  real s_t = lognormal_rng(-1.40, 0.12);
   
   
   vector[N_subjects] z_CL;
