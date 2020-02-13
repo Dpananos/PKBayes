@@ -23,10 +23,13 @@ data {
    real KAPPA_A;
    real KAPPA_B;
    
+   real SIGMA_MEAN;
+   real SIGMA_SIGMA;
+   
 }
 generated quantities{
   
-  real mu_t = normal_rng(MU_T_MEAN, MU_T_SIGMA);
+  real mu_t = normal_rng( MU_T_MEAN, MU_T_SIGMA);
   real s_t = gamma_rng(S_T_A, S_T_B);
   real tmax = exp(mu_t + normal_rng(0,1)*s_t);
   
@@ -44,5 +47,13 @@ generated quantities{
   real delay = beta_rng(phi/kappa, (1-phi)/kappa);
   
   vector[N] y=2.5/CL*(ke*ka)/(ke-ka)*(exp(-ka*(t-0.5*delay)) - exp(-ke*(t-0.5*delay)));
+  
+  real sigma = lognormal_rng(SIGMA_MEAN, SIGMA_SIGMA);
+  
+  vector[N] Observations;
+  
+  for (i in 1:N){
+     Observations[i] = lognormal_rng(log(y[i]), sigma);
+  }
 
 }

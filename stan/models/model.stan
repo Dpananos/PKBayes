@@ -54,22 +54,29 @@ model{
   yobs ~ lognormal(log(C), sigma);
 }
 generated quantities{
-  vector[9] ppc_t = [0.0, 0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0]';
-  vector[9] ppc_y;
-  real ppc_CL = exp(mu_CL + normal_rng(0,1)*s_CL);
-  // real ppc_alpha = beta_rng(2,2);
-  real ppc_alpha = beta_rng(2,2);
-  real ppc_tmax = exp(mu_t + normal_rng(0,1)*s_t);
-  real ppc_ka = log(ppc_alpha)*(ppc_tmax * (ppc_alpha-1));
-  real ppc_ke = ppc_alpha*ppc_ka;
-  real ppc_delay = beta_rng(phi/kappa, (1-phi)/kappa);
-  vector[N] C_ppc;
   
-  for (i in 1:N){
-    C_ppc[i] = lognormal_rng(log(C[i]), sigma);
+  real ppc_cl = exp(mu_CL + normal_rng(0,1)*s_CL);
+  real ppc_tmax = exp(mu_t + normal_rng(0,1)*s_t);
+  real ppc_alpha = beta_rng(2,2);
+  real ppc_delay = 0.5*beta_rng(phi/kappa, (1-phi)/kappa);
+  real ppc_ka = log(ppc_alpha)/(ppc_tmax*(ppc_alpha-1));
+  real ppc_ke = ppc_alpha*ppc_ka;
+  vector[8] ppc_t = [0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0]';
+  
+  vector[8] pop_ppc_C = 2.5*ppc_ke*ppc_ka/(ppc_cl*(ppc_ke - ppc_ka))*(exp(-ppc_ka*(ppc_t - ppc_delay)) - exp(-ppc_ke*(ppc_t - ppc_delay)));
+  
+  real ppc_cmax =  2.5*ppc_ke*ppc_ka/(ppc_cl*(ppc_ke - ppc_ka))*(exp(-ppc_ka*(ppc_tmax)) - exp(-ppc_ke*(ppc_tmax)));
+  
+  vector[N] ppc_C;
+  vector[8] pop_obs;
+  
+  for(i in 1:N){
+    ppc_C[i] = lognormal_rng(log(C[i]), sigma);
   }
   
-  ppc_y = 2.5/ppc_CL*(ppc_ke*ppc_ka/(ppc_ke - ppc_ka))*(exp(-ppc_ka*(ppc_t - 0.5*ppc_delay)) - exp(-ppc_ke*(ppc_t - 0.5*ppc_delay)));
+  for(i in 1:8){
+    pop_obs[i] = lognormal_rng(log(pop_ppc_C[i]), sigma);
+  }
   
-
+  
 }
