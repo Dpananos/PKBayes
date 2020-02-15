@@ -1,0 +1,162 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(tidybayes)
+library(lme4)
+library(glmm)
+
+d = read_csv('../data/apixiban_regression_data.csv') %>% 
+  mutate(i= 1:n(),
+         t = 1/Time)
+```
+
+
+```{r}
+model = glmer(Concentration_scaled ~ Time + t + (1 + Time + t|Subject),
+      data = d,
+      offset = log(rep(2.5, nrow(d))),
+      family = Gamma('log'),
+      control = glmerControl('Nelder_Mead'))
+
+clust <- makeCluster(2)
+model_mm = glmm(Concentration_scaled ~ Time + t,
+                random = list(~1+Time+t),
+                data = d,
+                varcomps.names = c('T','t'),
+                family = Gamma.glmm,
+                m = 1000,
+                cluster = clust)
+stopCluster(clust)
+
+d$pred = predict(model, type = 'response')
+
+predict(model, type = 'response',se.fit=T )
+
+d %>% 
+  ggplot()+
+  geom_line(aes(Time, pred))+
+  geom_point(aes(Time, Concentration_scaled), size = 1)+
+  facet_wrap(~Subject, nrow = 3)+
+  theme()
+```
+
+```{stan, output.var = model}
+data{
+  int N;
+  vector[N] times;
+  vector[N] yobs;
+  int n_subjects;
+  int subjectids[N];
+}
+parameters{
+  real b0;
+  real b1;
+  real b2;
+  
+  real<lower=0> s0;
+  real<lower=0> s1;
+  real<lower=0> s2;
+  
+  vector[n_subjects] z0;
+  vector[n_subjects] z1;
+  vector[n_subjects] z2;
+  
+  real<lower=0> phi;
+}
+transformed parameters{
+  vector[n_subjects] B0 = b0 + z0*s0;
+  vector[n_subjects] B1 = -exp(b1+z1*s1);
+  vector[n_subjects] B2 = -exp(b2+z2*s2);
+  vector[N] y=2.5*exp(B0[subjectids] + B1[subjectids] .* times + B2[subjectids] ./ times);
+  vector[N] alpha = y .* y/phi;
+  vector[N] beta = y ./ phi;
+}
+model{
+  b0~normal(0,1);
+  b1~normal(0,1);
+  b2~normal(0,1);
+  s0~cauchy(0,1);
+  s1~cauchy(0,1);
+  s2~cauchy(0,1);
+  z0~normal(0,1);
+  z1~normal(0,1);
+  z2~normal(0,1);
+  phi~cauchy(0,1);
+  yobs~gamma(alpha,beta);
+}
+generated quantities{
+  vector[N] yppc;
+  vector[n_subjects] tmax = sqrt(B2 ./ B1);
+  vector[n_subjects] cmax = 2.5*exp(B0 - 2*sqrt(B1 .* B2));
+  vector[n_subjects] Cl;
+  
+  for(i in 1:n_subjects){
+    Cl[i] = sqrt(B1[i] / B2[i])/(2*exp(B0[i])*modified_bessel_second_kind(1, 2*sqrt(B1[i] * B2[i]) ));
+  }
+
+  for(i in 1:N){
+    yppc[i] = gamma_rng(alpha[i], beta[i]);
+  }
+}
+
+```
+
+```{r}
+times = d$Time
+N = nrow(d)
+yobs = d$Concentration_scaled
+n_subjects=36
+subjectids = as.integer(factor(d$Subject))
+
+model_data = list(times=times, N=N, yobs=yobs, n_subjects = n_subjects, subjectids=subjectids)
+
+fit = sampling(model, model_data, chains=4)
+
+
+fit %>% 
+  spread_draws(y[i], yppc[i]) %>% 
+  mean_qi(y, yppc) %>% 
+  bind_cols(select(d,Time, Concentration_scaled, Subject)) %>% 
+  ggplot(aes(Time,y))+
+  geom_line()+
+  geom_ribbon(aes(ymin=y.lower, ymax = y.upper ), alpha = .5)+
+  geom_ribbon(aes(ymin=yppc.lower, ymax = yppc.upper ), alpha = 0.25)+
+  geom_point(aes(Time,Concentration_scaled), size = 1)+
+  facet_wrap(~Subject)+
+  theme(aspect.ratio = 1/1.61)
+
+fit %>% 
+  spread_draws(y[i], yppc[i]) %>% 
+  mean_qi(y, yppc) %>% 
+  bind_cols(select(d,Time, Concentration_scaled, Subject)) %>% 
+  ggplot(aes(y, Concentration_scaled-y))+
+  geom_point()+
+  geom_smooth()+
+  geom_hline(aes(yintercept=0))
+
+
+fit %>% 
+  gather_draws(yppc[i]) %>% 
+  filter(.draw<=10) %>% 
+  left_join(d) %>% 
+  ggplot()+
+  geom_line(aes(Time,.value, group = interaction(.draw, .chain)), alpha = 0.5)+
+  geom_line(data = d, aes(Time, Concentration_scaled), color = 'red')+
+  facet_wrap(~Subject)+
+  theme(aspect.ratio = 0.5)
+
+
+fit %>% 
+  gather_draws(Cl[i], cmax[i], tmax[i], n=2000) %>% 
+  mean_qi %>% 
+  left_join(d) %>% 
+  ggplot(aes(i, .value, ymin=.lower, ymax=.upper, color = Age))+
+  geom_pointrange()+
+  facet_wrap(~.variable, scales = 'free_y')
+
+```
+

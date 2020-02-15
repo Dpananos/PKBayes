@@ -2,7 +2,12 @@ library(rstan)
 library(bayesplot)
 library(tidyverse)
 library(tidybayes)
+library(ggpubr)
 options(mc.cores = parallel::detectCores())
+
+theme_set(theme_classic())
+
+
 
 
 #### GENERATE PRIORS ####
@@ -56,12 +61,13 @@ prior_samples %>%
   spread_draws(y[i]) %>% 
   left_join(tframe) %>% 
   ggplot()+
-  geom_line(aes(t,y, group=.draw), alpha = 0.05)+
+  geom_line(aes(t,1000*y, group=.draw), alpha = 0.05)+
   theme_classic()+
   labs(x='Time (Hours after ingestion)', y='Concentration (mg/L)')
 
 p<-prior_samples %>% 
   spread_draws(Observations[i]) %>% 
+  mutate(Observations = 1000*Observations) %>% 
   left_join(tframe) %>% 
   group_by(t) %>% 
   mean_qi(Observations, .width = c(0.5, 0.8, 0.95)) %>% 
@@ -72,13 +78,15 @@ p<-prior_samples %>%
   scale_color_brewer(palette ='OrRd')+
   theme_classic()+
   labs(x='Hours Post Dose', 
-       y='Prior Predictions of\nObserved Concentrations',
+       y='Prior Predictions of\nObserved Concentrations (ng/ml)',
        color='Credible Intervals')+
-  ylim(0.0, 0.25)
+  theme(aspect.ratio = 1/1.61)
 
+p
+ggsave('figs/prior_predictions.png', height = 4)
 
 p +
-  geom_point(data = d, aes(Time, Concentration_scaled), color = 'black', size = 0.25)
+  geom_point(data = d, aes(Time, Concentration), color = 'black', size = 0.25)
   
 #### -----MODELLING----- ####
 
@@ -104,41 +112,54 @@ fit = sampling(model,
 p = rstan::extract(fit)
 
 
+####--- Plots ----
+
 ppc = fit %>% 
   spread_draws(pop_obs[i]) 
 
 
-ppc %>% 
+# Population level observations
+pop_obs_plot = ppc %>% 
+  mutate(pop_obs = pop_obs*1000) %>% 
   mean_qi(.width=c(0.5, 0.8, 0.95)) %>% 
   left_join(tframe) %>% 
   ggplot(aes(t, pop_obs))+
   geom_interval()+
-  scale_color_brewer(palette ='OrRd')+
+  geom_jitter(data = d, 
+              aes(Time, Concentration),
+              size = 1, alpha = 0.25, width = 0.1, height = 0) +
+  scale_color_brewer()+
   theme_classic()+
   labs(x='Hours Post Dose', 
-       y='Prior Predictions of\nObserved Concentrations',
+       y='Posterior Population Predictions of\nObserved Concentrations',
        color='Credible Intervals')+
-  theme(aspect.ratio = 1/1.61)
-
-
-s = d %>% distinct(Subject, .keep_all = T) %>% mutate(i = 1:n())
-fit %>% 
-  spread_draws(z_CL[i]) %>% 
-  mean_qi() %>% 
-  inner_join(s) %>% 
-  ggplot(aes(Weight, z_CL, ymin=.lower, ymax = .upper, color=Sex))+
-  geom_pointrange()+
   theme(aspect.ratio = 1)
 
-
+# Observed vs Predicted
 
 preds = fit %>% 
-  spread_draws(C[i], ppc_C[i]) %>% 
-  mean_qi()
+  spread_draws(C[i], ppc_C[i], n=2000) %>% 
+  mean_qi() %>% 
+  bind_cols(d) 
 
+err_plot = preds %>% 
+  mutate(C = 1000*C) %>% 
+  ggplot(aes(C, Concentration - C)) +
+  geom_point(color = 'black', fill = 'gray',pch=21)+
+  geom_hline(aes(yintercept=0))+
+  labs(x='Predicted Concentration (ng/ml)', y='Residual (ng/ml)')+
+  theme(aspect.ratio = 1)+
+  geom_smooth(se = F, color = 'red', size =1)
 
-preds %>% 
-  bind_cols(d) %>% 
+figure = ggarrange(pop_obs_plot, 
+          err_plot,
+          ncol=2, common.legend = T
+          )
+  ggsave('figs/model_results.png',plot = figure, height = 4, width = 7)
+
+  
+
+preds %>%
   ggplot(aes(Time,C))+
   geom_line(color='red')+
   geom_point(aes(Time, Concentration_scaled), inherit.aes = F, size = 1)+
@@ -147,15 +168,10 @@ preds %>%
   facet_wrap(~Subject, scales = 'free_y')+
   theme(aspect.ratio = 1/1.61)
 
-  
+
 fit %>% 
-  spread_draws(ppc_cmax) %>% 
-  ggplot(aes('cmax', ppc_cmax))+
-  stat_interval()+
-  scale_color_brewer(palette = 'OrRd')+
-  theme_classic()
-
-
-bayesplot::mcmc_hist(fit, regex_pars = 'mu', transformations = exp)
-  
-bayesplot::mcmc_hist(fit, regex_pars = 's_')
+  gather_draws(ppc_tmax, mu_tmax, ppc_cl, mu_cl, ppc_ka, ppc_ke) %>% 
+  mutate(.value = if_else(grepl('mu',.variable), exp(.value), .value)) %>% 
+  ggplot(aes(.value))+
+  geom_histogram(aes(y=..density..),color = 'black', fill = 'light gray')+
+  facet_wrap(~.variable, scales = 'free')

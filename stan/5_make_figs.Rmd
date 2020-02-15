@@ -59,8 +59,9 @@ d %>%
   facet_wrap(~subject, scales = 'free_y')+
   scale_fill_manual(values = c('red','blue'))+
   theme_classic()+
-  theme(legend.position = 'top')+
+  theme(legend.position = 'top', aspect.ratio = 1/1.61)+
   labs(x='Time (Hours Post Dose)', y='Concentration ng/mL', fill = 'Method')
+  
   
 ggsave('../figs/bad_ones.png', height = 5, width = 8)
 
