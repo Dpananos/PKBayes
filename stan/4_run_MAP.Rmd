@@ -20,6 +20,7 @@ d = read_csv('../data/simulated_data.csv') %>%
 
 
 obs_times = seq(0.5, 12, 0.5)
+
 condition = d %>% 
   filter(times %in%obs_times)
 
@@ -158,4 +159,29 @@ apply(ypred_cols, 2, function(x) tidybayes::mean_hdci(x)) %>%
   scale_color_manual(values=c('red','black'))+
   labs(fill='Intervals')
 ```
+
+```{r}
+
+theta_tilde %>% 
+  spread_draws(ypred[i], n=500) %>% 
+  left_join(no_condition %>% mutate(i = 1:n()) ) %>% 
+  filter(subjectids<21) %>% 
+  ggplot(aes(times, ypred, group = .draw))+
+  geom_line(color = 'red', size = 1, alpha = 0.1)+
+  facet_wrap(~subjectids, scales = 'free_y')
+```
+
+
+```{r}
+param_draws = list(
+  ke = theta_tilde[,grep('ke', colnames(theta_tilde))],
+  ka = theta_tilde[,grep('ka', colnames(theta_tilde))],
+  cl = theta_tilde[,grep('Cl', colnames(theta_tilde))]
+  )
+
+saveRDS(param_draws, '../data/map_parameter_draws.RDS')
+  
+```
+
+
 

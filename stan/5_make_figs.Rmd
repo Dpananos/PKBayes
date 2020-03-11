@@ -44,7 +44,7 @@ bad_ones = d %>%
   mutate(r = map/mcmc) %>% 
   group_by(subjectids) %>% 
   filter(r == max(r)) %>% 
-  filter(r>=1.75) %>% 
+  filter(r>=1.5) %>% 
   distinct(subjectids)
 
 

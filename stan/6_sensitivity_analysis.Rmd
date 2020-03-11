@@ -1,0 +1,175 @@
+---
+title: "R Notebook"
+---
+
+```{r}
+library(tidyverse)
+library(rstan)
+library(tidybayes)
+library(glue)
+options(mc.cores = parallel::detectCores())
+```
+
+```{stan, output.var = sensitivity_model}
+
+data{
+  int N; //Total number of observations
+  int subjectids[N]; 
+  int n_subjects;
+  vector[N] times;
+  real yobs[N];
+  
+  //Prior parameters
+  real mu_tmax_MEAN;
+  real mu_tmax_SD;
+  real s_tmax_A;
+  real s_tmax_B;
+  
+  real mu_cl_MEAN;
+  real mu_cl_SD;
+  real s_cl_A;
+  real s_cl_B;
+  
+  real alpha_A;
+  real alpha_B;
+  
+  real sigma_MEAN;
+  real sigma_SD;
+  
+}
+parameters{
+  real<lower=0>  mu_cl;
+  real<lower=0> s_cl;
+  vector[n_subjects] z_cl;
+  
+  real<lower=0> mu_tmax;
+  real<lower=0> s_t;
+  vector[n_subjects] z_t;
+  
+  vector<lower=0, upper=1>[n_subjects] alpha ;
+  
+  real<lower=0, upper=1> phi;
+  real<lower=0, upper=1> kappa;
+  vector<lower=0, upper=1>[n_subjects] delays;
+  
+  real<lower=0> sigma;
+}
+transformed parameters{
+  vector[n_subjects] Cl = exp(mu_cl + z_cl*s_cl);
+  vector[n_subjects] t = exp(mu_tmax + z_t*s_t);
+  vector[n_subjects] ka = log(alpha)./(t .* (alpha-1));
+  vector[n_subjects] ke = alpha .* ka;
+  vector[N] delayed_times = times - 0.5*delays[subjectids];
+  
+  vector[N] C = (2.5 ./ Cl[subjectids]) .* (ke[subjectids] .* ka[subjectids]) ./ (ke[subjectids] - ka[subjectids]) .* (exp(-ka[subjectids] .* delayed_times) -exp(-ke[subjectids] .* delayed_times));
+}
+model{
+  mu_tmax ~ normal(mu_tmax_MEAN, mu_tmax_SD);
+  s_t ~ gamma(s_tmax_A, s_tmax_B);
+  z_t ~ normal(0,1);
+  
+  mu_cl ~ normal(mu_cl_MEAN, mu_cl_SD);
+  s_cl ~ gamma(s_cl_A, s_cl_B);
+  z_cl ~ normal(0,1);
+
+  alpha ~ beta(alpha_A, alpha_B);
+  phi ~ beta(20,20);
+  kappa ~ beta(20,20);
+  delays ~ beta(phi/kappa, (1-phi)/kappa);
+  sigma ~ lognormal(sigma_MEAN, sigma_SD);
+  yobs ~ lognormal(log(C), sigma);
+}
+generated quantities{
+vector[N] log_lik;
+for (i in 1:N){
+  log_lik[i] = lognormal_lpdf(yobs[i] | log(C[i]), sigma);
+  }
+}
+
+```
+
+
+```{r}
+d = read_csv('../data/apixiban_regression_data.csv')
+
+make_model_data<-function(d){
+  
+  model_data = list(
+    
+    yobs = d$Concentration_scaled,
+    subjectids = as.integer(factor(d$Subject)),
+    n_subjects = 36,
+    times = d$Time,
+    N = nrow(d),
+    
+    #model parameters
+    mu_tmax_MEAN = rnorm(1, log(3.3), 0.25) ,
+    mu_tmax_SD = abs(rnorm(1, 0.25, 0.25)),
+    s_tmax_A = abs(rnorm(1, 10, 2)),
+    s_tmax_B = abs(rnorm(1, 100, 20)),
+    
+    mu_cl_MEAN = rnorm(1, log(3.3), 0.25) ,
+    mu_cl_SD = abs(rnorm(1, 0.15, 0.25)),
+    s_cl_A = abs(rnorm(1, 15, 3)),
+    s_cl_B = abs(rnorm(1, 100, 20)),
+    
+    alpha_A = 2+rpois(1,2),
+    alpha_B = 2+rpois(1,2),
+    
+    sigma_MEAN = abs(rnorm(1,0.1, 0.2)),
+    sigma_SD = abs(rnorm(1,0.2, 0.2))
+    
+  )
+  
+  model_data
+}
+
+fit_model<-function(model_data, model){
+  fit = sampling(model, 
+                 model_data, 
+                 chains = 12, 
+                 iter = 4000,
+                 warmup = 1000)
+  
+  fit
+}
+
+summarize_model<-function(fit, i){
+  
+  frame = fit %>% 
+    spread_draws(mu_tmax, s_t, mu_cl, s_cl, phi, kappa, n = 2000) %>% 
+    mean_qi() %>% 
+    mutate(sensitivity_round = i)
+  
+  frame
+  
+}
+
+run_sensitivity<-function(i){
+  data_for_model=make_model_data(d) 
+  fit = fit_model(data_for_model,sensitivity_model)
+  fit_summary = summarize_model(fit, i=i)
+  f = summary(fit)
+  divergences = get_sampler_params(fit, inc_warmup=FALSE)[[1]][,'divergent__']
+  
+  list(data = data_for_model, 
+       fit_summary =fit_summary,  
+       rhat_good = all(f$summary[,'Rhat']<1.01), 
+       n_eff_good = all(f$summary[,'n_eff']/36000>0.001),
+       divergences = sum(divergences)
+       
+       )
+}
+
+```
+
+
+```{r}
+for(i in 33:250){
+  sens_result = run_sensitivity(i)
+  result_file_name = glue('sensitivity/sensitivity_result_{i}.RDS')
+  print(glue('working on {result_file_name}') )
+  saveRDS(sens_result, result_file_name)
+}
+```
+

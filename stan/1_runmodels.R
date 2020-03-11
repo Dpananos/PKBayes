@@ -3,6 +3,7 @@ library(bayesplot)
 library(tidyverse)
 library(tidybayes)
 library(ggpubr)
+library(Metrics)
 options(mc.cores = parallel::detectCores())
 
 theme_set(theme_classic())
@@ -10,7 +11,7 @@ theme_set(theme_classic())
 
 
 
-#### GENERATE PRIORS ####
+# ---- Prior Predictive ----
 
 d = read_csv('data/apixiban_regression_data.csv')
 
@@ -111,14 +112,11 @@ fit = sampling(model,
 
 p = rstan::extract(fit)
 
-
-####--- Plots ----
-
 ppc = fit %>% 
   spread_draws(pop_obs[i]) 
 
 
-# Population level observations
+#----Population level observations----
 pop_obs_plot = ppc %>% 
   mutate(pop_obs = pop_obs*1000) %>% 
   mean_qi(.width=c(0.5, 0.8, 0.95)) %>% 
@@ -135,7 +133,7 @@ pop_obs_plot = ppc %>%
        color='Credible Intervals')+
   theme(aspect.ratio = 1)
 
-# Observed vs Predicted
+####----Observed vs Predicted----
 
 preds = fit %>% 
   spread_draws(C[i], ppc_C[i], n=2000) %>% 
@@ -158,7 +156,8 @@ figure = ggarrange(pop_obs_plot,
   ggsave('figs/model_results.png',plot = figure, height = 4, width = 7)
 
   
-
+#----Full comparison of prediction vs actual----
+  
 preds %>%
   ggplot(aes(Time,C))+
   geom_line(color='red')+
@@ -168,10 +167,29 @@ preds %>%
   facet_wrap(~Subject, scales = 'free_y')+
   theme(aspect.ratio = 1/1.61)
 
+#-----Best and worst plot----
 
-fit %>% 
-  gather_draws(ppc_tmax, mu_tmax, ppc_cl, mu_cl, ppc_ka, ppc_ke) %>% 
-  mutate(.value = if_else(grepl('mu',.variable), exp(.value), .value)) %>% 
-  ggplot(aes(.value))+
-  geom_histogram(aes(y=..density..),color = 'black', fill = 'light gray')+
-  facet_wrap(~.variable, scales = 'free')
+preds %>% 
+  select(Subject, Time, C, Concentration_scaled, C.lower, C.upper) %>% 
+  group_by(Subject) %>% 
+  nest() %>% 
+  mutate(
+    rmse = map_dbl(data, ~mape(.x$Concentration_scaled, .x$C))
+         ) %>% 
+  arrange(desc(rmse)) %>% 
+  ungroup %>% 
+  slice(1, n()) %>% 
+  mutate(labels = c('Worst MAPE','Best MAPE')) %>% 
+  unnest(c(data)) %>% 
+  ggplot()+
+  geom_point(aes(Time, 1000*Concentration_scaled, shape = labels))+
+  geom_line(aes(Time, 1000*C, group=Subject, color = labels))+
+  geom_ribbon(aes(Time, ymin = 1000*C.lower, ymax = 1000*C.upper, group = Subject, fill = labels), alpha = 0.5)+
+  theme(legend.position = 'top', aspect.ratio = 1/1.61)+
+  labs(color = '', fill = '', x = 'Hours Post Dose',y = 'Concentration')+
+  scale_color_brewer(palette = 'Set1', direction = -1)+
+  scale_fill_brewer(palette = 'Set1', direction = -1)+
+  guides(shape = F)+
+  ggsave('figs/best_and_worst.png', height = 3, width = 5)
+
+

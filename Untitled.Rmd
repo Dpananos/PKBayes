@@ -1,0 +1,205 @@
+---
+title: "R Notebook"
+---
+
+```{r}
+library(tidyverse)
+library(rstan)
+library(tidybayes)
+library(patchwork)
+library(viridis)
+theme_set(theme_minimal(base_size = 10))
+
+
+
+```
+
+
+```{stan, output.var = model}
+
+data{
+  int N; //Number of observations
+  vector[N] times; //times at which observations made
+  vector[100] t; //see generated quantities block
+  vector[N] y; //concentration observations
+  int prior_only; //only draw prior samples?
+  
+  real cl_mu; //fixed parameter for cl prior
+  real cl_sd; //fixed parameter for cl prior
+}
+transformed data{
+//Fix these so that the model is a little simpler.
+real ka = 0.5; //absorption rate constant
+real ke = 0.25; //elimination rate constant
+}
+parameters{
+  real<lower=0> cl; //only parameter in the model.  Easy that waty
+}
+transformed parameters{
+// Solution to the differential equation for mass transit.
+vector[N] C = 2.5*ka*ke/(cl*(ke-ka))*(exp(-ka*times) - exp(-ke*times));
+}
+model{
+  cl ~ normal(cl_mu, cl_sd);
+  if( prior_only<1){
+  for (i in 1:N){
+    target += lognormal_lpdf(y[i] | log(C[i]), 0.12);
+  }
+  }
+}
+generated quantities{
+// generate smooth curves in this block.
+// Will use these to make plots
+  vector[100] CC = 2.5*ka*ke/(cl*(ke-ka))*(exp(-ka*t) - exp(-ke*t));
+}
+
+```
+
+
+```{r}
+#Generate data to do the fitting
+set.seed(0)
+times = c(0.5,  5, 12)
+ka = 0.5
+ke = 0.25
+cl = 3.5
+ytrue = 2.5*ka*ke/(cl*(ke-ka))*(exp(-ka*times) - exp(-ke*times))
+y = rlnorm(length(ytrue), log(ytrue), 0.12) 
+
+
+#Generate prior curves
+prior_data = list(
+  times = times,
+  t = seq(0.1,12, length.out = 100),
+  y = y,
+  N = length(times),
+  prior_only=1,
+  cl_mu = 7.0,
+  cl_sd = 1.0
+)
+prior_fit = sampling(model, prior_data, control = list(adapt_delta = 0.9))
+
+posterior_data = list(
+  times = times,
+  t = seq(0.1,12, length.out = 100),
+  y = y,
+  N = length(times),
+  prior_only=0,
+  cl_mu = 7.0,
+  cl_sd = 1.0
+)
+posterior_fit = sampling(model, posterior_data, control = list(adapt_delta = 0.99))
+
+
+# Join on this later to do the plotting in ggplot2.
+dd = tibble(t = seq(0,12,length.out = 100), i = 1:100)
+```
+
+
+```{r}
+
+
+
+prior = prior_fit %>% 
+  spread_draws(CC[i], n = 50, seed = 3) %>% 
+  left_join(dd)  %>% 
+  ggplot(aes(t, CC, group = .draw))+
+  geom_line(alpha = 0.1)+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Plausible Concentrations\nBefore Seeing Data')+
+  scale_y_continuous(labels = c(), limits = c(0, 0.2))+
+  theme(aspect.ratio = 1)
+
+data = tibble(times, y) %>% 
+  ggplot(aes(times, y))+
+  geom_point(color = 'red')+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Observed Data')+
+  scale_y_continuous(labels = c(), limits = c(0, 0.2))+
+  theme(aspect.ratio = 1)
+
+
+posterior = posterior_fit %>% 
+  spread_draws(CC[i], n = 50, seed = 3) %>% 
+  left_join(dd)  %>% 
+  ggplot(aes(t, CC, group = .draw))+
+  geom_line(alpha = 0.1)+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Plausible Concentrations\nAfter Seeing Data')+
+  scale_y_continuous(labels = c(), limits = c(0, 0.2))+
+  geom_point(data=tibble(times, y), aes(times, y), color = 'red', inherit.aes = F)+
+  theme(aspect.ratio = 1)
+
+fig = (prior +  data + posterior)
+
+ggsave('figs/bayes_example.png', fig, height = 3)
+```
+
+
+
+```{r}
+set.seed(0)
+ka = 0.5
+ke = 0.25
+y = function(cl) 0.3125/(0.25-0.5)*(1/cl)*(exp(-0.5*times) - exp(-0.25*times))
+cl = 3.5
+yy = rlnorm(length(y(cl)), log(y(cl)), 0.12)
+
+domle = Vectorize(function(cl) sum(dlnorm(yy, log(y(cl)), 0.12, log = T)))
+
+cli = seq(1,8, 0.01)
+plot(cli,domle(cli))
+
+mle = optimize(domle, c(2.0, 8.0), maximum = T)$maximum
+```
+
+
+
+```{r}
+prior = prior_fit %>% 
+  spread_draws(CC[i], n = 100, seed = 3) %>% 
+  left_join(dd)  %>% 
+  ggplot(aes(t, CC, group = .draw))+
+  geom_line(alpha = 0.1)+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Plausible Concentrations\nBefore Seeing Data')+
+  scale_y_continuous(labels = c(), limits = c(0, 0.2))+
+  theme(aspect.ratio = 1)
+
+data = prior_fit %>% 
+  spread_draws(CC[i], cl, n = 50, seed = 3) %>% 
+  mutate(ll = domle(cl)) %>% 
+  left_join(dd)  %>% 
+  ggplot(aes(t, CC, group = .draw, color = ll))+
+  geom_line()+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Observed Data')+
+  scale_color_viridis(option = 'inferno', 
+                      direction = -1,
+                      limits = c(domle(9.5),domle(mle)))+
+  labs(color = 'Log Likelihood')+
+  geom_point(data = tibble(times, yy), aes(times, yy), color = 'black', fill = 'red', shape = 21, inherit.aes = F)+
+  guides(color = F)+
+  scale_y_continuous(labels = c(), limits = c(0,0.2))
+
+
+posterior = posterior_fit %>% 
+  spread_draws(CC[i], cl, n = 50, seed = 3) %>% 
+  mutate(ll = domle(cl)) %>% 
+  left_join(dd)  %>% 
+  ggplot(aes(t, CC, group = .draw, color = ll))+
+  geom_line(alpha = 0.5)+
+  scale_color_viridis(option = 'inferno',
+                      direction = -1,
+                      limits = c(domle(9.5), domle(mle) ))+
+  labs(x = 'Time Post Dose', y = 'Concentration', subtitle = 'Plausible Concentrations\nAfter Seeing Data')+
+  geom_point(data = tibble(times, yy), aes(times, yy), color = 'black', fill = 'red', shape = 21, inherit.aes = F)+
+  scale_y_continuous(labels = c(), limits = c(0, 0.2))+
+  theme(aspect.ratio = 1)+
+  labs(color = 'Log-Likelihood')
+
+
+alt_fig = (prior + data + posterior)
+
+alt_fig
+
+
+ggsave('figs/alt_bayes_example.png', alt_fig , height = 3)
+
+```
+
