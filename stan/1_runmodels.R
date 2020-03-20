@@ -4,21 +4,23 @@ library(tidyverse)
 library(tidybayes)
 library(ggpubr)
 library(Metrics)
+library(patchwork)
 options(mc.cores = parallel::detectCores())
-
-theme_set(theme_classic())
+rstan_options(auto_write = TRUE)
+theme_set(theme_minimal(base_size = 12))
 
 
 
 
 # ---- Prior Predictive ----
 
-d = read_csv('data/apixiban_regression_data.csv')
+d = read_csv('data/apixiban_regression_data.csv') %>% 
+    mutate(i = seq_along(Time))
 
 
 prior_model = stan_model('stan/models/prior_predictive_check.stan')
 
-ts = c(0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0)
+ts = seq(0.5, 12, 0.1)
 prior_params = list(
   N = length(ts),
   t = ts,
@@ -83,15 +85,9 @@ p<-prior_samples %>%
        color='Credible Intervals')+
   theme(aspect.ratio = 1/1.61)
 
-p
-ggsave('figs/prior_predictions.png', height = 4)
-
-p +
-  geom_point(data = d, aes(Time, Concentration), color = 'black', size = 0.25)
   
 #### -----MODELLING----- ####
 
-d = read_csv('data/apixiban_regression_data.csv')
 
 model = stan_model('stan/models/model.stan')
 
@@ -100,7 +96,8 @@ model_data = list(
   subjectids = as.integer(factor(d$Subject)),
   n_subjects = 36,
   times = d$Time,
-  N = nrow(d)
+  N = nrow(d),
+  ppc_t = c(0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0)
 )
 
 
@@ -116,80 +113,138 @@ ppc = fit %>%
   spread_draws(pop_obs[i]) 
 
 
-#----Population level observations----
-pop_obs_plot = ppc %>% 
-  mutate(pop_obs = pop_obs*1000) %>% 
-  mean_qi(.width=c(0.5, 0.8, 0.95)) %>% 
+#### Bayes in 3 panels ####
+
+prior_plot<-prior_samples %>% 
+  spread_draws(y[i], n = 250, seed = 1) %>% 
   left_join(tframe) %>% 
-  ggplot(aes(t, pop_obs))+
-  geom_interval()+
-  geom_jitter(data = d, 
-              aes(Time, Concentration),
-              size = 1, alpha = 0.25, width = 0.1, height = 0) +
-  scale_color_brewer()+
-  theme_classic()+
-  labs(x='Hours Post Dose', 
-       y='Posterior Population Predictions of\nObserved Concentrations',
-       color='Credible Intervals')+
+  ggplot(aes(t, 1000*y, group = .draw))+
+  geom_line(alpha = 0.2)+
+  labs(x = 'Hours Post Dose',
+       y = 'Concentration (ng/ml)',
+       subtitle = 'Plausible Concentrations\nBefore Seeing Data')+
+  ylim(0,250)+
   theme(aspect.ratio = 1)
 
-####----Observed vs Predicted----
 
-preds = fit %>% 
-  spread_draws(C[i], ppc_C[i], n=2000) %>% 
+error = fit %>% 
+  spread_draws(C[i], n = 2000) %>% 
   mean_qi() %>% 
-  bind_cols(d) 
-
-err_plot = preds %>% 
-  mutate(C = 1000*C) %>% 
-  ggplot(aes(C, Concentration - C)) +
-  geom_point(color = 'black', fill = 'gray',pch=21)+
-  geom_hline(aes(yintercept=0))+
-  labs(x='Predicted Concentration (ng/ml)', y='Residual (ng/ml)')+
-  theme(aspect.ratio = 1)+
-  geom_smooth(se = F, color = 'red', size =1)
-
-figure = ggarrange(pop_obs_plot, 
-          err_plot,
-          ncol=2, common.legend = T
-          )
-  ggsave('figs/model_results.png',plot = figure, height = 4, width = 7)
-
-  
-#----Full comparison of prediction vs actual----
-  
-preds %>%
-  ggplot(aes(Time,C))+
-  geom_line(color='red')+
-  geom_point(aes(Time, Concentration_scaled), inherit.aes = F, size = 1)+
-  geom_ribbon(aes(ymin=C.lower, ymax=C.upper), alpha=0.5, fill='red')+
-  geom_ribbon(aes(ymin=ppc_C.lower, ymax=ppc_C.upper), alpha=0.25, fill='red')+
-  facet_wrap(~Subject, scales = 'free_y')+
-  theme(aspect.ratio = 1/1.61)
-
-#-----Best and worst plot----
-
-preds %>% 
-  select(Subject, Time, C, Concentration_scaled, C.lower, C.upper) %>% 
-  group_by(Subject) %>% 
-  nest() %>% 
-  mutate(
-    rmse = map_dbl(data, ~mape(.x$Concentration_scaled, .x$C))
-         ) %>% 
-  arrange(desc(rmse)) %>% 
+  left_join(d) %>% 
   ungroup %>% 
-  slice(1, n()) %>% 
-  mutate(labels = c('Worst MAPE','Best MAPE')) %>% 
-  unnest(c(data)) %>% 
-  ggplot()+
-  geom_point(aes(Time, 1000*Concentration_scaled, shape = labels))+
-  geom_line(aes(Time, 1000*C, group=Subject, color = labels))+
-  geom_ribbon(aes(Time, ymin = 1000*C.lower, ymax = 1000*C.upper, group = Subject, fill = labels), alpha = 0.5)+
-  theme(legend.position = 'top', aspect.ratio = 1/1.61)+
-  labs(color = '', fill = '', x = 'Hours Post Dose',y = 'Concentration')+
-  scale_color_brewer(palette = 'Set1', direction = -1)+
+  select(Subject, C, Concentration_scaled) %>% 
+  group_by(Subject) %>% 
+  summarise(mape = mape(1000*Concentration_scaled, 1000*C)) %>% 
+  arrange(desc(mape))
+
+candidate = rbind(head(error,1), tail(error,1))
+candidate$Rank = c('Worst Fit', 'Best Fit')
+best_worst_data = d %>% 
+  left_join(candidate) %>% 
+  filter(Subject %in% candidate$Subject)
+
+data_plot =  best_worst_data %>% 
+  ggplot(aes(Time, Concentration))+
+  geom_point(aes(fill = Rank), shape = 21, size = 2)+
   scale_fill_brewer(palette = 'Set1', direction = -1)+
-  guides(shape = F)+
-  ggsave('figs/best_and_worst.png', height = 3, width = 5)
+  guides(fill = F)+
+  labs(x = 'Time Post Dose',
+       y = 'Concentration (ng/ml)',
+       subtitle = 'Observed Concentration')+
+  theme(aspect.ratio = 1)+
+  ylim(0,250)
 
 
+posterior_plot = fit %>% 
+  spread_draws(C[i], n = 125, seed = 0) %>% 
+  inner_join(d) %>% 
+  inner_join(candidate, by = 'Subject') %>% 
+  ggplot(aes(Time, 1000*C, color = Rank, group = interaction(.draw, Rank)))+
+  geom_line(alpha = 0.2)+
+  geom_point(data = best_worst_data,
+             aes(Time, Concentration, fill = Rank),
+             shape = 21,
+             size = 2,
+             inherit.aes = F)+
+  scale_fill_brewer(palette = 'Set1', direction = -1)+
+  scale_color_brewer(palette = 'Set1', direction = -1)+
+  theme(aspect.ratio = 1,
+        legend.position = c(0.8, 0.8))+
+  ylim(0,250)+
+  labs(x = 'Time Post Dose',
+       y = 'Concentration (ng/ml)',
+       subtitle = 'Plausible Concentrations\nAfter Seeing Data',
+       color = '',
+       fill = '')
+
+
+fig = (prior_plot + data_plot + posterior_plot)
+ggsave(filename = 'figs/bayes_in_3_model.png',plot = fig,  height = 3, width = 9)
+
+#### Diagnostics ####
+
+pop_obs = fit %>% 
+  spread_draws(pop_obs[i]) %>% 
+  mutate(pop_obs = 1000*pop_obs) %>% 
+  mean_qi(.width = c(0.5, 0.8, 0.95)) %>% 
+  mutate(.width = scales::percent(.width))
+
+ppc_plot = pop_obs %>%
+  left_join(d) %>% 
+  ggplot()+
+  geom_interval(aes(Time, ymin = .lower, ymax = .upper, color = factor(.width)))+
+  geom_jitter(data = d, aes(Time, Concentration), height = 0, width = 0.2, alpha = 0.25)+
+  scale_color_brewer(palette = 'OrRd', direction = -1)+
+  labs(x = 'Time Post Dose', y = 'Concentration (ng/ml)', color = 'Posterior Probability')+
+  theme(legend.position = c(0.75, 0.8))+
+  theme(aspect.ratio = 1)+
+  guides(color = guide_legend(reverse = TRUE))
+
+
+resids = fit %>% 
+  spread_draws(C[i]) %>% 
+  mutate(log_C = log(1000*C)) %>% 
+  mean_qi() %>% 
+  left_join(d) %>% 
+  mutate(err = log(Concentration) - log_C)
+
+
+err_plot = resids %>% 
+  ggplot(aes(log_C, err))+
+  geom_point(size = 2, fill = 'gray', shape = 21)+
+  geom_hline(aes(yintercept = 0))+
+  geom_smooth(color = 'red', se = F, size = 1)+
+  labs(x = 'Predicted Log Concentration', y = 'Residual on Log Scale')+
+  theme(aspect.ratio = 1)
+
+pred_plot = fit %>% 
+  spread_draws(C[i]) %>% 
+  mutate(C = 1000*C) %>% 
+  mean_qi() %>% 
+  left_join(d) %>% 
+  ggplot(aes(Concentration, C, ymin = .lower, ymax = .upper))+
+  geom_abline(color = 'black')+
+  geom_pointrange(alpha = 0.5, color = 'black', fill = 'gray', shape = 21, size = 0.25)+
+  theme(aspect.ratio = 1)+
+  labs(x = 'True Concentration (ng/ml)', y = 'Predicted Concentration (ng/ml)')
+
+  
+ecdf_plot = fit %>% 
+  spread_draws(ppc_C[i], n = 100) %>% 
+  ungroup %>% 
+  mutate(C = 1000*ppc_C) %>% 
+  select(C, .draw) %>% 
+  ggplot(aes(C, group = .draw))+
+  stat_ecdf(aes(color = 'Posterior Concentrations'), size = 1)+
+  stat_ecdf(data = d, aes(Concentration, color = 'Observed Concentration'), inherit.aes = F, size = 1)+
+  scale_color_manual(values = c('black','gray'))+
+  theme(aspect.ratio = 1,
+        legend.position = c(0.75, 0.75))+
+  labs(x = 'Concentration (ng/ml)', y = 'Cumulative Probability', color = '')
+  
+
+
+
+fig2 = ((ppc_plot | pred_plot) / (err_plot | ecdf_plot))
+
+ggsave('figs/diagnostics.png', fig2, width = 8, height = 8)

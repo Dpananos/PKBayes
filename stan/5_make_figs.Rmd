@@ -6,8 +6,9 @@ title: "R Notebook"
 ```{r}
 library(tidyverse)
 library(ggpubr)
+library(patchwork)
 library(Metrics)
-theme_set(theme_classic())
+theme_set(theme_minimal())
 files = c('../data/mcmc_predictions.csv', '../data/map_predictions.csv')
 
 d = map(files, read_csv) %>% 
@@ -58,7 +59,6 @@ d %>%
   geom_ribbon(alpha = 0.5)+
   facet_wrap(~subject, scales = 'free_y')+
   scale_fill_manual(values = c('red','blue'))+
-  theme_classic()+
   theme(legend.position = 'top', aspect.ratio = 1/1.61)+
   labs(x='Time (Hours Post Dose)', y='Concentration ng/mL', fill = 'Method')
   
@@ -80,8 +80,8 @@ true_v_pred = d %>%
   theme(aspect.ratio = 1,
         legend.position = 'top')+
   labs(x = 'Latent log(Concentration)', 
-       y='Predicted Latent log(Cocentration)', 
-       color = 'Method')
+       y='Predicted Latent\nlog(Cocentration)', 
+       color = '')
 
 
 compare_mcmc_map = d %>% 
@@ -93,7 +93,7 @@ compare_mcmc_map = d %>%
   scale_x_log10()+
   scale_y_log10()+
   theme(aspect.ratio = 1)+
-  labs(x='MCMC Predicted  log(Concentration)', y='MAP Predicted log(Concentration)')
+  labs(x='MCMC Predicted\nLog Concentration (ng/ml)', y='MAP Predicted\nlog(Concentration)')
 
 
 d %>% 
@@ -103,15 +103,16 @@ d %>%
   ggplot(aes(mn, diff))+
   geom_point(size = 1, alpha = 0.25)+
   theme(aspect.ratio = 1)+
-  labs(x='MCMC Predicted  log(Concentration)', y='MAP Predicted log(Concentration)')
+  labs(x='MCMC Predicted\nLog Concentration (ng/ml)', y='MAP Predicted\nlog(Concentration)')
 
-figure <- ggarrange(true_v_pred, compare_mcmc_map,
-                    labels = c("A", "B"),
-                    ncol = 2, common.legend = T)
+# figure <- ggarrange(true_v_pred, compare_mcmc_map,
+#                     labels = c("A", "B"),
+#                     ncol = 2, common.legend = T)
 
+figure = true_v_pred + compare_mcmc_map
 
 figure
-ggsave('../figs/compare.png', plot = figure, height = 4)
+ggsave('../figs/compare.png', plot = figure, height = 3)
 ```
 
 ```{r}

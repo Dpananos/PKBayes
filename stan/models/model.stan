@@ -4,6 +4,7 @@ data{
   int n_subjects;
   vector[N] times;
   real yobs[N];
+  vector[8] ppc_t;
 }
 parameters{
   real<lower=0>  mu_cl;
@@ -55,7 +56,6 @@ generated quantities{
   real ppc_delay = 0.5*beta_rng(phi/kappa, (1-phi)/kappa);
   real ppc_ka = log(ppc_alpha)/(ppc_tmax*(ppc_alpha-1));
   real ppc_ke = ppc_alpha*ppc_ka;
-  vector[8] ppc_t = [0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0]';
   
   vector[8] pop_ppc_C = 2.5*ppc_ke*ppc_ka/(ppc_cl*(ppc_ke - ppc_ka))*(exp(-ppc_ka*(ppc_t - ppc_delay)) - exp(-ppc_ke*(ppc_t - ppc_delay)));
   
