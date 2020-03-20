@@ -1,0 +1,116 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Brooks et~al.(2016)Brooks, Tett, Isbel, and Staatz]{Brooks2016-li}
+Emily Brooks, Susan~E Tett, Nicole~M Isbel, and Christine~E Staatz.
+\newblock Population pharmacokinetic modelling and bayesian estimation of
+  tacrolimus exposure: Is this clinically useful for dosage prediction yet?
+\newblock \emph{Clin. Pharmacokinet.}, 55\penalty0 (11):\penalty0 1295--1335,
+  November 2016.
+
+\bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{Byon2019-gf}
+Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
+\newblock Apixaban: A clinical pharmacokinetic and pharmacodynamic review.
+\newblock \emph{Clin. Pharmacokinet.}, 58\penalty0 (10):\penalty0 1265--1279,
+  October 2019.
+
+\bibitem[Caldwell et~al.(2007)Caldwell, Berg, Zhang, Glurich, Schmelzer, Yale,
+  Vidaillet, and Burmester]{Caldwell2007-mi}
+Michael~D Caldwell, Richard~L Berg, Kai~Qi Zhang, Ingrid Glurich, John~R
+  Schmelzer, Steven~H Yale, Humberto~J Vidaillet, and James~K Burmester.
+\newblock Evaluation of genetic factors for warfarin dose prediction.
+\newblock \emph{Clin. Med. Res.}, 5\penalty0 (1):\penalty0 8--16, March 2007.
+
+\bibitem[Carpenter et~al.(2017)Carpenter, Gelman, Hoffman, Lee, Goodrich,
+  Betancourt, Brubaker, Guo, Li, and Riddell]{Carpenter2017-qf}
+Bob Carpenter, Andrew Gelman, Matthew~D Hoffman, Daniel Lee, Ben Goodrich,
+  Michael Betancourt, Marcus Brubaker, Jiqiang Guo, Peter Li, and Allen
+  Riddell.
+\newblock Stan: A probabilistic programming language, 2017.
+
+\bibitem[Consortium(2009)]{international2009estimation}
+International Warfarin~Pharmacogenetics Consortium.
+\newblock Estimation of the warfarin dose with clinical and pharmacogenetic
+  data.
+\newblock \emph{New England Journal of Medicine}, 360\penalty0 (8):\penalty0
+  753--764, 2009.
+
+\bibitem[Matthew D.~Hoffman(2014)]{Matthew_D_Hoffman2014-in}
+Andrew~Gelman Matthew D.~Hoffman.
+\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
+  hamiltonian monte carlo.
+\newblock \emph{Journal of Machine Learning Research}, 2014.
+
+\bibitem[Neal(1996)]{Neal1996-vn}
+Radford~M Neal.
+\newblock Bayesian learning for neural networks, 1996.
+
+\bibitem[Nguyen et~al.(2016)Nguyen, B{\'e}nech, Pruvost, and
+  Lenuzza]{Nguyen2016-pg}
+Thu~Thuy Nguyen, Henri B{\'e}nech, Alain Pruvost, and Natacha Lenuzza.
+\newblock A limited sampling strategy based on maximum a posteriori bayesian
+  estimation for a five-probe phenotyping cocktail.
+\newblock \emph{Eur. J. Clin. Pharmacol.}, 72\penalty0 (1):\penalty0 39--51,
+  January 2016.
+
+\bibitem[Preijers et~al.(2019)Preijers, Laros-vanGorkom, Math{\^o}t, and
+  Cnossen]{Preijers2019-kc}
+Tim Preijers, Britta A~P Laros-vanGorkom, Ron A~A Math{\^o}t, and Marjon~H
+  Cnossen.
+\newblock Pharmacokinetic-guided dosing of factor {VIII} concentrate in a
+  morbidly obese severe haemophilia a patient undergoing orthopaedic surgery,
+  2019.
+
+\bibitem[Sohrabi and Tajik(2017)]{Sohrabi2017-zv}
+Mohammad~Karim Sohrabi and Alireza Tajik.
+\newblock Multi-objective feature selection for warfarin dose prediction.
+\newblock \emph{Comput. Biol. Chem.}, 69:\penalty0 126--133, August 2017.
+
+\bibitem[Stifft et~al.(2020)Stifft, Vandermeer, Neef, van Kuijk, and
+  Christiaans]{Stifft2020-uq}
+Frank Stifft, Franciscus Vandermeer, Cees Neef, Sander van Kuijk, and Maarten
+  H~L Christiaans.
+\newblock A limited sampling strategy to estimate exposure of once-daily
+  modified release tacrolimus in renal transplant recipients using linear
+  regression analysis and comparison with bayesian population pharmacokinetics
+  in different cohorts.
+\newblock \emph{Eur. J. Clin. Pharmacol.}, February 2020.
+
+\bibitem[Tripuraneni et~al.(2017)Tripuraneni, Rowland, Ghahramani, and
+  Turner]{Tripuraneni2017-oh}
+Nilesh Tripuraneni, Mark Rowland, Zoubin Ghahramani, and Richard Turner.
+\newblock Magnetic hamiltonian monte carlo.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning - Volume 70}, ICML'17, pages 3453--3461. JMLR.org, August 2017.
+
+\bibitem[Vinogradova et~al.(2018)Vinogradova, Coupland, Hill, and
+  Hippisley-Cox]{vinogradova2018risks}
+Yana Vinogradova, Carol Coupland, Trevor Hill, and Julia Hippisley-Cox.
+\newblock Risks and benefits of direct oral anticoagulants versus warfarin in a
+  real world setting: cohort study in primary care.
+\newblock \emph{bmj}, 362:\penalty0 k2505, 2018.
+
+\bibitem[Xue et~al.(2017)Xue, Holford, Ding, Shen, Huang, Zhang, Zhang, Guo,
+  Xie, Zhou, Chen, Liu, and Miao]{Xue2017-mp}
+Ling Xue, Nick Holford, Xiao‐liang Ding, Zhen‐ya Shen, Chen‐rong Huang,
+  Hua Zhang, Jing‐jing Zhang, Zhe‐ning Guo, Cheng Xie, Ling Zhou, Zhi‐yao
+  Chen, Lin‐sheng Liu, and Li‐yan Miao.
+\newblock Theory‐based pharmacokinetics and pharmacodynamics of s‐ and
+  r‐warfarin and effects on international normalized ratio: influence of body
+  size, composition and genotype in cardiac surgery patients, 2017.
+
+\bibitem[Zhu et~al.(2017)Zhu, Hong, Wei, Hu, Chen, Wang, Zhu, Yu, and
+  Sun]{Zhu2017-rk}
+Yu-Bin Zhu, Xian-Hua Hong, Meng Wei, Jing Hu, Xin Chen, Shu-Kui Wang, Jun-Rong
+  Zhu, Feng Yu, and Jian-Guo Sun.
+\newblock Development of a novel individualized warfarin dose algorithm based
+  on a population pharmacokinetic model with improved prediction accuracy for
+  chinese patients after heart valve replacement.
+\newblock \emph{Acta Pharmacol. Sin.}, 38\penalty0 (3):\penalty0 434--442,
+  March 2017.
+
+\end{thebibliography}

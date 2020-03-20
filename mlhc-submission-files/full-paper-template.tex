@@ -1,0 +1,80 @@
+%\documentclass[wcp,gray]{jmlr} % test grayscale version
+ %\documentclass[wcp]{jmlr}% former name JMLR W\&CP
+\documentclass[pmlr]{jmlr}% new name PMLR (Proceedings of Machine Learning)
+
+ % The following packages will be automatically loaded:
+ % amsmath, amssymb, natbib, graphicx, url, algorithm2e
+
+ %\usepackage{rotating}% for sideways figures and tables
+\usepackage{longtable}% for long tables
+
+ % The booktabs package is used by this sample document
+ % (it provides \toprule, \midrule and \bottomrule).
+ % Remove the next line if you don't require it.
+\usepackage{booktabs}
+ % The siunitx package is used by this sample document
+ % to align numbers in a column by their decimal point.
+ % Remove the next line if you don't require it.
+\usepackage[load-configurations=version-1]{siunitx} % newer version
+ %\usepackage{siunitx}
+
+\makeatletter
+\def\set@curr@file#1{\def\@curr@file{#1}} %temp workaround for 2019 latex release
+\makeatother
+
+ % The following command is just for this sample document:
+\newcommand{\cs}[1]{\texttt{\char`\\#1}}
+
+ % Define an unnumbered theorem just for this sample document:
+\theorembodyfont{\upshape}
+\theoremheaderfont{\scshape}
+\theorempostheader{:}
+\theoremsep{\newline}
+\newtheorem*{note}{Note}
+
+ % change the arguments, as appropriate, in the following:
+\jmlrvolume{}
+\jmlryear{2020}
+\jmlrworkshop{Machine Learning for Healthcare}
+
+% Short headings should be running head and authors last names
+% \ShortHeadings{A Really Awesome MLHC Article}{Lastname, PhD and Lastname, MD}
+% \firstpageno{1}
+
+\title[Short Title]{Comparisons Between Hamiltonian Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixaban Induction Dose \& Dose Personalization}
+
+\author{\Name{A. Demetri Pananos}
+       \Email{apananos@uwo.ca}\\ 
+       \addr Department of Epidemiology and Biostatistics\\
+       Western University\\
+		London, Ontario, Canada
+       \AND
+       \Name{Daniel J. Lizotte}
+       \Email{dlizotte@uwo.ca}\\ 
+       \addr Department of Epidemiology and Biostatistics\\
+       Department of Computer Science\\
+       Western University\\
+       London, Ontario, Canada} 
+
+\editor{Editor's name}
+
+%My imports
+\usepackage{cleveref}
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Precision medicine’s slogan is “right drug -- right patient -- right time”, which is implicitly preceded by “right dose”. However, determining the right dose for any one patient can be challenging because existing models for dose personalization require more data than can reasonably be obtained in order to truly personalize doses.  Bayesian methods, with their ability to explicitly pass prior information to the model, have been proposed as a solution to this problem. Hamiltonian Monte Carlo (HMC) is largely considered the gold standard for fitting Bayesian models, and yet several dose personalization studies use Maximum A Posteriori (MAP) methods to fit their models.  In this study, we put forth a new Bayesian pharmacokinetic model for apixaban pharmacokinetics written in an open source Bayesian language.  We make the model code and posterior summaries of all parameters publicly available. We also perform a simulation study characterizing the differences between inferences made via MAP and HMC for personalized dosing strategies. We find that the differences between HMC and MAP are non-trivial and can greatly affect the choices surrounding dose selection for personalized medicine.
+
+\end{abstract}
+
+%I like to break apart the sections in this way so that editing and debugging is not
+% a complete cluster fuck as it usually is in LaTeX
+\input{sections/introduction}
+\input{sections/background}
+\bibliography{references}
+
+
+
+\end{document}
