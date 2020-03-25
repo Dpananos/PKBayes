@@ -39,12 +39,12 @@ transformed parameters{
   vector[N] C = (2.5 ./ Cl[subjectids]) .* (ke[subjectids] .* ka[subjectids]) ./ (ke[subjectids] - ka[subjectids]) .* (exp(-ka[subjectids] .* delayed_times) -exp(-ke[subjectids] .* delayed_times));
 }
 model{
-  mu_CL ~ lognormal(0.26,0.042);
-  s_CL ~ lognormal(-1.14,0.09);
+  mu_CL ~ normal(1.64,0.09);
+  s_CL ~ lognormal(-0.94,0.11);
   z_CL ~ normal(0,1);
   
-  mu_t ~ lognormal(-0.028, 0.051);
-  s_t ~ lognormal(-1.40, 0.12);
+  mu_t ~ normal(0.97, 0.05);
+  s_t ~ lognormal(-1.42, 0.12);
   z_t ~ normal(0,1);
   
   alpha ~ beta(2,2);
@@ -59,9 +59,13 @@ generated quantities{
   // vector[Ntest] test_delay_times = test_times - 0.5*delays[test_ids];
   vector[Ntest] test_delay_times = test_times;
   vector[Ntest] ypred;
+  vector[Ntest] yppc;
   
   ypred = (2.5 ./ Cl[test_ids]) .* (ke[test_ids] .* ka[test_ids]) ./ (ke[test_ids] - ka[test_ids]) .* (exp(-ka[test_ids] .* test_delay_times) -exp(-ke[test_ids] .* test_delay_times));
   
+  for (i in 1:Ntest){
+    yppc[i] = lognormal_rng(log(ypred[i]), sigma);
+  }
   
   
   
