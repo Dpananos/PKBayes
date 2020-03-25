@@ -37,7 +37,7 @@ parameters{
 }
 transformed parameters{
 // Solution to the differential equation for mass transit.
-vector[N] C = 2.5*ka*ke/(cl*(ke-ka))*(exp(-ka*times) - exp(-ke*times));
+vector[N] C = 2.5*ka*ke*cl/((ke-ka))*(exp(-ka*times) - exp(-ke*times));
 }
 model{
   cl ~ uniform(cl_mu, cl_sd);
@@ -50,7 +50,7 @@ model{
 generated quantities{
 // generate smooth curves in this block.
 // Will use these to make plots
-  vector[100] CC = 2.5*ka*ke/(cl*(ke-ka))*(exp(-ka*t) - exp(-ke*t));
+  vector[100] CC = 2.5*ka*ke*cl/((ke-ka))*(exp(-ka*t) - exp(-ke*t));
 }
 
 ```
@@ -74,8 +74,8 @@ prior_data = list(
   y = y,
   N = length(times),
   prior_only=1,
-  cl_mu = 2.0,
-  cl_sd = 7.0
+  cl_mu = 0.1,
+  cl_sd = 0.5
 )
 prior_fit = sampling(model, prior_data, control = list(adapt_delta = 0.9))
 
@@ -85,8 +85,8 @@ posterior_data = list(
   y = y,
   N = length(times),
   prior_only=0,
-  cl_mu = 2.0,
-  cl_sd = 7.0
+  cl_mu = 0.1,
+  cl_sd = 0.5
 )
 posterior_fit = sampling(model, posterior_data, control = list(adapt_delta = 0.99))
 
@@ -109,7 +109,7 @@ yy = rlnorm(length(Y(cl)), log(Y(cl)), 0.12)
 domle = Vectorize(function(cl) sum(dlnorm(yy, log(Y(cl)), 0.12, log = T)))
 
 cli = seq(1,8, 0.01)
-plot(cli,domle(cli))
+plot(1/cli,domle(cli))
 
 # Now optimize and get the mle
 mle = optimize(domle, c(2.0, 8.0), maximum = T)$maximum
@@ -177,6 +177,6 @@ alt_fig = (prior + data + posterior)
 
 ggsave('mlhc-submission-files/figs/fig_1.png', height = 3, dpi = 240)
 
-
+alt_fig
 ```
 

@@ -60,12 +60,14 @@
 
 %My imports
 \usepackage{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-Precision medicine’s slogan is “right drug -- right patient -- right time”, which is implicitly preceded by “right dose”. However, determining the right dose for any one patient can be challenging because existing models for dose personalization require more data than can reasonably be obtained in order to truly personalize doses.  Bayesian methods, with their ability to explicitly pass prior information to the model, have been proposed as a solution to this problem. Hamiltonian Monte Carlo (HMC) is largely considered the gold standard for fitting Bayesian models, and yet several dose personalization studies use Maximum A Posteriori (MAP) methods to fit their models.  In this study, we put forth a new Bayesian pharmacokinetic model for apixaban pharmacokinetics written in an open source Bayesian language.  We make the model code and posterior summaries of all parameters publicly available. We also perform a simulation study characterizing the differences between inferences made via MAP and HMC for personalized dosing strategies. We find that the differences between HMC and MAP are non-trivial and can greatly affect the choices surrounding dose selection for personalized medicine.
+Precision medicine’s slogan is “right drug -- right patient -- right time”, which is implicitly preceded by ``right dose''. However, determining the right dose for any one patient can be challenging because existing models for dose personalization require more data than can reasonably be obtained in order to truly personalize doses.  Bayesian methods, with their ability to explicitly pass prior information to the model, have been proposed as a solution to this problem. Hamiltonian Monte Carlo (HMC) is largely considered the gold standard for fitting Bayesian models, and yet several dose personalization studies use Maximum A Posteriori (MAP) methods to fit their models.  In this study, we put forth a new Bayesian pharmacokinetic model for apixaban pharmacokinetics written in an open source Bayesian language.  We make the model code and posterior summaries of all parameters publicly available. We also perform a simulation study characterizing the differences between inferences made via MAP and HMC for personalized dosing strategies. We find that the differences between HMC and MAP are non-trivial and can greatly affect the choices surrounding dose selection for personalized medicine.
 
 \end{abstract}
 
@@ -73,6 +75,7 @@ Precision medicine’s slogan is “right drug -- right patient -- right time”
 % a complete cluster fuck as it usually is in LaTeX
 \input{sections/introduction}
 \input{sections/background}
+\input{sections/methods}
 \bibliography{references}
 
 
