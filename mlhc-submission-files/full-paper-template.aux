@@ -21,7 +21,7 @@
 \citation{Zhu2017-rk,Xue2017-mp}
 \providecommand \oddpage@label [2]{}
 \jmlr@workshop{Machine Learning for Healthcare}
-\jmlr@title{Short Title}{Comparisons Between Hamiltonian Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixaban Induction Dose \& Dose Personalization}
+\jmlr@title{Comparisons Between HMC and MAP For Personalized Medicine}{Comparisons Between Hamiltonian Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixaban Induction Dose \& Dose Personalization}
 \jmlr@author{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}
 \newlabel{jmlrstart}{{}{1}{}{Doc-Start}{}}
 \newlabel{jmlrstart@cref}{{}{[1][1][]1}}
@@ -83,7 +83,6 @@
 \newlabel{eq:eq_16@cref}{{[equation][16][]16}{[1][7][]7}}
 \newlabel{eq:eq_17}{{17}{7}{Priors for Model Hyperparameters}{equation.0.3.17}{}}
 \newlabel{eq:eq_17@cref}{{[equation][17][]17}{[1][7][]7}}
-\bibdata{references}
 \newlabel{eq:eq_18}{{18}{8}{Posterior Summarization and Generating New Data}{equation.0.3.18}{}}
 \newlabel{eq:eq_18@cref}{{[equation][18][]18}{[1][8][]8}}
 \newlabel{eq:eq_19}{{19}{8}{Posterior Summarization and Generating New Data}{equation.0.3.19}{}}
@@ -96,6 +95,27 @@
 \newlabel{eq:eq_22@cref}{{[equation][22][]22}{[1][8][]8}}
 \newlabel{eq:eq_23}{{23}{8}{Posterior Summarization and Generating New Data}{equation.0.3.23}{}}
 \newlabel{eq:eq_23@cref}{{[equation][23][]23}{[1][8][]8}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Comparisons of HMC and MAP on three loss functions popular in pharmacokinetics.}}{9}{table.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{9}{section.0.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution, top right shows the predicted values along with accompanying 95\% equal tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}}{10}{figure.3}}
+\newlabel{fig:fig3}{{3}{10}{Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution, top right shows the predicted values along with accompanying 95\% equal tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray)}{figure.3}{}}
+\newlabel{fig:fig3@cref}{{[figure][3][]3}{[1][9][]10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for. }}{11}{figure.4}}
+\newlabel{fig:fig4}{{4}{11}{The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for}{figure.4}{}}
+\newlabel{fig:fig4@cref}{{[figure][4][]4}{[1][9][]11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligbly different as compared by RMSE, MAE, and MAPE}}{11}{figure.5}}
+\newlabel{fig:fig5}{{5}{11}{Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligbly different as compared by RMSE, MAE, and MAPE}{figure.5}{}}
+\newlabel{fig:fig5@cref}{{[figure][5][]5}{[1][9][]11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Comparisons of equal tail posterior intervals from MAP and HMC. Note that the concentration scales differ from subplot to subplot. Selected patients are those which have a MAP posterior interval at least 50\% as wide or wider than their HMC interval. In many simulated subjects.}}{12}{figure.6}}
+\newlabel{fig:fig6}{{6}{12}{Comparisons of equal tail posterior intervals from MAP and HMC. Note that the concentration scales differ from subplot to subplot. Selected patients are those which have a MAP posterior interval at least 50\% as wide or wider than their HMC interval. In many simulated subjects}{figure.6}{}}
+\newlabel{fig:fig6@cref}{{[figure][6][]6}{[1][9][]12}}
+\citation{Betancourt2017-ak}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces NEED A CPATION AND BETTER X AXIS}}{13}{figure.7}}
+\newlabel{fig:fig7}{{7}{13}{NEED A CPATION AND BETTER X AXIS}{figure.7}{}}
+\newlabel{fig:fig7@cref}{{[figure][7][]7}{[1][13][]13}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{13}{section.0.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{14}{section.0.6}}
+\bibdata{references}
 \bibcite{Beaton2018-el}{{1}{2018}{{Beaton et~al.}}{{Beaton, Tirona, Strapp, Ramu, Schwarz, Kim, Aljudaibi, and Kassam}}}
 \bibcite{Brooks2016-li}{{2}{2016}{{Brooks et~al.}}{{Brooks, Tett, Isbel, and Staatz}}}
 \bibcite{Byon2019-gf}{{3}{2019}{{Byon et~al.}}{{Byon, Garonzik, Boyd, and Frost}}}
@@ -115,5 +135,5 @@
 \bibcite{Wakefield1996-yy}{{17}{1996}{{Wakefield}}{{}}}
 \bibcite{Xue2017-mp}{{18}{2017}{{Xue et~al.}}{{Xue, Holford, Ding, Shen, Huang, Zhang, Zhang, Guo, Xie, Zhou, Chen, Liu, and Miao}}}
 \bibcite{Zhu2017-rk}{{19}{2017}{{Zhu et~al.}}{{Zhu, Hong, Wei, Hu, Chen, Wang, Zhu, Yu, and Sun}}}
-\newlabel{jmlrend}{{3}{10}{end of Short Title}{section*.9}{}}
-\newlabel{jmlrend@cref}{{[section][3][0]3}{[1][10][]10}}
+\newlabel{jmlrend}{{6}{16}{end of Comparisons Between HMC and MAP For Personalized Medicine}{section*.12}{}}
+\newlabel{jmlrend@cref}{{[section][6][0]6}{[1][16][]16}}
