@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,6 +11,11 @@ Melanie~D Beaton, Rommel~G Tirona, Ruth Strapp, Mala Ramu, Ute Schwarz, Richard
   Kim, Bandar Aljudaibi, and Zahra Kassam.
 \newblock Su1495 - apixaban and rosuvastatin pharmacokinetics in nonalcoholic
   fatty liver disease, 2018.
+
+\bibitem[Betancourt(2017)]{Betancourt2017-ak}
+Michael Betancourt.
+\newblock A conceptual introduction to hamiltonian monte carlo.
+\newblock January 2017.
 
 \bibitem[Brooks et~al.(2016)Brooks, Tett, Isbel, and Staatz]{Brooks2016-li}
 Emily Brooks, Susan~E Tett, Nicole~M Isbel, and Christine~E Staatz.
@@ -46,16 +51,16 @@ International Warfarin~Pharmacogenetics Consortium.
 \newblock \emph{New England Journal of Medicine}, 360\penalty0 (8):\penalty0
   753--764, 2009.
 
+\bibitem[Hoffman and Gelman(2014)]{Matthew_D_Hoffman2014-in}
+Mathew Hoffman and Andrew Gelman.
+\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
+  hamiltonian monte carlo.
+\newblock \emph{Journal of Machine Learning Research}, 2014.
+
 \bibitem[Lin and Segel(1988)]{Lin1988-pr}
 C~C Lin and L~A Segel.
 \newblock Mathematics applied to deterministic problems in the natural
   sciences, 1988.
-
-\bibitem[Matthew D.~Hoffman(2014)]{Matthew_D_Hoffman2014-in}
-Andrew~Gelman Matthew D.~Hoffman.
-\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
-  hamiltonian monte carlo.
-\newblock \emph{Journal of Machine Learning Research}, 2014.
 
 \bibitem[Neal(1996)]{Neal1996-vn}
 Radford~M Neal.

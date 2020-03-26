@@ -1,13 +1,13 @@
 \section{Results}
 \subsection*{Bayesian Model}
 
-The Bayesian model fit to the real apixaban data is shown below.  Posterior population prediction intervals (that is, the result of integrating out the random effect of each patient) of the observed concentration are realistic and to the eye appear similar to the observed data.  Residual plots (observed minus posterior mean) indicate heterogeneity of variance, which is consistent both with expert knowledge on the measurement process and the likelihood we choose. Predicted concentrations tend to agree with observed concentrations, and posterior predictive draws have similar empirical cumulative distribution functions as the observed data (see \cref{fig:fig3}). In \cref{fig:fig4}, we show draws from our prior predictive distribution as well as two patients with best and worst fit as measured by mean absolute percent error (best: 3.29\%, worst: 26.4\%). Because our HMC diagnostics do not indicate problematic behaviour in the markov chains, and because the model diagnostics indicate adequate fit, we believe the obtained model’s posterior predictive distribution is adequate for simulation of pseudodata.
+Diagnostic plots for Bayesian model fit to the real apixaban data is shown in \cref{fig:fig3}.  Posterior population prediction intervals (that is, the result of integrating out the random effect of each patient) of the observed concentration are realistic and to the eye appear similar to the observed data (top left of \cref{fig:fig3}).  Residual plots (observed minus posterior mean) indicate homogeneity of variance on the log scale, which is consistent both with expert knowledge on the measurement process and the likelihood we choose (bottom left of \cref{fig:fig3}). Predicted concentrations tend to agree with observed concentrations (top right of \cref{fig:fig3}), and posterior predictive draws have similar empirical cumulative distribution functions as the observed data (bottom right of \cref{fig:fig3} ). In \cref{fig:fig4}, we show concentration functions obtained from draws from our prior distribution as well as two patients with best and worst fit as measured by mean absolute percent error (best: 3.29\%, worst: 26.4\%). Because our HMC diagnostics do not indicate problematic behaviour in the Markov chains, and because the model diagnostics indicate adequate fit, we believe the obtained model’s posterior predictive distribution is adequate for simulation of pseudodata.
 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\linewidth]{figs/diagnostics}
-	\caption{Diagnostic plots for our Bayesian model.  Top left shows the posterior predictive distribution, top right shows the predicted values along with accompanying 95\% equal tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}
+	\includegraphics[width=0.9\linewidth]{figs/diagnostics}
+	\caption{Diagnostic plots for our Bayesian model.  Top left shows the posterior predictive distribution plus observed data.  Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}
 	\label{fig:fig3}
 \end{figure}
 
@@ -22,17 +22,15 @@ The Bayesian model fit to the real apixaban data is shown below.  Posterior popu
 
 \subsection*{Fit on Simulated Patients Using HMC and MAP}
 
-Initial comparisons of predicted values indicate that both HMC and MAP yield similar predictions to one another, and similar predictions to actual values of unseen data.  Examining predictions alone, it would seem that HMC and MAP are equivalent, or at the very least similar enough so as to not have strong preference for one over the other. When using posterior means, HMC results in lower prediction error on unseen data as measured with RMSE, MAE, and MAPE, but these are not stark differences.
+Initial comparisons of predicted values indicate that both HMC and MAP yield similar predictions to one another, and similar predictions to actual values of unseen data.  Examining predictions alone, it would seem that HMC and MAP are equivalent, or at the very least similar enough so as to not have strong preference for one over the other. When using posterior means, HMC results in lower prediction error on unseen data as measured with RMSE, MAE, and MAPE, but these are not stark differences. Estimates of posterior uncertainty between MAP and HMC can however vary a great deal.   Shown in \cref{fig:fig6} are 18 of the 100 simulated patients which have a MAP equal tailed posterior interval at least 50\% larger as compared to their HMC equal tail posterior interval at the widest point. We note that while not shown explicitly, unobserved concentrations lie entirely within the HMC and MAP posterior intervals.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.85\linewidth]{figs/compare}
-	\caption{Comparisons of fits obtained through HMC and MAP for simulated patients.  On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another.  The predictions are negligibly different to the eye and are also negligbly different as compared by RMSE, MAE, and MAPE}.
+	\caption{Comparisons of fits obtained through HMC and MAP for simulated patients.  On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another.  The predictions are negligibly different to the eye and are also negligibly different as compared by RMSE, MAE, and MAPE.}
 	\label{fig:fig5}
 \end{figure}
 
-
-Estimates of posterior uncertainty between MAP and HMC can however vary a great deal.   Shown in \cref{fig:fig6} are 18 of the 100 simulated patients which have a MAP equal tailed posterior interval at least 50\% larger as compared to their HMC equal tail posterior interval at the widest point. We note that while not shown explicitly, unobserved concentrations lie entirely within the HMC and MAP posterior intervals.
 
 \begin{table}
 	\centering
