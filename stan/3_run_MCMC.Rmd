@@ -100,9 +100,14 @@ no_condition %>%
 ```
 
 ```{r}
-fit %>% 
-  spread_draws(mu_CL, n=2000) %>% 
-  mean_qi
+
+
+subject_params = fit %>% 
+  gather_draws(Cl[subject], ke[subject], ka[subject], alpha[subject], t[subject], n = 2000) %>% 
+  mean_qi()
+
+
+write_csv(subject_params,'../data/hmc_patient_parameter_estimates.csv')
 ```
 
 ```{r}

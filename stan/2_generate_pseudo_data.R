@@ -26,7 +26,7 @@ fits = sampling(model,
 
 
 samples = rstan::extract(fits)
-
+saveRDS(samples, 'data/simulated_data.RDS')
 
 data = tibble(
   subjectids = subjectids,
@@ -36,7 +36,11 @@ data = tibble(
 ) %>% 
   left_join(
     tibble(subjectids=unique(subjectids), 
-           tmax = as.numeric(samples$tmax))
+           tmax = as.numeric(samples$tmax),
+           cl= as.numeric(samples$Cl),
+           ke = as.numeric(samples$ke),
+           ka = as.numeric(samples$ka),
+           alpha = as.numeric(samples$alpha)),
   )
 
 data %>% 

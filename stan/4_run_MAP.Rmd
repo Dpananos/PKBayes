@@ -164,11 +164,12 @@ apply(ypred_cols, 2, function(x) tidybayes::mean_hdci(x)) %>%
 
 theta_tilde %>% 
   spread_draws(ypred[i], n=500) %>% 
-  left_join(no_condition %>% mutate(i = 1:n()) ) %>% 
-  filter(subjectids<21) %>% 
-  ggplot(aes(times, ypred, group = .draw))+
-  geom_line(color = 'red', size = 1, alpha = 0.1)+
-  facet_wrap(~subjectids, scales = 'free_y')
+  left_join(no_condition %>% mutate(i = 1:n())) %>%  
+  filter(subjectids<21)  %>% 
+  ggplot(aes(times, ypred, group = .draw), color = 'red')+
+  geom_line( size = 1, alpha = 0.1)+
+  facet_wrap(~subjectids, scales = 'free_y')+
+  viridis::scale_color_viridis()
 ```
 
 
@@ -182,6 +183,17 @@ param_draws = list(
 saveRDS(param_draws, '../data/map_parameter_draws.RDS')
   
 ```
+
+
+```{r}
+subject_params = theta_tilde %>% 
+  gather_draws(Cl[subject], ke[subject], ka[subject], alpha[subject], t[subject]) %>% 
+  mean_qi()
+
+
+write_csv(subject_params,'../data/map_patient_parameter_estimates.csv')
+```
+
 
 
 

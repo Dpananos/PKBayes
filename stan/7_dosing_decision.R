@@ -6,7 +6,7 @@ theme_set(theme_minimal(base_size = 12))
 
 map_draws = readRDS('data/map_parameter_draws.RDS') 
 mcmc_draws = readRDS('data/mcmc_parameter_draws.RDS')
-DD = seq(0, 60, length.out = 200)
+DD = c(seq(0,10, 0.05),seq(11, 60, 0.5))
 nD = length(DD)
 
 get_risk = function(i, draws, thresh){
@@ -46,7 +46,7 @@ estimate_d = function(model, p){
   roots = uniroot(function(x) model(x) - p, c(0, max(DD)))
   roots$root
 }
-
+ 
 
 
 # Analysis
@@ -83,14 +83,31 @@ plot1 = models %>%
   mutate(mcmc_d = map2_dbl(mcmc_model, p, estimate_d),
          map_d = map2_dbl(map_model, p, estimate_d),
          deltad = map_d - mcmc_d) %>% 
+  arrange(deltad) %>% 
   ggplot(aes(p, deltad, group=i))+
   geom_line(alpha = 0.5)+
   geom_hline(aes(yintercept = 0), color = 'red')+
   scale_x_reverse(labels = scales::percent, breaks = seq(0.05, 0.95, 0.2))+
   ylab('MAP Dose - HMC Dose')+
-  xlab('Risk')+
+  xlab('Risk At 12 Hours Post Dose')+
   theme(aspect.ratio = 1/1.61)+
   ggsave('figs/risk_dose_1.png',height = 3, width = 5)
+
+
+#plot dose sizes
+dev.new()
+options(device = "quartz")
+models %>% 
+  crossing(p = seq(0.05,0.95,0.05)) %>% 
+  mutate(mcmc_d = map2_dbl(mcmc_model, p, estimate_d),
+         map_d = map2_dbl(map_model, p, estimate_d),
+         deltad = map_d - mcmc_d) %>% 
+  arrange(deltad) %>% 
+  select(i, map_d, mcmc_d, p) %>% 
+  gather(method, dose, -i, -p) %>% 
+  ggplot(aes(p, dose, color = method, group = interaction(method, i)))+
+  geom_line()+
+  facet_wrap(~i, scales = 'free_y')
   
   
 
@@ -118,7 +135,7 @@ plot2 = models %>%
   geom_hline(aes(yintercept = 0), color = 'red')+
   scale_x_reverse(labels = scales::percent, breaks = seq(0.05, 0.95, 0.2))+
   ylab('MAP Dose - HMC Dose')+
-  xlab('Risk')+
+  xlab('Risk Over 12 Hour Observation Period')+
   theme(aspect.ratio = 1/1.61)+
   ggsave('figs/risk_dose_2.png',height = 3, width = 5)
 
@@ -129,4 +146,7 @@ fig = (plot1+plot2)
 ggsave('figs/experiments.png', 
        fig,
        height = 3)
+
+
+
 

@@ -59,14 +59,14 @@ Initial comparisons of predicted values indicate that both HMC and MAP yield sim
 \subsection*{Difference in Estimated Dose To Achieve Target Risk}
 
 
-Shown in \cref{fig:fig7} are the differences between doses computed from HMC and MAP posteriors to achieve the indicated level of risk.  The left panel shows the difference in doses in order to achieve a concentration of 20 ng/ml 12 hours after ingestion. For a majority of patients, MAP and HMC agree to within 1 mg though some pseudopatients see a much larger dose recommendation by HMC than by MAP.  An increase in dose size will always lead to a smaller risk, and so as the dose size increases the differences tend to 0, though the two methods never perfectly agree.
+Shown in \cref{fig:fig7} are the differences between doses computed from HMC and MAP posteriors to achieve the indicated level of risk.  The left panel shows the difference in doses in order to achieve a concentration of at least 20 ng/ml 12 hours post dose. For a majority of patients, MAP and HMC agree to within 1 mg though some pseudopatients see a much larger dose recommendation by HMC than by MAP.  An increase in dose size will always lead to a smaller risk, and so as the dose size increases the differences tend to 0, though the two methods never perfectly agree.
 
 The right panel shows the difference in doses in order to spend no more than the indicated proportion of the 12 hour observation period below 20 ng/ml (we call this an “acceptable risk”).  Small dose sizes lead to large risks in this experiment.  Both MAP and HMC tend to agree to within 0.5 mg.  As the acceptable risk decreases, dose sizes tend to diverge, with MAP recommending larger doses for the majority of pseudopatients.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{figs/experiments}
-	\caption{NEED A CPATION AND BETTER X AXIS}
+	\caption{Left: Differences between the estimated doses from MAP and HMC to achieve the indicated risk of having a concentration of apixiban smaller than 20 ng/ml at 12 hours post dose. Right: Differences between estimated doses from MAP and HMC to achieve the indicated risk of being below 20 ng/ml over the 12 hour observation period.}
 	\label{fig:fig7}
 \end{figure}
 

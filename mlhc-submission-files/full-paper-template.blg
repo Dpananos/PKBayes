@@ -4,45 +4,45 @@ The top-level auxiliary file: full-paper-template.aux
 The style file: plainnat.bst
 Database file #1: references.bib
 Warning--empty note in Betancourt2017-ak
-You've used 20 entries,
+You've used 22 entries,
             2773 wiz_defined-function locations,
-            735 strings with 9701 characters,
-and the built_in function-call counts, 10607 in all, are:
-= -- 876
-> -- 853
-< -- 9
-+ -- 287
-- -- 267
-* -- 946
-:= -- 1668
-add.period$ -- 54
-call.type$ -- 20
-change.case$ -- 149
-chr.to.int$ -- 20
-cite$ -- 41
-duplicate$ -- 382
-empty$ -- 727
-format.name$ -- 295
-if$ -- 2152
+            747 strings with 10599 characters,
+and the built_in function-call counts, 12801 in all, are:
+= -- 1041
+> -- 1121
+< -- 8
++ -- 376
+- -- 354
+* -- 1188
+:= -- 2032
+add.period$ -- 60
+call.type$ -- 22
+change.case$ -- 183
+chr.to.int$ -- 22
+cite$ -- 45
+duplicate$ -- 425
+empty$ -- 813
+format.name$ -- 384
+if$ -- 2575
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 12
-newline$ -- 101
-num.names$ -- 80
-pop$ -- 308
+missing$ -- 14
+newline$ -- 111
+num.names$ -- 88
+pop$ -- 371
 preamble$ -- 1
-purify$ -- 129
+purify$ -- 161
 quote$ -- 0
-skip$ -- 349
+skip$ -- 402
 stack$ -- 0
-substring$ -- 292
-swap$ -- 41
+substring$ -- 355
+swap$ -- 43
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 220
+type$ -- 242
 warning$ -- 1
-while$ -- 80
+while$ -- 90
 width$ -- 0
-write$ -- 244
+write$ -- 270
 (There was 1 warning)
