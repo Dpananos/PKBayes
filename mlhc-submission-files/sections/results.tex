@@ -7,7 +7,7 @@ Diagnostic plots for Bayesian model fit to the real apixaban data is shown in \c
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\linewidth]{figs/diagnostics}
-	\caption{Diagnostic plots for our Bayesian model.  Top left shows the posterior predictive distribution plus observed data.  Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}
+	\caption{Diagnostic plots for our Bayesian model.  Top left shows the posterior predictive distribution plus observed data.  Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}
 	\label{fig:fig3}
 \end{figure}
 
@@ -22,12 +22,12 @@ Diagnostic plots for Bayesian model fit to the real apixaban data is shown in \c
 
 \subsection*{Fit on Simulated Patients Using HMC and MAP}
 
-Initial comparisons of predicted values indicate that both HMC and MAP yield similar predictions to one another, and similar predictions to actual values of unseen data.  Examining predictions alone, it would seem that HMC and MAP are equivalent, or at the very least similar enough so as to not have strong preference for one over the other. When using posterior means, HMC results in lower prediction error on unseen data as measured with RMSE, MAE, and MAPE, but these are not stark differences. Estimates of posterior uncertainty between MAP and HMC can however vary a great deal.   Shown in \cref{fig:fig6} are 18 of the 100 simulated patients which have a MAP equal tailed posterior interval at least 50\% larger as compared to their HMC equal tail posterior interval at the widest point. We note that while not shown explicitly, unobserved concentrations lie entirely within the HMC and MAP posterior intervals.
+Initial comparisons of predicted values indicate that both HMC and MAP yield similar predictions to one another, and similar predictions to actual values of unseen data.  Examining predictions alone, it would seem that HMC and MAP are equivalent, or at the very least similar enough so as to not have strong preference for one over the other. When using posterior means, HMC results in lower prediction error on unseen data as measured with Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE), but these are not stark differences. Estimates of posterior uncertainty between MAP and HMC can however vary a great deal. Shown in \cref{fig:fig6} are 18 of the 100 simulated patients which have a MAP equal tailed posterior interval at least 50\% larger as compared to their HMC equal tail posterior interval at the widest point. We note that while not shown explicitly, unobserved concentrations lie entirely within the HMC and MAP posterior intervals.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.85\linewidth]{figs/compare}
-	\caption{Comparisons of fits obtained through HMC and MAP for simulated patients.  On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another.  The predictions are negligibly different to the eye and are also negligibly different as compared by RMSE, MAE, and MAPE.}
+	\caption{Comparisons of fits obtained through HMC and MAP for simulated patients.  On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another.  The predictions are negligibly different to the eye and are also negligibly different as compared by Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE).}
 	\label{fig:fig5}
 \end{figure}
 
@@ -45,7 +45,7 @@ Initial comparisons of predicted values indicate that both HMC and MAP yield sim
 	MAPE & 0.04 & 0.05 \\ 
 	\hline 
 \end{tabular} 
-\caption{Comparisons of HMC and MAP on three loss functions popular in pharmacokinetics.}
+\caption{Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). \textbf{Could present standard deviations of these? Let's discuss.}}
 \end{table}
 
 \begin{figure}
