@@ -25,7 +25,7 @@ hmc %>%
   bind_rows(true)  %>% 
   filter(subject %in% f, .variable=='alpha') %>% 
   select(subject, .lower, kind) %>% 
-  spread(kind,.lower)
+  spread(kind,.upper)
   # 
   # mutate(.variable = stringr::str_to_lower(.variable)) %>% 
   # ggplot(aes(.value, factor(subject), xmin = .lower, xmax = .upper, color = kind))+

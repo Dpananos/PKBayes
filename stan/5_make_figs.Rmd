@@ -133,5 +133,11 @@ tibble(
   ) %>% 
   mutate_if(is.numeric, list(function(x) round(x,2)))
   
+
+
+actual = preds$C
+predicted = preds$mcmc
+
+mean(abs(actual - predicted)/(abs(actual)))
 ```
 

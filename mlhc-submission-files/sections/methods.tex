@@ -8,7 +8,7 @@ To achieve our three objectives of 1) developing a new Bayesian pharmacokinetic 
 
 \begin{table}[htb]
 	\centering
-	\caption{Need a caption} 
+	\caption{Summary of data from  \cite{Beaton2018-el}. } 
 	\label{tab:my table} 
 	\includegraphics[width=0.7\linewidth]{figs/table1}
 \end{table}
@@ -172,3 +172,5 @@ The results from both the HMC and MAP techniques yield samples from the approxim
 
 
 We perform two experiments to compare HMC and MAP.  In our first experiment, we determine the posterior probability of failing to exceed a concentration of 20 ng/ml 12 hours post dose for each pseudopatient across a variety of dose sizes. We choose 20 ng/ml as our threshold as the median concentration at 12 hours post dose  in the data from \cite{Beaton2018-el} is approximately 20 ng/ml. In our second experiment, we compute the expected amount of time spent below 20 ng/ml for each pseudopatient.  These quantities represent two different ways of assessing a patient's risk of being below the 20 ng/ml threshold.  The chosen threshold is arbitrary, but our method generalizes to any threshold.  For each experiment, the risks are computed across dose sizes of 0 mg to 60 mg, yielding risk as a function of dose size.  We interpolate these estimates using a monotone Hermite spline and then invert the risk curve for each pseudopatient; the inverted risk curve maps risk to dose. Hence, this allows us to determine a dose size which produces a specified risk level.
+
+
