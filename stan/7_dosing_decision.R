@@ -6,7 +6,7 @@ theme_set(theme_minimal(base_size = 12))
 
 map_draws = readRDS('data/map_parameter_draws.RDS') 
 mcmc_draws = readRDS('data/mcmc_parameter_draws.RDS')
-DD = c(seq(0,10, 0.05),seq(11, 60, 0.5))
+DD = c(seq(0,10, 0.05),seq(11, 100, 0.5))
 nD = length(DD)
 
 get_risk = function(i, draws, thresh){
@@ -14,16 +14,16 @@ get_risk = function(i, draws, thresh){
   ka = rray(draws$ka[,i], dim=c(n,1))
   ke = rray(draws$ke[,i], dim=c(n,1))
   cl = rray(draws$cl[,i], dim=c(n,1))
-  time = rray(seq(0.75,11.75,length.out = 23), dim = c(1,23))
+  time = log(ka/ke)/(ka - ke)
   
-  D = rray(DD, dim = c(nD,1))
+  D = rray(DD, dim = c(1,nD))
   
   y = 1000*(ke*ka)/(2*cl*(ke-ka))*(exp(-ka*time) - exp(-ke*time))
-  yy = D*rray_reshape(y, dim = c(1, n, 23))
-  r= yy %>% rray_lesser(thresh) %>% rray_mean(axes = c(2,3))
+  yy = y*D
+  r= yy %>% rray_lesser(thresh) %>% rray_mean(axes = c(1))
   
   as.numeric(r)
-}
+  }
 
 get_risk_at_12 = function(i, draws, thresh){
   n = nrow(draws[[1]])
@@ -53,8 +53,8 @@ estimate_d = function(model, p){
 tic()
 risk = tibble(i = 1:100) %>% 
   mutate(
-    map_risk = map(i, ~get_risk(.x, map_draws, 20)),
-    mcmc_risk = map(i, ~get_risk(.x, mcmc_draws,  20)),
+    map_risk = map(i, ~get_risk(.x, map_draws, 100)),
+    mcmc_risk = map(i, ~get_risk(.x, mcmc_draws,  100)),
     map_risk_12 = map(i, ~get_risk_at_12(.x, map_draws, 20)),
     mcmc_risk_12 = map(i, ~get_risk_at_12(.x, mcmc_draws, 20))
       
