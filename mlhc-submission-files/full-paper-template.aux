@@ -22,36 +22,36 @@
 \providecommand \oddpage@label [2]{}
 \jmlr@workshop{Machine Learning for Healthcare}
 \jmlr@title{Comparisons Between HMC and MAP For Precision Medicine}{Comparisons Between Hamiltonian Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixaban Induction Dose \& Dose Personalization}
-\jmlr@author{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}
 \newlabel{jmlrstart}{{}{1}{}{Doc-Start}{}}
 \newlabel{jmlrstart@cref}{{}{[1][1][]1}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.0.1}}
 \citation{Neal1996-vn,Matthew_D_Hoffman2014-in,Carpenter2017-qf,Tripuraneni2017-oh}
 \citation{Brooks2016-li,Nguyen2016-pg,Preijers2019-kc,Stifft2020-uq}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background}{2}{section.0.2}}
 \citation{vinogradova2018risks}
 \citation{Byon2019-gf}
 \citation{gulilat2020drug}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Background}{3}{section.0.2}}
+\citation{Beaton2018-el}
 \citation{Beaton2018-el}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces A demonstration of a Bayesian workflow for pharmacokinetic models. The leftmost panel represents the prior. Each curve corresponds to a unique set of model parameters which induce each concentration function. In the center panel is the data observed from a single patient. Conditioning on this data yields the rightmost panel. Each curve corresponds to a unique set of model parameters drawn from the posterior distribution.}}{4}{figure.1}}
 \newlabel{fig:fig1}{{1}{4}{A demonstration of a Bayesian workflow for pharmacokinetic models. The leftmost panel represents the prior. Each curve corresponds to a unique set of model parameters which induce each concentration function. In the center panel is the data observed from a single patient. Conditioning on this data yields the rightmost panel. Each curve corresponds to a unique set of model parameters drawn from the posterior distribution}{figure.1}{}}
 \newlabel{fig:fig1@cref}{{[figure][1][]1}{[1][3][]4}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{4}{section.0.3}}
-\citation{Beaton2018-el}
 \citation{Byon2019-gf}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of data from \cite  {Beaton2018-el}. }}{5}{table.1}}
-\newlabel{tab:my table}{{1}{5}{Summary of data from \cite {Beaton2018-el}}{table.1}{}}
-\newlabel{tab:my table@cref}{{[table][1][]1}{[1][5][]5}}
-\newlabel{eq:eq_1}{{1}{5}{Bayesian Model}{equation.0.3.1}{}}
-\newlabel{eq:eq_1@cref}{{[equation][1][]1}{[1][5][]5}}
-\newlabel{eq:eq_2}{{2}{5}{Bayesian Model}{equation.0.3.2}{}}
-\newlabel{eq:eq_2@cref}{{[equation][2][]2}{[1][5][]5}}
 \citation{Lin1988-pr}
 \citation{Wakefield1996-yy,Salway2008-gi}
 \citation{Wakefield1996-yy,Salway2008-gi}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of data from \cite  {Beaton2018-el}. }}{5}{table.1}}
+\newlabel{tab:my table}{{1}{5}{Summary of data from \cite {Beaton2018-el}}{table.1}{}}
+\newlabel{tab:my table@cref}{{[table][1][]1}{[1][4][]5}}
+\newlabel{eq:eq_1}{{1}{5}{Bayesian Model}{equation.0.3.1}{}}
+\newlabel{eq:eq_1@cref}{{[equation][1][]1}{[1][4][]5}}
+\newlabel{eq:eq_2}{{2}{5}{Bayesian Model}{equation.0.3.2}{}}
+\newlabel{eq:eq_2@cref}{{[equation][2][]2}{[1][5][]5}}
+\newlabel{eq:eq_3}{{3}{5}{Bayesian Model}{equation.0.3.3}{}}
+\newlabel{eq:eq_3@cref}{{[equation][3][]3}{[1][5][]5}}
 \citation{Byon2019-gf}
-\newlabel{eq:eq_3}{{3}{6}{Bayesian Model}{equation.0.3.3}{}}
-\newlabel{eq:eq_3@cref}{{[equation][3][]3}{[1][5][]6}}
+\citation{Byon2019-gf}
 \newlabel{eq:eq_4}{{4}{6}{Bayesian Model}{equation.0.3.4}{}}
 \newlabel{eq:eq_4@cref}{{[equation][4][]4}{[1][6][]6}}
 \newlabel{eq:eq_5}{{5}{6}{Bayesian Model}{equation.0.3.5}{}}
@@ -64,28 +64,27 @@
 \newlabel{eq:eq_8@cref}{{[equation][8][]8}{[1][6][]6}}
 \newlabel{eq:eq_9}{{9}{6}{Bayesian Model}{equation.0.3.9}{}}
 \newlabel{eq:eq_9@cref}{{[equation][9][]9}{[1][6][]6}}
-\citation{Byon2019-gf}
+\newlabel{eq:eq_10}{{10}{6}{Priors for Model Hyperparameters}{equation.0.3.10}{}}
+\newlabel{eq:eq_10@cref}{{[equation][10][]10}{[1][6][]6}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients.}}{7}{figure.2}}
 \newlabel{net}{{2}{7}{Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients}{figure.2}{}}
 \newlabel{net@cref}{{[figure][2][]2}{[1][6][]7}}
-\newlabel{eq:eq_10}{{10}{7}{Priors for Model Hyperparameters}{equation.0.3.10}{}}
-\newlabel{eq:eq_10@cref}{{[equation][10][]10}{[1][6][]7}}
 \newlabel{eq:eq_11}{{11}{7}{Priors for Model Hyperparameters}{equation.0.3.11}{}}
-\newlabel{eq:eq_11@cref}{{[equation][11][]11}{[1][7][]7}}
+\newlabel{eq:eq_11@cref}{{[equation][11][]11}{[1][6][]7}}
 \newlabel{eq:eq_12}{{12}{7}{Priors for Model Hyperparameters}{equation.0.3.12}{}}
 \newlabel{eq:eq_12@cref}{{[equation][12][]12}{[1][7][]7}}
 \newlabel{eq:eq_13}{{13}{7}{Priors for Model Hyperparameters}{equation.0.3.13}{}}
 \newlabel{eq:eq_13@cref}{{[equation][13][]13}{[1][7][]7}}
+\newlabel{eq:eq_14}{{14}{7}{Priors for Model Hyperparameters}{equation.0.3.14}{}}
+\newlabel{eq:eq_14@cref}{{[equation][14][]14}{[1][7][]7}}
+\newlabel{eq:eq_15}{{15}{7}{Priors for Model Hyperparameters}{equation.0.3.15}{}}
+\newlabel{eq:eq_15@cref}{{[equation][15][]15}{[1][7][]7}}
 \citation{Carpenter2017-qf}
 \citation{Byon2019-gf}
-\newlabel{eq:eq_14}{{14}{8}{Priors for Model Hyperparameters}{equation.0.3.14}{}}
-\newlabel{eq:eq_14@cref}{{[equation][14][]14}{[1][8][]8}}
-\newlabel{eq:eq_15}{{15}{8}{Priors for Model Hyperparameters}{equation.0.3.15}{}}
-\newlabel{eq:eq_15@cref}{{[equation][15][]15}{[1][8][]8}}
 \newlabel{eq:eq_16}{{16}{8}{Priors for Model Hyperparameters}{equation.0.3.16}{}}
-\newlabel{eq:eq_16@cref}{{[equation][16][]16}{[1][8][]8}}
+\newlabel{eq:eq_16@cref}{{[equation][16][]16}{[1][7][]8}}
 \newlabel{eq:eq_17}{{17}{8}{Priors for Model Hyperparameters}{equation.0.3.17}{}}
-\newlabel{eq:eq_17@cref}{{[equation][17][]17}{[1][8][]8}}
+\newlabel{eq:eq_17@cref}{{[equation][17][]17}{[1][7][]8}}
 \newlabel{eq:eq_18}{{18}{8}{Posterior Summarization and Generating New Data}{equation.0.3.18}{}}
 \newlabel{eq:eq_18@cref}{{[equation][18][]18}{[1][8][]8}}
 \newlabel{eq:eq_19}{{19}{8}{Posterior Summarization and Generating New Data}{equation.0.3.19}{}}
@@ -100,18 +99,18 @@
 \newlabel{eq:eq_23@cref}{{[equation][23][]23}{[1][8][]8}}
 \citation{Beaton2018-el}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Results}{9}{section.0.4}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values.}}{10}{table.2}}
-\newlabel{table2}{{2}{10}{Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values}{table.2}{}}
-\newlabel{table2@cref}{{[table][2][]2}{[1][10][]10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}}{11}{figure.3}}
-\newlabel{fig:fig3}{{3}{11}{Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray)}{figure.3}{}}
-\newlabel{fig:fig3@cref}{{[figure][3][]3}{[1][10][]11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for. }}{12}{figure.4}}
-\newlabel{fig:fig4}{{4}{12}{The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for}{figure.4}{}}
-\newlabel{fig:fig4@cref}{{[figure][4][]4}{[1][10][]12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligibly different as compared by Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE).}}{12}{figure.5}}
-\newlabel{fig:fig5}{{5}{12}{Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligibly different as compared by Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE)}{figure.5}{}}
-\newlabel{fig:fig5@cref}{{[figure][5][]5}{[1][10][]12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}}{10}{figure.3}}
+\newlabel{fig:fig3}{{3}{10}{Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray)}{figure.3}{}}
+\newlabel{fig:fig3@cref}{{[figure][3][]3}{[1][9][]10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for. }}{11}{figure.4}}
+\newlabel{fig:fig4}{{4}{11}{The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for}{figure.4}{}}
+\newlabel{fig:fig4@cref}{{[figure][4][]4}{[1][9][]11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligibly different as compared by Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE).}}{11}{figure.5}}
+\newlabel{fig:fig5}{{5}{11}{Comparisons of fits obtained through HMC and MAP for simulated patients. On the left, the two methods are compared to the true concentration values, and on the right the two methods are compared to one another. The predictions are negligibly different to the eye and are also negligibly different as compared by Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE)}{figure.5}{}}
+\newlabel{fig:fig5@cref}{{[figure][5][]5}{[1][9][]11}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values.}}{12}{table.2}}
+\newlabel{table2}{{2}{12}{Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values}{table.2}{}}
+\newlabel{table2@cref}{{[table][2][]2}{[1][12][]12}}
 \newlabel{RF1}{13}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Comparisons of equal tail posterior intervals from MAP and HMC. Note that the concentration scales differ from subplot to subplot. Selected patients are those which have a MAP posterior interval at least 50\% as wide or wider than their HMC interval.}}{13}{figure.6}}
 \newlabel{fig:fig6}{{6}{13}{Comparisons of equal tail posterior intervals from MAP and HMC. Note that the concentration scales differ from subplot to subplot. Selected patients are those which have a MAP posterior interval at least 50\% as wide or wider than their HMC interval}{figure.6}{}}
