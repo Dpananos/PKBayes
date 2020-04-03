@@ -81,7 +81,7 @@ models %>%
   mutate(mcmc_d = map2_dbl(mcmc_model, p, estimate_d),
          map_d = map2_dbl(map_model, p, estimate_d),
          deltad = map_d - mcmc_d) %>% 
-  filter(p <=0.5) %>% 
+  # filter(p <=0.5) %>% 
   select(i, p, mcmc_d, map_d) %>% 
   write_csv('data/experiment_1_doses.csv')
 
@@ -139,12 +139,12 @@ models %>%
   mutate(mcmc_d = map2_dbl(mcmc_model, p, estimate_d),
          map_d = map2_dbl(map_model, p, estimate_d),
          deltad = map_d - mcmc_d) %>% 
-  filter(p <=0.5) %>% 
+  # filter(p <=0.5) %>% 
   select(i,p, mcmc_d, map_d) %>% 
   write_csv('data/experiment_2_doses.csv')
 
 plot2 = models %>% 
-  crossing(p = seq(0.05,0.95,0.05)) %>% 
+  crossing(p = seq(0.05,0.95,0.01)) %>% 
   mutate(mcmc_d = map2_dbl(mcmc_model, p, estimate_d),
          map_d = map2_dbl(map_model, p, estimate_d),
          deltad = map_d - mcmc_d) %>% 
@@ -154,7 +154,7 @@ plot2 = models %>%
   scale_x_continuous(labels = scales::percent, breaks = seq(0.0, 0.5, 0.1), limits = c(0.05, 0.5))+
   scale_y_continuous(breaks = seq(-3,3), limits = c(-3,3))+
   ylab('MAP Dose - HMC Dose')+
-  xlab('Risk Over 12 Hour Observation Period')+
+  xlab('Risk For Max Concentration')+
   theme(aspect.ratio = 1/1.61)+
   ggsave('figs/risk_dose_2.png',height = 3, width = 5)
 
