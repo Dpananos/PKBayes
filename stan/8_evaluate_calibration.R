@@ -34,7 +34,7 @@ cal1 = experiment_1_doses %>%
   theme(aspect.ratio = 1, legend.position = 'top')+
   scale_color_brewer(palette = 'Set1', direction = -1)+
   xlab('Desired Risk')+
-  ylab('Observed Proportion Failing\nTo Exceed Threshold')+
+  ylab('Calibration For Experiment 1')+
   scale_y_continuous(labels = scales::percent, limits = c(0,1))+
   scale_x_continuous(labels = scales::percent)+
   labs(color = '')
@@ -62,7 +62,7 @@ cal2 = experiment_2_doses %>%
   theme(aspect.ratio = 1, legend.position = 'top')+
   scale_color_brewer(palette = 'Set1', direction = -1)+
   xlab('Desired Risk')+
-  ylab('Observed Proportion Failing\nTo Exceed Threshold')+
+  ylab('Calibration For Experiment 2')+
   scale_y_continuous(labels = scales::percent, limits = c(0,1))+
   scale_x_continuous(labels = scales::percent)+
   labs(color = '')
