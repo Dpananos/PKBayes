@@ -6,7 +6,7 @@ theme_set(theme_minimal(base_size = 12))
 
 map_draws = readRDS('data/map_parameter_draws.RDS') 
 mcmc_draws = readRDS('data/mcmc_parameter_draws.RDS')
-DD = c(seq(0,10, 0.05),seq(11, 100, 0.5))
+DD = c(seq(0,10, 0.05),seq(11, 60, 0.5))
 nD = length(DD)
 
 get_risk = function(i, draws, thresh){

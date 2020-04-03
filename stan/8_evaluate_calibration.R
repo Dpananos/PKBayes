@@ -2,8 +2,10 @@ library(tidyverse)
 library(patchwork)
 theme_set(theme_minimal())
 
-experiment_1_doses = read_csv('data/experiment_1_doses.csv')
-experiment_2_doses = read_csv('data/experiment_2_doses.csv')
+experiment_1_doses = read_csv('data/experiment_1_doses.csv') %>% 
+  filter(p<=0.5)
+experiment_2_doses = read_csv('data/experiment_2_doses.csv') %>% 
+  filter(p<=0.5)
 true_pk_params = read_csv('data/simulated_data.csv') %>% select(subjectids, cl, ke, ka) %>% 
   distinct(subjectids, .keep_all = T)
 
