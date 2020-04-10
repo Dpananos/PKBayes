@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,6 +11,11 @@ Melanie~D Beaton, Rommel~G Tirona, Ruth Strapp, Mala Ramu, Ute Schwarz, Richard
   Kim, Bandar Aljudaibi, and Zahra Kassam.
 \newblock Su1495 - apixaban and rosuvastatin pharmacokinetics in nonalcoholic
   fatty liver disease, 2018.
+
+\bibitem[Betancourt(2017)]{Betancourt2017-ak}
+Michael Betancourt.
+\newblock A conceptual introduction to hamiltonian monte carlo.
+\newblock January 2017.
 
 \bibitem[Brooks et~al.(2016)Brooks, Tett, Isbel, and Staatz]{Brooks2016-li}
 Emily Brooks, Susan~E Tett, Nicole~M Isbel, and Christine~E Staatz.
@@ -39,23 +44,26 @@ Bob Carpenter, Andrew Gelman, Matthew~D Hoffman, Daniel Lee, Ben Goodrich,
   Riddell.
 \newblock Stan: A probabilistic programming language, 2017.
 
-\bibitem[Consortium(2009)]{international2009estimation}
-International Warfarin~Pharmacogenetics Consortium.
-\newblock Estimation of the warfarin dose with clinical and pharmacogenetic
-  data.
-\newblock \emph{New England Journal of Medicine}, 360\penalty0 (8):\penalty0
-  753--764, 2009.
+\bibitem[Gulilat et~al.(2020)Gulilat, Keller, Linton, Pananos, Lizotte,
+  Dresser, Alfonsi, Tirona, Kim, and Schwarz]{gulilat2020drug}
+Markus Gulilat, Denise Keller, Bradley Linton, A~Demetri Pananos, Daniel
+  Lizotte, George~K Dresser, Jeffrey Alfonsi, Rommel~G Tirona, Richard~B Kim,
+  and Ute~I Schwarz.
+\newblock Drug interactions and pharmacogenetic factors contribute to variation
+  in apixaban concentration in atrial fibrillation patients in routine care.
+\newblock \emph{Journal of Thrombosis and Thrombolysis}, 49\penalty0
+  (2):\penalty0 294--303, 2020.
+
+\bibitem[Hoffman and Gelman(2014)]{Matthew_D_Hoffman2014-in}
+Mathew Hoffman and Andrew Gelman.
+\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
+  hamiltonian monte carlo.
+\newblock \emph{Journal of Machine Learning Research}, 2014.
 
 \bibitem[Lin and Segel(1988)]{Lin1988-pr}
 C~C Lin and L~A Segel.
 \newblock Mathematics applied to deterministic problems in the natural
   sciences, 1988.
-
-\bibitem[Matthew D.~Hoffman(2014)]{Matthew_D_Hoffman2014-in}
-Andrew~Gelman Matthew D.~Hoffman.
-\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
-  hamiltonian monte carlo.
-\newblock \emph{Journal of Machine Learning Research}, 2014.
 
 \bibitem[Neal(1996)]{Neal1996-vn}
 Radford~M Neal.
@@ -69,6 +77,16 @@ Thu~Thuy Nguyen, Henri B{\'e}nech, Alain Pruvost, and Natacha Lenuzza.
 \newblock \emph{Eur. J. Clin. Pharmacol.}, 72\penalty0 (1):\penalty0 39--51,
   January 2016.
 
+\bibitem[Ohara et~al.(2019)Ohara, Suzuki, Shinohara, Gong, Schmerk, Tirona,
+  Schwarz, Wen, Lee, Mihara, et~al.]{ohara2019differences}
+Minami Ohara, Yasuhiko Suzuki, Saki Shinohara, Inna~Y Gong, Crystal~L Schmerk,
+  Rommel~G Tirona, Ute~I Schwarz, Ming-Shien Wen, Ming Ta~Michael Lee, Kiyoshi
+  Mihara, et~al.
+\newblock Differences in warfarin pharmacodynamics and predictors of response
+  among three racial populations.
+\newblock \emph{Clinical pharmacokinetics}, 58\penalty0 (8):\penalty0
+  1077--1089, 2019.
+
 \bibitem[Preijers et~al.(2019)Preijers, Laros-vanGorkom, Math{\^o}t, and
   Cnossen]{Preijers2019-kc}
 Tim Preijers, Britta A~P Laros-vanGorkom, Ron A~A Math{\^o}t, and Marjon~H
@@ -81,6 +99,15 @@ Tim Preijers, Britta A~P Laros-vanGorkom, Ron A~A Math{\^o}t, and Marjon~H
 Ruth Salway and Jon Wakefield.
 \newblock Gamma generalized linear models for pharmacokinetic data.
 \newblock \emph{Biometrics}, 64\penalty0 (2):\penalty0 620--626, June 2008.
+
+\bibitem[Schwarz et~al.(2008)Schwarz, Ritchie, Bradford, Li, Dudek,
+  Frye-Anderson, Kim, Roden, and Stein]{schwarz2008genetic}
+Ute~I Schwarz, Marylyn~D Ritchie, Yuki Bradford, Chun Li, Scott~M Dudek, Amy
+  Frye-Anderson, Richard~B Kim, Dan~M Roden, and C~Michael Stein.
+\newblock Genetic determinants of response to warfarin during initial
+  anticoagulation.
+\newblock \emph{New England Journal of Medicine}, 358\penalty0 (10):\penalty0
+  999--1008, 2008.
 
 \bibitem[Sohrabi and Tajik(2017)]{Sohrabi2017-zv}
 Mohammad~Karim Sohrabi and Alireza Tajik.

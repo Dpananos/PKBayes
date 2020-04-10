@@ -1,5 +1,0 @@
-√ Ensure priors are the same between prior_predictive_check.stan and model.stan
-
-√ Ensure summaries of model.stan are the same as generate_pseudo_data.stan
-
-√ Ensure generate_pseudo_data.stan has the same priors as strong_model.stan
