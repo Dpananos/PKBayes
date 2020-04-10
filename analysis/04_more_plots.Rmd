@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+---
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library(patchwork)
+library(Metrics)
+library(here)
+theme_set(theme_minimal())
+mcmc_predictions = here('analysis','data','mcmc_predictions.csv')
+map_predictions = here('analysis','data','map_predictions.csv')
+files = list(mcmc_predictions, map_predictions)
+
+d = map(files, read_csv) %>% 
+  reduce(bind_rows) %>% 
+  mutate(pred = 1000*pred, 
+         low = 1000*low,
+         high = 1000*high,
+         C = 1000*C)
+  
+
+subjects =  paste('Subject ', 1:100)
+
+d %>% 
+  mutate(type = stringr::str_to_upper(type),
+         subject = factor(paste('Subject ', subjectids), ordered = T, levels = subjects)
+         ) %>% 
+    mutate(type = stringr::str_to_upper(type),
+         type = if_else(type == 'MCMC','HMC',type)) %>% 
+  filter(subjectids<=20) %>% 
+  ggplot(aes(times, pred, ymin=low, ymax=high, fill=type))+
+  geom_ribbon(alpha = 0.5)+
+  facet_wrap(~subject, scales = 'free_y')+
+  scale_color_brewer(palette = 'Set1', direction = -1)+
+  theme_classic()+
+  theme(legend.position = 'top')+
+  labs(x='Time (Hours Post Dose)', y='Concentration ng/mL', fill = 'Method')
+  
+
+
+
+bad_ones = d %>% 
+  filter(between(times, 1, 5)) %>% 
+  mutate(width = high - low) %>% 
+  select(subjectids, times, width, type) %>% 
+  spread(type, width) %>% 
+  mutate(r = map/mcmc) %>% 
+  group_by(subjectids) %>% 
+  filter(r == max(r)) %>% 
+  filter(r>=1.5) %>% 
+  distinct(subjectids)
+
+
+
+d %>% 
+  mutate(type = stringr::str_to_upper(type),
+         type = if_else(type == 'MCMC','HMC',type)) %>% 
+  right_join(bad_ones) %>% 
+  mutate(type = stringr::str_to_upper(type),
+         subject = factor(paste('Subject ', subjectids), ordered = T, levels = subjects)
+         ) %>% 
+  ggplot(aes(times, pred, ymin=low, ymax=high, fill=forcats::fct_rev(type)))+
+  geom_ribbon(alpha = 0.5)+
+  facet_wrap(~subject, scales = 'free_y')+
+  scale_fill_brewer(palette = 'Set1', direction = 1)+
+  theme(legend.position = 'top', aspect.ratio = 1/1.61)+
+  labs(x='Time (Hours Post Dose)', y='Concentration ng/mL', fill = '')
+  
+```
+

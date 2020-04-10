@@ -47,11 +47,11 @@ saveRDS(model_data,'../data/simulated_data_dump.Rdump')
 
 model = stan_model('models/strong_model.stan')
 
-fit = sampling(model,
-               readRDS('../data/simulated_data_dump.Rdump'),
+fit = sampling(model,               readRDS('../data/simulated_data_dump.Rdump'),
                warmup=1000,
                iter=4000,
                chains = 12,
+               thin = 2,
                control = list(adapt_delta=0.8))
 
 p = rstan::extract(fit)
