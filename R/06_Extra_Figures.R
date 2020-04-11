@@ -1,4 +1,4 @@
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(ggpubr)
 library(patchwork)
 library(Metrics)
@@ -31,7 +31,9 @@ figure_5_left = d %>%
   scale_color_brewer(palette = 'Set1', direction = -1)+
   theme(legend.position = 'top',
         aspect.ratio = 1)+
-  labs(color = '')
+  labs(color = '',
+       x = 'Latent log(Concentration)',
+       y = 'Predicted Latent log(Concentration)')
 
 figure_5_right = d %>% 
   select(times, subjectids, pred, type) %>% 
@@ -42,7 +44,9 @@ figure_5_right = d %>%
   geom_abline(color = 'gray')+
   scale_x_log10()+
   scale_y_log10()+
-  theme(aspect.ratio = 1)
+  theme(aspect.ratio = 1)+
+  labs(x='HMC Predicted\nLog Concentration (ng/ml)',
+       y = 'MAP Predicted\nLog Concentration (ng/ml)')
 
 figure_5 = figure_5_left + figure_5_right
 ggsave(filename = 'figure_5.pdf',

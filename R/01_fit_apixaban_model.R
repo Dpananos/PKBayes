@@ -3,7 +3,9 @@ library(Metrics)
 library(patchwork)
 library(rstan)
 library(tidybayes)
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
 theme_set(theme_minimal())
 
 # ---- Prior Predictive Checks ----
@@ -337,7 +339,8 @@ data <-
   subjectids = subjectids,
   times = times,
   C = as.numeric(samples$C),
-  Cobs = as.numeric(samples$Cobs)) %>%
+  Cobs = as.numeric(samples$Cobs)
+  ) %>%
   left_join(
     tibble(
       subjectids = unique(subjectids),

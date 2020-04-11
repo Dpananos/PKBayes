@@ -1,4 +1,4 @@
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(rray)
 library(tictoc)
 library(patchwork)
@@ -77,7 +77,9 @@ figure_7_right = doses_for_max %>%
   ggplot(aes(p, delta, group = patient))+
   geom_line()+
   scale_x_continuous(labels = scales::percent, limits = c(0,0.5))+
-  geom_hline(aes(yintercept = 0), color = 'red')
+  geom_hline(aes(yintercept = 0), color = 'red')+
+  labs(x = 'Risk For Max Concentration',
+       y = 'MAP Dose - HMC Dose')
 
 ggsave(filename = 'figure_7_right.pdf',
        plot = figure_7_right,

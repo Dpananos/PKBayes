@@ -1,4 +1,4 @@
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(rray)
 library(tictoc)
 library(patchwork)
@@ -85,7 +85,9 @@ figure_7_left = doses_for_12 %>%
   geom_line()+
   scale_x_continuous(labels = scales::percent, limits = c(0,0.5))+
   scale_y_continuous(limits = c(-3,3))+
-  geom_hline(aes(yintercept = 0), color = 'red')
+  geom_hline(aes(yintercept = 0), color = 'red')+
+  labs(x = 'Risk At 12 Hours Post Dose',
+       y = 'MAP Dose - HMC Dose')
 
 
 ggsave('figure_7_left.pdf',

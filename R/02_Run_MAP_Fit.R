@@ -1,7 +1,7 @@
 library(bayesplot)
 library(here)
 library(rstan)
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(tidybayes)
 
 options(mc.cores = parallel::detectCores())
@@ -13,7 +13,7 @@ rstan_options(auto_write = TRUE)
 # --- Load in data and model ---
 
 # Load Simulated data. Only want 100 subjects
-d = here('analysis','data','simulated_data.csv') %>% 
+d = here('data','simulated_data.csv') %>% 
   read_csv() %>%
   filter(subjectids<=100)
 
