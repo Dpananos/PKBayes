@@ -292,11 +292,13 @@ by_subject_ppc <-
   scale_alpha_manual(values = c(0.5, 0.25)) +
   scale_color_manual(values = c('black', 'red')) +
   labs(alpha = '', color = '')+
-  theme(aspect.ratio = 1/1.61)
+  theme(aspect.ratio = 1/1.61,
+        legend.position = 'top')
 
 ggsave(filename = 'by_subject_ppc.pdf',
        plot = by_subject_ppc,
-       path = here("figures"))
+       path = here("figures"),
+       height = 8, width = 15)
 
 
 
