@@ -1,5 +1,9 @@
 echo "Starting Analysis"
 
+echo "Removing Old Plots"
+
+rm -v -- figures/*
+
 echo "Drawing From Prior Predictive, Fitting Model, Generating Simulation Data"
 Rscript --no-environ R/01_fit_apixaban_model.R
 
@@ -16,4 +20,4 @@ echo "Performing Experiment 2: Risk at Cmax"
 Rscript --no-environ R/05_CMax_Calibration.R
 
 echo "Making Extra Plots"
-Rscrupt --no-environ R/06_Extra_Figures.R
+Rscript --no-environ R/06_Extra_Figures.R

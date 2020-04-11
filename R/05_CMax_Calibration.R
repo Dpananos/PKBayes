@@ -94,8 +94,13 @@ doses_for_max %>%
 
 
 
-experiment_2_doses = read_csv(here("data","experiment_2_doses.csv")) %>% 
-  filter(p<=0.5)
+experiment_2_doses = here("data","experiment_2_doses.csv") %>% 
+                      read_csv() %>% 
+                      filter(p<=0.5)
+
+true_pk_params = here("data","simulated_data.csv") %>% 
+                read_csv()
+
 
 
 pkfunc<-function(dose, cl, ke, ka, t){
@@ -103,8 +108,6 @@ pkfunc<-function(dose, cl, ke, ka, t){
   1000*dose*ke*ka/(2*cl*(ke - ka))*(exp(-ka*t) - exp(-ke*t))
   
 }
-
-
 
 # To determine calibration, we give each patient their recommended dose for the desired risk
 # Each dose was designed to elicit a risk of exceeding some threshold
@@ -121,7 +124,7 @@ figure_8_right_data = experiment_2_doses %>%
             map_calib = mean(calibration_map))
 
 
-figure_8_right<-figure_8_right_daya
+figure_8_right<-figure_8_right_data %>% 
   ggplot()+
   geom_point(aes(p, mcmc_calib, color = 'HMC'))+
   geom_point(aes(p, map_calib, color = 'MAP'))+

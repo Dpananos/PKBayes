@@ -1,16 +1,15 @@
+Research compendium for our article:
 
-# PKBayes
+<Citation Here>
 
+# Repository Overview
 
-Code for "Comparisons Between Hamiltonioan Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixiban Induction Dose & Dose Personalization".
+* `data` contains raw data used to fit our apixaban model as well as derived datasets from our modelling pricess.  The `data/README` provides a codebook for the data in each file.
 
+* `R` contains the scripts that fit the models, compute appropriate metrics, and produce figures.  The `R/README` outlines what datasets and what figures are produced by which scripts.
 
-* `analysis/01_apixiban_model.Rmd` has code to generate prior predictive samples and fit the model described in section 3.  Code for figures 1, 3, and 4 are found here.
+* `figures` contains figures generated for the paper.
 
-* `analysis/02_Run_Simulation.Rmd` has code to fit models to pseudopatients.  **Warning**: The model fit via HMC takes approx 1 hour to run, so be prepared to wait.
+* `models` contains relevant Stan models used in the paper.  The `models/README` includes a summary of the models and in which scripts they are used.
 
-* `analysis/03_decisions.Rmd` has code to create figures 7 and 8.
-
-* `analysis/04_more_plots.Rmd` has code for figure 6 (and for figure 5, though it is not included).  In order to run this notebook, `analysis/02_Run_Simulation.Rmd` needs to be run first.
-
-
+The shell script `build.sh` will delete all figures and then rerun the scripts in `R` in order to generate them again.  **Fitting our simulation via Hamiltonian Monte Carlo can take up to an hour on a 2017 iMac with 8GB of RAM**.

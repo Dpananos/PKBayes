@@ -278,20 +278,19 @@ by_subject_ppc <-
     ymin = ppc_C.lower,
     ymax = ppc_C.upper,
     alpha = 'PPC Concentration'
-  ),
-  fill = 'red') +
+  ),fill = 'red') +
   geom_ribbon(aes(
     Time,
     ymin = C.lower,
     ymax = C.upper,
     alpha = 'Latent Concentration'
-  ),
-  fill = 'red') +
+  ),fill = 'red') +
   geom_point(aes(Time, Concentration_scaled, color = 'Observed Data'), size = 0.5) +
   facet_wrap( ~ Subject, scales = 'free_y') +
   scale_alpha_manual(values = c(0.5, 0.25)) +
   scale_color_manual(values = c('black', 'red')) +
-  labs(alpha = '', color = '')
+  labs(alpha = '', color = '')+
+  theme(aspect.ratio = 1/1.61)
 
 ggsave(filename = 'by_subject_ppc.pdf',
        plot = by_subject_ppc,
