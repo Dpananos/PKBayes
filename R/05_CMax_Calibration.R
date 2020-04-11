@@ -1,6 +1,5 @@
 suppressPackageStartupMessages(library(tidyverse))
 library(rray)
-library(tictoc)
 library(patchwork)
 library(here)
 theme_set(theme_minimal(base_size = 12))

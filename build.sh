@@ -12,6 +12,7 @@ rm -v -- figures/*
 printf "\n#######################################################################\n"
 printf "Drawing From Prior Predictive, Fitting Model, Generating Simulation Data"
 printf "\n#######################################################################\n"
+
 Rscript --no-environ R/01_fit_apixaban_model.R
 
 printf "\n#######################################################################\n"
@@ -38,4 +39,4 @@ Rscript --no-environ R/05_CMax_Calibration.R
 printf "\n#######################################################################\n"
 printf "Making Extra Plots"
 printf "\n#######################################################################\n"
-Rscript --no-environ R/06_Extra_Figures.R
+Rscript --no-environ R/06_Extra_Figures.R 
