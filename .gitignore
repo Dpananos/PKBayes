@@ -109,3 +109,4 @@ venv.bak/
 .vscode
 data/mcmc_parameter*
 daya/map_paraameter*
+.DS_Store

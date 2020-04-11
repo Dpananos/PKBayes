@@ -44,7 +44,7 @@ This dataset is created in `R/02_Run_MAP_Fit.R`. It contains the predctions and 
 
 This dataset is created in `R/02_Run_MAP_Fit.R` and contains a list of matrices.  The matrices in these lists are 10000x100 matrices representing the posterior samples for the pseudopatient pharmacokinetic parameters `cl`, `ke`, and `ka`.  Entry `[i,j]` in these matrices represents the `ith` sample for the `jth` pseudopatient.
 
-### mcmc_predictions.csv'
+### mcmc_predictions.csv
 
 This dataset is created in `R/03_Run_HMC_Fit.R`. It contains the predctions and credible intervals for pseudopatient latent concentration.
 
@@ -68,7 +68,7 @@ This dataset is created in `R/04_12_Hour_Calibration.R`.  It contains estimated 
 
 
 
-### experiment_1_doses.csv
+### experiment_2_doses.csv
 
 This dataset is created in `R/05_Cmax_Calibration.R`.  It contains estimated doses to achieve an indicated risk for our risk-at-tmax experiment.
 
@@ -76,3 +76,7 @@ This dataset is created in `R/05_Cmax_Calibration.R`.  It contains estimated dos
 * `p`: Desired risk level
 * `mcmc_estimated_dose`: Dose estimated from HMC posterior
 * `map_estimated_dose`: Dose estimated from MAP posterior
+
+### table_2_errors.csv
+
+Out of sample expexted error (and standard deviations) for each model.  This data populates table 2 in the paper.
