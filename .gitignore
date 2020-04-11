@@ -107,3 +107,5 @@ venv.bak/
 /bigfits
 *.pdf
 .vscode
+data/mcmc_parameter*
+daya/map_paraameter*
