@@ -10,6 +10,18 @@ printf "\n######################################################################
 rm -v -- figures/*
 
 printf "\n#######################################################################\n"
+printf "Deleting Generated Datasets"
+printf "\n#######################################################################n"
+
+files=$(ls data)
+
+for file in $files; do
+  if [ $file != "apixaban_regression_data.csv" ] && [ $file != "README.md" ]; then  
+    rm -v "data/$file"
+  fi
+done
+
+printf "\n#######################################################################\n"
 printf "Drawing From Prior Predictive, Fitting Model, Generating Simulation Data"
 printf "\n#######################################################################\n"
 

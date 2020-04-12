@@ -47,13 +47,14 @@ model_file = here('models','strong_model.stan')
 model = stan_model(model_file)
 
 # ---- Fit Model with HMC ----
-
+#If this takes too long, thin the chains with a frequency of 3.
+# Gives similar results, with only the out of sample error changing to within 1e-3
 fit = sampling(model,
                model_data, 
                warmup=1000,
                iter=4000,
                chains = 12,
-               thin = 3,
+               # thin = 3,
                control = list(adapt_delta=0.8))
 
 
