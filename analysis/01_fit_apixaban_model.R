@@ -49,8 +49,6 @@ units <- function(x) {
   glue::glue('{x} ng/ml')
 }
 
-
-
 # Plot the prior now.  One curve per sample.
 # 250 samples from the prior will be plotted (see n argument in spread_draws)
 # COncentrations from the model are in units mg/L

@@ -7,12 +7,8 @@ Concentration data used to fit our apixaban model.  This is not generated from a
 * `Time`: Time (in hours) when observation was made
 * `Subject`:  Participant ID Number
 * `Concentration`: Concentration observed in ng/ml
-* `Group`: If subject is control or has non-alcoholic fatty liver disease
-* `Sex`: Male/Female
-* `Age`: In years
-* `Weight`: In kilograms
-* `Creatinine`: In micromolar.  Measure of kidney function 
-* `BMI`: Body Mass Index
+* `Concentration_scaled`: Concentration rescaled to g/L
+
 
 ### simulated_data.RDS
 
