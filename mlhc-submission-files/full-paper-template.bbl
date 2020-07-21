@@ -10,12 +10,13 @@
 Melanie~D Beaton, Rommel~G Tirona, Ruth Strapp, Mala Ramu, Ute Schwarz, Richard
   Kim, Bandar Aljudaibi, and Zahra Kassam.
 \newblock Su1495 - apixaban and rosuvastatin pharmacokinetics in nonalcoholic
-  fatty liver disease, 2018.
+  fatty liver disease.
+\newblock \emph{Gastroenterology}, 154\penalty0 (6):\penalty0 S--1158, 2018.
 
 \bibitem[Betancourt(2017)]{Betancourt2017-ak}
 Michael Betancourt.
-\newblock A conceptual introduction to hamiltonian monte carlo.
-\newblock January 2017.
+\newblock A conceptual introduction to {Hamiltonian Monte Carlo}, 2017.
+\newblock arXiv:1701.02434 [stat.ME].
 
 \bibitem[Brooks et~al.(2016)Brooks, Tett, Isbel, and Staatz]{Brooks2016-li}
 Emily Brooks, Susan~E Tett, Nicole~M Isbel, and Christine~E Staatz.
@@ -42,7 +43,8 @@ Michael~D Caldwell, Richard~L Berg, Kai~Qi Zhang, Ingrid Glurich, John~R
 Bob Carpenter, Andrew Gelman, Matthew~D Hoffman, Daniel Lee, Ben Goodrich,
   Michael Betancourt, Marcus Brubaker, Jiqiang Guo, Peter Li, and Allen
   Riddell.
-\newblock Stan: A probabilistic programming language, 2017.
+\newblock Stan: A probabilistic programming language.
+\newblock \emph{Journal of Statistical Software}, 76\penalty0 (1), 2017.
 
 \bibitem[Gulilat et~al.(2020)Gulilat, Keller, Linton, Pananos, Lizotte,
   Dresser, Alfonsi, Tirona, Kim, and Schwarz]{gulilat2020drug}
@@ -57,17 +59,20 @@ Markus Gulilat, Denise Keller, Bradley Linton, A~Demetri Pananos, Daniel
 \bibitem[Hoffman and Gelman(2014)]{Matthew_D_Hoffman2014-in}
 Mathew Hoffman and Andrew Gelman.
 \newblock The {No-U-Turn} sampler: Adaptively setting path lengths in
-  hamiltonian monte carlo.
-\newblock \emph{Journal of Machine Learning Research}, 2014.
+  {Hamiltonian Monte Carlo}.
+\newblock \emph{Journal of Machine Learning Research}, 15:\penalty0 1593--1623,
+  2014.
 
 \bibitem[Lin and Segel(1988)]{Lin1988-pr}
 C~C Lin and L~A Segel.
-\newblock Mathematics applied to deterministic problems in the natural
-  sciences, 1988.
+\newblock \emph{Mathematics Applied to Deterministic Problems in the Natural
+  Sciences}.
+\newblock SIAM, Philadelphia, 1988.
 
 \bibitem[Neal(1996)]{Neal1996-vn}
 Radford~M Neal.
-\newblock Bayesian learning for neural networks, 1996.
+\newblock \emph{Bayesian Learning for Neural Networks}.
+\newblock Lecture Notes in Statistics. Springer, New York, 1996.
 
 \bibitem[Nguyen et~al.(2016)Nguyen, B{\'e}nech, Pruvost, and
   Lenuzza]{Nguyen2016-pg}
@@ -92,8 +97,8 @@ Minami Ohara, Yasuhiko Suzuki, Saki Shinohara, Inna~Y Gong, Crystal~L Schmerk,
 Tim Preijers, Britta A~P Laros-vanGorkom, Ron A~A Math{\^o}t, and Marjon~H
   Cnossen.
 \newblock Pharmacokinetic-guided dosing of factor {VIII} concentrate in a
-  morbidly obese severe haemophilia a patient undergoing orthopaedic surgery,
-  2019.
+  morbidly obese severe haemophilia a patient undergoing orthopaedic surgery.
+\newblock \emph{BMJ Case Reports}, 12\penalty0 (1):\penalty0 bcr--2018, 2019.
 
 \bibitem[Salway and Wakefield(2008)]{Salway2008-gi}
 Ruth Salway and Jon Wakefield.
@@ -122,12 +127,13 @@ Frank Stifft, Franciscus Vandermeer, Cees Neef, Sander van Kuijk, and Maarten
   modified release tacrolimus in renal transplant recipients using linear
   regression analysis and comparison with bayesian population pharmacokinetics
   in different cohorts.
-\newblock \emph{Eur. J. Clin. Pharmacol.}, February 2020.
+\newblock \emph{Eur. J. Clin. Pharmacol.}, 76\penalty0 (5):\penalty0 685--693,
+  May 2020.
 
 \bibitem[Tripuraneni et~al.(2017)Tripuraneni, Rowland, Ghahramani, and
   Turner]{Tripuraneni2017-oh}
 Nilesh Tripuraneni, Mark Rowland, Zoubin Ghahramani, and Richard Turner.
-\newblock Magnetic hamiltonian monte carlo.
+\newblock Magnetic {Hamiltonian Monte Carlo}.
 \newblock In \emph{Proceedings of the 34th International Conference on Machine
   Learning - Volume 70}, ICML'17, pages 3453--3461. JMLR.org, August 2017.
 
@@ -136,20 +142,24 @@ Nilesh Tripuraneni, Mark Rowland, Zoubin Ghahramani, and Richard Turner.
 Yana Vinogradova, Carol Coupland, Trevor Hill, and Julia Hippisley-Cox.
 \newblock Risks and benefits of direct oral anticoagulants versus warfarin in a
   real world setting: cohort study in primary care.
-\newblock \emph{bmj}, 362:\penalty0 k2505, 2018.
+\newblock \emph{{BMJ}}, 362:\penalty0 k2505, 2018.
 
 \bibitem[Wakefield(1996)]{Wakefield1996-yy}
 Jon Wakefield.
-\newblock The bayesian analysis of population pharmacokinetic models, 1996.
+\newblock The bayesian analysis of population pharmacokinetic models.
+\newblock \emph{Journal of the American Statistical Association}, 91\penalty0
+  (433):\penalty0 62--75, 1996.
 
 \bibitem[Xue et~al.(2017)Xue, Holford, Ding, Shen, Huang, Zhang, Zhang, Guo,
   Xie, Zhou, Chen, Liu, and Miao]{Xue2017-mp}
 Ling Xue, Nick Holford, Xiao‐liang Ding, Zhen‐ya Shen, Chen‐rong Huang,
   Hua Zhang, Jing‐jing Zhang, Zhe‐ning Guo, Cheng Xie, Ling Zhou, Zhi‐yao
   Chen, Lin‐sheng Liu, and Li‐yan Miao.
-\newblock Theory‐based pharmacokinetics and pharmacodynamics of s‐ and
-  r‐warfarin and effects on international normalized ratio: influence of body
-  size, composition and genotype in cardiac surgery patients, 2017.
+\newblock Theory‐based pharmacokinetics and pharmacodynamics of {S}‐ and
+  {R}‐warfarin and effects on international normalized ratio: influence of
+  body size, composition and genotype in cardiac surgery patients.
+\newblock \emph{British Journal of Clinical Pharmacology}, 83\penalty0
+  (4):\penalty0 823--835, 2017.
 
 \bibitem[Zhu et~al.(2017)Zhu, Hong, Wei, Hu, Chen, Wang, Zhu, Yu, and
   Sun]{Zhu2017-rk}
@@ -157,7 +167,7 @@ Yu-Bin Zhu, Xian-Hua Hong, Meng Wei, Jing Hu, Xin Chen, Shu-Kui Wang, Jun-Rong
   Zhu, Feng Yu, and Jian-Guo Sun.
 \newblock Development of a novel individualized warfarin dose algorithm based
   on a population pharmacokinetic model with improved prediction accuracy for
-  chinese patients after heart valve replacement.
+  {Chinese} patients after heart valve replacement.
 \newblock \emph{Acta Pharmacol. Sin.}, 38\penalty0 (3):\penalty0 434--442,
   March 2017.
 

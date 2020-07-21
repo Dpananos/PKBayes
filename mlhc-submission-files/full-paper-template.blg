@@ -3,46 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: full-paper-template.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-Warning--empty note in Betancourt2017-ak
 You've used 22 entries,
             2773 wiz_defined-function locations,
-            747 strings with 10599 characters,
-and the built_in function-call counts, 12801 in all, are:
-= -- 1041
+            753 strings with 10677 characters,
+and the built_in function-call counts, 13511 in all, are:
+= -- 1134
 > -- 1121
 < -- 8
 + -- 376
 - -- 354
-* -- 1188
-:= -- 2032
-add.period$ -- 60
+* -- 1286
+:= -- 2143
+add.period$ -- 68
 call.type$ -- 22
-change.case$ -- 183
+change.case$ -- 181
 chr.to.int$ -- 22
-cite$ -- 45
-duplicate$ -- 425
-empty$ -- 813
+cite$ -- 44
+duplicate$ -- 463
+empty$ -- 876
 format.name$ -- 384
-if$ -- 2575
+if$ -- 2722
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 14
-newline$ -- 111
+missing$ -- 23
+newline$ -- 118
 num.names$ -- 88
-pop$ -- 371
+pop$ -- 339
 preamble$ -- 1
 purify$ -- 161
 quote$ -- 0
-skip$ -- 402
+skip$ -- 397
 stack$ -- 0
-substring$ -- 355
+substring$ -- 505
 swap$ -- 43
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 242
-warning$ -- 1
-while$ -- 90
+type$ -- 232
+warning$ -- 0
+while$ -- 102
 width$ -- 0
-write$ -- 270
-(There was 1 warning)
+write$ -- 295

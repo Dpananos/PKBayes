@@ -22,7 +22,7 @@
 \providecommand \oddpage@label [2]{}
 \jmlr@workshop{Machine Learning for Healthcare}
 \jmlr@title{Comparisons Between HMC And MAP For Dose Personalization}{Comparisons Between Hamiltonian Monte Carlo and Maximum A Posteriori For A Bayesian Model For Apixaban Induction Dose \& Dose Personalization}
-\jmlr@author{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Epidemiology and Biostatistics\\ Department of Computer Science\\ Western University\\ London, Ontario, Canada}
+\jmlr@author{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology \& Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Computer Science\\ Department of Epidemiology \& Biostatistics\\ Western University\\ London, Ontario, Canada}{\Name {A. Demetri Pananos} \Email {apananos@uwo.ca}\\ \addr Department of Epidemiology \& Biostatistics\\ Western University\\ London, Ontario, Canada \AND \Name {Daniel J. Lizotte} \Email {dlizotte@uwo.ca}\\ \addr Department of Computer Science\\ Department of Epidemiology \& Biostatistics\\ Western University\\ London, Ontario, Canada}
 \newlabel{jmlrstart}{{}{1}{}{Doc-Start}{}}
 \newlabel{jmlrstart@cref}{{}{[1][1][]1}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.0.1}}
@@ -32,26 +32,26 @@
 \citation{Byon2019-gf}
 \citation{gulilat2020drug}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Background}{3}{section.0.2}}
-\citation{Beaton2018-el}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces A demonstration of a Bayesian workflow for pharmacokinetic models. The leftmost panel represents the prior. Each curve corresponds to a unique set of model parameters which induce each concentration function. In the center panel is the data observed from a single patient. Conditioning on this data yields the rightmost panel. Each curve corresponds to a unique set of model parameters drawn from the posterior distribution.}}{4}{figure.1}}
 \newlabel{fig:fig1}{{1}{4}{A demonstration of a Bayesian workflow for pharmacokinetic models. The leftmost panel represents the prior. Each curve corresponds to a unique set of model parameters which induce each concentration function. In the center panel is the data observed from a single patient. Conditioning on this data yields the rightmost panel. Each curve corresponds to a unique set of model parameters drawn from the posterior distribution}{figure.1}{}}
 \newlabel{fig:fig1@cref}{{[figure][1][]1}{[1][3][]4}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{4}{section.0.3}}
+\citation{Beaton2018-el}
 \citation{Beaton2018-el}
 \citation{Byon2019-gf}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{5}{section.0.3}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of data from \cite  {Beaton2018-el}. }}{5}{table.1}}
 \newlabel{tab:my table}{{1}{5}{Summary of data from \cite {Beaton2018-el}}{table.1}{}}
 \newlabel{tab:my table@cref}{{[table][1][]1}{[1][5][]5}}
 \newlabel{eq:eq_1}{{1}{5}{Bayesian Model}{equation.0.3.1}{}}
 \newlabel{eq:eq_1@cref}{{[equation][1][]1}{[1][5][]5}}
-\newlabel{eq:eq_2}{{2}{5}{Bayesian Model}{equation.0.3.2}{}}
-\newlabel{eq:eq_2@cref}{{[equation][2][]2}{[1][5][]5}}
 \citation{Lin1988-pr}
 \citation{Wakefield1996-yy,Salway2008-gi}
 \citation{Wakefield1996-yy,Salway2008-gi}
 \citation{Carpenter2017-qf}
+\newlabel{eq:eq_2}{{2}{6}{Bayesian Model}{equation.0.3.2}{}}
+\newlabel{eq:eq_2@cref}{{[equation][2][]2}{[1][6][]6}}
 \newlabel{eq:eq_3}{{3}{6}{Bayesian Model}{equation.0.3.3}{}}
-\newlabel{eq:eq_3@cref}{{[equation][3][]3}{[1][5][]6}}
+\newlabel{eq:eq_3@cref}{{[equation][3][]3}{[1][6][]6}}
 \newlabel{eq:eq_4}{{4}{6}{Bayesian Model}{equation.0.3.4}{}}
 \newlabel{eq:eq_4@cref}{{[equation][4][]4}{[1][6][]6}}
 \newlabel{eq:eq_5}{{5}{6}{Bayesian Model}{equation.0.3.5}{}}
@@ -61,9 +61,9 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray).}}{8}{figure.2}}
 \newlabel{fig:fig3}{{2}{8}{Diagnostic plots for our Bayesian model. Top left shows the posterior predictive distribution plus observed data. Data points gave been perturbed to prevent overlapping. Top right shows the predicted values along with accompanying 95\% equal-tailed posterior credible interval. Bottom left shows the residuals (on the log scale) between the observed concentrations and the posterior mean concentration, bottom right shows the cumulative density function for the observed data (black) as well as draws from the posterior predictive distribution (gray)}{figure.2}{}}
 \newlabel{fig:fig3@cref}{{[figure][2][]2}{[1][7][]8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for. }}{9}{figure.3}}
-\newlabel{fig:fig4}{{3}{9}{The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who acieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for}{figure.3}{}}
-\newlabel{fig:fig4@cref}{{[figure][3][]3}{[1][7][]9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who achieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for. }}{9}{figure.3}}
+\newlabel{fig:fig4}{{3}{9}{The leftmost panel shows 250 draws from the prior defined in the previous section. The center panel shows data from two patients who achieved the best (blue) and worst (red) model fit as measured through mean absolute percent error. The rightmost panel shows 250 draws from the posterior for these patients. Not shown here are the other 34 patients in our data, for which the model is also capable of performing predictions for}{figure.3}{}}
+\newlabel{fig:fig4@cref}{{[figure][3][]3}{[1][8][]9}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values.}}{9}{table.2}}
 \newlabel{table2}{{2}{9}{Comparison of HMC and MAP on three loss functions common in pharmacokinetics: Mean Squared Error (MSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The loss was computed on samples not seen by our model. Included in parentheses are the standard deviations of the loss values}{table.2}{}}
 \newlabel{table2@cref}{{[table][2][]2}{[1][9][]9}}
@@ -79,8 +79,8 @@
 \newlabel{fig:fig8@cref}{{[figure][6][]6}{[1][12][]12}}
 \citation{Betancourt2017-ak}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{13}{section.0.5}}
-\bibdata{references}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{14}{section.0.6}}
+\bibdata{references}
 \bibcite{Beaton2018-el}{{1}{2018}{{Beaton et~al.}}{{Beaton, Tirona, Strapp, Ramu, Schwarz, Kim, Aljudaibi, and Kassam}}}
 \bibcite{Betancourt2017-ak}{{2}{2017}{{Betancourt}}{{}}}
 \bibcite{Brooks2016-li}{{3}{2016}{{Brooks et~al.}}{{Brooks, Tett, Isbel, and Staatz}}}
@@ -104,47 +104,47 @@
 \bibcite{Xue2017-mp}{{21}{2017}{{Xue et~al.}}{{Xue, Holford, Ding, Shen, Huang, Zhang, Zhang, Guo, Xie, Zhou, Chen, Liu, and Miao}}}
 \bibcite{Zhu2017-rk}{{22}{2017}{{Zhu et~al.}}{{Zhu, Hong, Wei, Hu, Chen, Wang, Zhu, Yu, and Sun}}}
 \citation{Byon2019-gf}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Model Priors}{17}{section.0.A}}
-\newlabel{eq:eq_6}{{6}{17}{Model Priors}{equation.0.A.6}{}}
-\newlabel{eq:eq_6@cref}{{[equation][6][2147483647]6}{[1][17][]17}}
-\newlabel{eq:eq_7}{{7}{17}{Model Priors}{equation.0.A.7}{}}
-\newlabel{eq:eq_7@cref}{{[equation][7][2147483647]7}{[1][17][]17}}
-\newlabel{eq:eq_8}{{8}{17}{Model Priors}{equation.0.A.8}{}}
-\newlabel{eq:eq_8@cref}{{[equation][8][2147483647]8}{[1][17][]17}}
-\newlabel{eq:eq_9}{{9}{17}{Model Priors}{equation.0.A.9}{}}
-\newlabel{eq:eq_9@cref}{{[equation][9][2147483647]9}{[1][17][]17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients.}}{17}{figure.7}}
-\newlabel{net}{{7}{17}{Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients}{figure.7}{}}
-\newlabel{net@cref}{{[figure][7][2147483647]7}{[1][17][]17}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Model Priors}{18}{section.0.A}}
+\newlabel{eq:eq_6}{{6}{18}{Model Priors}{equation.0.A.6}{}}
+\newlabel{eq:eq_6@cref}{{[equation][6][2147483647]6}{[1][18][]18}}
+\newlabel{eq:eq_7}{{7}{18}{Model Priors}{equation.0.A.7}{}}
+\newlabel{eq:eq_7@cref}{{[equation][7][2147483647]7}{[1][18][]18}}
+\newlabel{eq:eq_8}{{8}{18}{Model Priors}{equation.0.A.8}{}}
+\newlabel{eq:eq_8@cref}{{[equation][8][2147483647]8}{[1][18][]18}}
+\newlabel{eq:eq_9}{{9}{18}{Model Priors}{equation.0.A.9}{}}
+\newlabel{eq:eq_9@cref}{{[equation][9][2147483647]9}{[1][18][]18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients.}}{18}{figure.7}}
+\newlabel{net}{{7}{18}{Graphical description of the data generating process for our model. The data consist of 36 patients, indexed by $j$. Each of the $j$ patients are observed a total of 8 times, with each observation index by $i$. The data are generated by drawing random variables from their appropriate distribution at the top level and then drawing child random variables directly there after. As an example, $\phi $ and $\kappa $ are drawn, which are then used to draw the $\delta _j$, which are then used to draw each of the 8 concentration values, $y_i$ for each of the $j$ patients}{figure.7}{}}
+\newlabel{net@cref}{{[figure][7][2147483647]7}{[1][18][]18}}
 \citation{Byon2019-gf}
-\newlabel{eq:eq_10}{{10}{18}{Priors for Model Hyperparameters}{equation.0.A.10}{}}
-\newlabel{eq:eq_10@cref}{{[equation][10][2147483647]10}{[1][18][]18}}
-\newlabel{eq:eq_11}{{11}{18}{Priors for Model Hyperparameters}{equation.0.A.11}{}}
-\newlabel{eq:eq_11@cref}{{[equation][11][2147483647]11}{[1][18][]18}}
-\newlabel{eq:eq_12}{{12}{18}{Priors for Model Hyperparameters}{equation.0.A.12}{}}
-\newlabel{eq:eq_12@cref}{{[equation][12][2147483647]12}{[1][18][]18}}
-\newlabel{eq:eq_13}{{13}{18}{Priors for Model Hyperparameters}{equation.0.A.13}{}}
-\newlabel{eq:eq_13@cref}{{[equation][13][2147483647]13}{[1][18][]18}}
-\newlabel{eq:eq_14}{{14}{18}{Priors for Model Hyperparameters}{equation.0.A.14}{}}
-\newlabel{eq:eq_14@cref}{{[equation][14][2147483647]14}{[1][18][]18}}
-\newlabel{eq:eq_15}{{15}{18}{Priors for Model Hyperparameters}{equation.0.A.15}{}}
-\newlabel{eq:eq_15@cref}{{[equation][15][2147483647]15}{[1][18][]18}}
-\newlabel{eq:eq_16}{{16}{18}{Priors for Model Hyperparameters}{equation.0.A.16}{}}
-\newlabel{eq:eq_16@cref}{{[equation][16][2147483647]16}{[1][18][]18}}
-\newlabel{eq:eq_17}{{17}{18}{Priors for Model Hyperparameters}{equation.0.A.17}{}}
-\newlabel{eq:eq_17@cref}{{[equation][17][2147483647]17}{[1][18][]18}}
+\newlabel{eq:eq_10}{{10}{19}{Priors for Model Hyperparameters}{equation.0.A.10}{}}
+\newlabel{eq:eq_10@cref}{{[equation][10][2147483647]10}{[1][19][]19}}
+\newlabel{eq:eq_11}{{11}{19}{Priors for Model Hyperparameters}{equation.0.A.11}{}}
+\newlabel{eq:eq_11@cref}{{[equation][11][2147483647]11}{[1][19][]19}}
+\newlabel{eq:eq_12}{{12}{19}{Priors for Model Hyperparameters}{equation.0.A.12}{}}
+\newlabel{eq:eq_12@cref}{{[equation][12][2147483647]12}{[1][19][]19}}
+\newlabel{eq:eq_13}{{13}{19}{Priors for Model Hyperparameters}{equation.0.A.13}{}}
+\newlabel{eq:eq_13@cref}{{[equation][13][2147483647]13}{[1][19][]19}}
+\newlabel{eq:eq_14}{{14}{19}{Priors for Model Hyperparameters}{equation.0.A.14}{}}
+\newlabel{eq:eq_14@cref}{{[equation][14][2147483647]14}{[1][19][]19}}
+\newlabel{eq:eq_15}{{15}{19}{Priors for Model Hyperparameters}{equation.0.A.15}{}}
+\newlabel{eq:eq_15@cref}{{[equation][15][2147483647]15}{[1][19][]19}}
+\newlabel{eq:eq_16}{{16}{19}{Priors for Model Hyperparameters}{equation.0.A.16}{}}
+\newlabel{eq:eq_16@cref}{{[equation][16][2147483647]16}{[1][19][]19}}
+\newlabel{eq:eq_17}{{17}{19}{Priors for Model Hyperparameters}{equation.0.A.17}{}}
+\newlabel{eq:eq_17@cref}{{[equation][17][2147483647]17}{[1][19][]19}}
 \citation{Beaton2018-el}
-\newlabel{eq:eq_18}{{18}{19}{Posterior Summarization and Generating New Data}{equation.0.A.18}{}}
-\newlabel{eq:eq_18@cref}{{[equation][18][2147483647]18}{[1][18][]19}}
-\newlabel{eq:eq_19}{{19}{19}{Posterior Summarization and Generating New Data}{equation.0.A.19}{}}
-\newlabel{eq:eq_19@cref}{{[equation][19][2147483647]19}{[1][18][]19}}
-\newlabel{eq:eq_20}{{20}{19}{Posterior Summarization and Generating New Data}{equation.0.A.20}{}}
-\newlabel{eq:eq_20@cref}{{[equation][20][2147483647]20}{[1][18][]19}}
-\newlabel{eq:eq_21}{{21}{19}{Posterior Summarization and Generating New Data}{equation.0.A.21}{}}
-\newlabel{eq:eq_21@cref}{{[equation][21][2147483647]21}{[1][18][]19}}
-\newlabel{eq:eq_22}{{22}{19}{Posterior Summarization and Generating New Data}{equation.0.A.22}{}}
-\newlabel{eq:eq_22@cref}{{[equation][22][2147483647]22}{[1][18][]19}}
-\newlabel{eq:eq_23}{{23}{19}{Posterior Summarization and Generating New Data}{equation.0.A.23}{}}
-\newlabel{eq:eq_23@cref}{{[equation][23][2147483647]23}{[1][18][]19}}
-\newlabel{jmlrend}{{A}{19}{end of Comparisons Between HMC And MAP For Dose Personalization}{section*.14}{}}
-\newlabel{jmlrend@cref}{{[subappendix][1][2147483647,0]A}{[1][19][]19}}
+\newlabel{eq:eq_18}{{18}{20}{Posterior Summarization and Generating New Data}{equation.0.A.18}{}}
+\newlabel{eq:eq_18@cref}{{[equation][18][2147483647]18}{[1][19][]20}}
+\newlabel{eq:eq_19}{{19}{20}{Posterior Summarization and Generating New Data}{equation.0.A.19}{}}
+\newlabel{eq:eq_19@cref}{{[equation][19][2147483647]19}{[1][19][]20}}
+\newlabel{eq:eq_20}{{20}{20}{Posterior Summarization and Generating New Data}{equation.0.A.20}{}}
+\newlabel{eq:eq_20@cref}{{[equation][20][2147483647]20}{[1][19][]20}}
+\newlabel{eq:eq_21}{{21}{20}{Posterior Summarization and Generating New Data}{equation.0.A.21}{}}
+\newlabel{eq:eq_21@cref}{{[equation][21][2147483647]21}{[1][19][]20}}
+\newlabel{eq:eq_22}{{22}{20}{Posterior Summarization and Generating New Data}{equation.0.A.22}{}}
+\newlabel{eq:eq_22@cref}{{[equation][22][2147483647]22}{[1][19][]20}}
+\newlabel{eq:eq_23}{{23}{20}{Posterior Summarization and Generating New Data}{equation.0.A.23}{}}
+\newlabel{eq:eq_23@cref}{{[equation][23][2147483647]23}{[1][19][]20}}
+\newlabel{jmlrend}{{A}{20}{end of Comparisons Between HMC And MAP For Dose Personalization}{section*.15}{}}
+\newlabel{jmlrend@cref}{{[subappendix][1][2147483647,0]A}{[1][20][]20}}
