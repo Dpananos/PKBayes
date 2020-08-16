@@ -1,18 +1,18 @@
 library(here)
 library(Metrics)
 library(patchwork)
-library(rstan)
+library(cmdstanr)
 library(tidybayes)
+library(posterior)
 suppressPackageStartupMessages(library(tidyverse))
-rstan_options(auto_write = TRUE)
-options(mc.cores = parallel::detectCores())
+mc.cores = parallel::detectCores()
 theme_set(theme_minimal())
 
 # ---- Prior Predictive Checks ----
 
 # Load the prior predictive check as a model in Stan
 prior_model <- here('models', 'prior_predictive_check.stan') %>% 
-               stan_model()
+               cmdstan_model()
 
 # Times at which we evaluate the concentration function.
 # We will be passing this to the prior predictive model and generate observations at these times
@@ -42,7 +42,7 @@ prior_params <- list(
 
 #Sample from the prior now
 # Sample from the prior
-prior_samples <- sampling( prior_model, data = prior_params, algorithm = 'Fixed_param', chains = 1)
+prior_samples <- prior_model$sample(data = prior_params, fixed_param = T)
 
 # Plot the prior
 units <- function(x) {
@@ -54,7 +54,8 @@ units <- function(x) {
 # COncentrations from the model are in units mg/L
 # Multiply by 1000 to get ng/ml, a more reasonable unit for pharmacokinetics
 sampled_times <- tibble(i = seq_along(ts), t = ts)
-prior_plot_data <- prior_samples %>%
+prior_plot_data <- prior_samples$draws() %>%
+  as_draws_df() %>% 
   spread_draws(y[i], n = 250, seed = 1) %>%
   left_join(sampled_times)
 
@@ -71,7 +72,7 @@ prior_plot = prior_plot_data %>%
 # ---- Fit Model ----
 
 model <- here('models', 'model.stan') %>%  
-         stan_model()
+         cmdstan_model()
 
 # Read in the data for the regresion
 # Create a new column, i, so I can join it to the result from tidybayes::spread_draws later
@@ -90,7 +91,7 @@ model_data <- list(
 )
 
 # Fit the model in stan
-fit <- sampling(model, model_data, chains = 12, warmup = 2000, iter = 4000)
+fit <- model$sample(model_data, chains = 12, parallel_chains = mc.cores, iter_warmup = 1000, iter_sampling = 3000)
 
 
 # ---- Recreate Figure 3 ----
@@ -98,7 +99,8 @@ fit <- sampling(model, model_data, chains = 12, warmup = 2000, iter = 4000)
 
 # Various diagnostic plots.
 pop_obs <-
-  fit %>%
+  fit$draws() %>%
+  as_draws_df %>% 
   spread_draws(pop_obs[i]) %>%
   mutate(pop_obs = 1000 * pop_obs) %>%
   mean_qi(.width = c(0.5, 0.8, 0.95)) %>%
@@ -110,6 +112,7 @@ ppc_plot <-
   ggplot() +
   geom_interval(aes(
     Time,
+    pop_obs,
     ymin = .lower,
     ymax = .upper,
     color = factor(.width)
@@ -129,7 +132,8 @@ ppc_plot <-
 
 
 resids <-
-  fit %>%
+  fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(C[i]) %>%
   mutate(log_C = log(1000 * C)) %>%
   mean_qi() %>%
@@ -147,7 +151,8 @@ err_plot <-
   theme(aspect.ratio = 1)
 
 pred_plot <-
-  fit %>%
+  fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(C[i]) %>%
   mutate(C = 1000 * C) %>%
   mean_qi() %>%
@@ -166,7 +171,8 @@ pred_plot <-
 
 
 ecdf_plot <-
-  fit %>%
+  fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(ppc_C[i], n = 100) %>%
   ungroup %>%
   mutate(C = 1000 * ppc_C) %>%
@@ -194,7 +200,8 @@ ggsave(filename = 'figure_3.pdf', plot = figure_3, path = here("figures"))
 
 # Need to identify which subjects have best/worst fit according to MAPE
 # This will compute the error for each subject over the training data
-error <- fit %>%
+error <- fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(C[i], n = 2000) %>%
   mean_qi() %>%
   left_join(d) %>%
@@ -226,7 +233,8 @@ data_plot <-  best_worst_data %>%
   ylim(0, 250)
 
 # Finally, plot predictions for the best and worst fits.
-posterior_plot_data <- fit %>%
+posterior_plot_data <- fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(C[i], n = 125, seed = 0) %>%
   inner_join(d) %>%
   inner_join(candidate, by = 'Subject') 
@@ -264,7 +272,8 @@ ggsave(filename = 'figure_4.pdf', plot = figure_4, path = here("figures"))
 # This is the posterior predictive distribution for each subject
 # We plot the posterior predictive intervals for the latent concentration and the observed concentration
 by_subject_ppc_data <-
-  fit %>%
+  fit$draws() %>%
+  as_draws_df() %>% 
   spread_draws(C[i], ppc_C[i]) %>%
   mean_qi() %>%
   left_join(d)
@@ -322,12 +331,13 @@ N <- length(times)
 model_data <- list( N = N, times = times, subjectids = subjectids, N_subjects = N_subjects)
 
 model <- here('models', 'generate_pseudo_data.stan') %>% 
-         stan_model()
+         cmdstan_model()
 
 # Actually perform draws
-fits <- sampling(model, data = model_data, iter = 1, chains = 1, algorithm = 'Fixed_param', seed = 19920908)
+fits <- model$sample(data = model_data, iter_sampling =  1, chains = 1, fixed_param = T, seed = 19920908)
 
-samples <- rstan::extract(fits)
+samples <- rstan::read_stan_csv(fits$output_files()) %>% 
+           rstan::extract()
 
 saveRDS(samples, here('data', 'simulated_data.RDS'))
 
