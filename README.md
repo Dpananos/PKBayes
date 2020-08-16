@@ -13,3 +13,5 @@ Research compendium for our article:
 * `models` contains relevant Stan models used in the paper.  The `models/README` includes a summary of the models and in which scripts they are used.
 
 The shell script `build.sh` will delete all figures and then rerun the scripts in `analysis` in order to generate them again.  **Fitting our simulation via Hamiltonian Monte Carlo can take up to an hour on a 2017 iMac with 8GB of RAM**.
+
+The branch `cmdstanr` implements the study using `cmdstanr` rather than `rstan`.  If you are using OSX Catalina, there have been some notorious problems getting `rstan` to sample in parallel.  `cmdstanr` is one way to get around this.
