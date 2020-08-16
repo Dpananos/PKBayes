@@ -1,11 +1,11 @@
 library(bayesplot)
 library(here)
-library(rstan)
+library(cmdstanr)
 suppressPackageStartupMessages(library(tidyverse))
 library(tidybayes)
 
-options(mc.cores = parallel::detectCores())
-rstan_options(auto_write = TRUE)
+mc.cores = parallel::detectCores()
+
 
 `%notin%` <- Negate(`%in%`)
 
@@ -44,21 +44,22 @@ saveRDS(model_data, here('data','simulated_data_dump.Rdump'))
 
 #Load model for HMC and MAP
 model_file = here('models','strong_model.stan')
-model = stan_model(model_file)
+model = cmdstan_model(model_file)
 
 # ---- Fit Model with HMC ----
 #If this takes too long, thin the chains with a frequency of 3.
 # Gives similar results, with only the out of sample error changing to within 1e-3
-fit = sampling(model,
+fit = model$sample(
                model_data, 
-               warmup=1000,
-               iter=4000,
+               iter_warmup=1000,
+               iter_sampling = 3000,
                chains = 12,
-               # thin = 3,
-               control = list(adapt_delta=0.8))
+               parallel_chains = mc.cores
+               # thin = 3
+               )
 
 
-p = rstan::extract(fit)
+p = rstan::read_stan_csv(fit$output_files()) %>% rstan::extract()
 
 mcmc_pred = apply(p$ypred, 2, mean)
 
@@ -79,7 +80,7 @@ predictions %>%
 
 # Save parameters for later
 
-m = as.matrix(fit)
+m = as.matrix(rstan::read_stan_csv(fit$output_files()))
 param_names = colnames(m)
 mcmc_params = list(
   ke = m[, grepl('ke',param_names)],
